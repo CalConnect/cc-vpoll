@@ -79,7 +79,9 @@ VEVENT:: In our simple use case there will be multiple VEVENT sub-
   date and or time for the meeting.
 
 [example]
+--
 VPOLL with 3 voters and 3 alternative meetings:
+
 [source]
 ----
 BEGIN:VCALENDAR
@@ -113,6 +115,7 @@ END:VEVENT
 END:VPOLL
 END:VCALENDAR
 ----
+--
 
 As can be seen in the example above, there is an iTip METHOD property
 with the value REQUEST.  The VPOLL object will be distributed to all
@@ -165,7 +168,9 @@ Eric responds and votes for items 1 and 2 and then responds again
 with a vote for only item 3, the final outcome is one vote on item 3.
 
 [example]
+--
 REPLY VPOLL from Cyrus:
+
 [source]
 ----
 BEGIN:VCALENDAR
@@ -197,6 +202,7 @@ END:VVOTER
 END:VPOLL
 END:VCALENDAR
 ----
+--
 
 === VPOLL updates
 
@@ -208,6 +214,7 @@ ORGANIZER and one or more VVOTER components each populated with a
 VOTER property and zero or more VOTE components.
 
 [example]
+--
 [source]
 ----
 BEGIN:VCALENDAR
@@ -255,6 +262,7 @@ END:VVOTER
 END:VPOLL
 END:VCALENDAR
 ----
+--
 
 === VPOLL Completion
 
@@ -274,7 +282,9 @@ the winning choice and when it has done so set the STATUS to
 "SUBMITTED".
 
 [example]
+--
 VPOLL confirmation:
+
 [source]
 ----
 BEGIN:VCALENDAR
@@ -300,6 +310,7 @@ END:VEVENT
 END:VPOLL
 END:VCALENDAR
 ----
+--
 
 === Other Responses
 

@@ -5,7 +5,7 @@
 :language: en
 :doctype: standard
 :edition: 1
-:status: working-draft
+:status: committee-draft
 :revdate: 2018-11-19
 :script: Latn
 :technical-committee: FREEBUSY
