@@ -1,6 +1,6 @@
 = CalConnect Standard: Calendaring and scheduling -- Consensus scheduling -- iCalendar VPOLL component
 :title: Calendaring and scheduling -- Consensus scheduling -- iCalendar VPOLL component
-:docnumber: 34520
+:docnumber: 51005
 :copyright-year: 2018
 :language: en
 :doctype: standard
