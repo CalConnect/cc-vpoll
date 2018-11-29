@@ -1,0 +1,20 @@
+
+[[terms]]
+== Terms and definitions
+
+=== consensus scheduling
+
+process whereby users come to some agreement on meeting
+or task alternatives and then book that meeting or task
+
+// TODO
+=== active Vpoll
+
+VPoll may have a DTSTART, DTEND and DURATION which
+may define the start and end of the active voting period
+
+=== voter
+
+participant who votes on the alternatives
+
+NOTE: A voter need not be an attendee of any of the alternatives presented.

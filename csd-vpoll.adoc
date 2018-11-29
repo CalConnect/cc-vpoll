@@ -1,0 +1,79 @@
+= CalConnect Standard: Calendaring and scheduling -- Consensus scheduling -- iCalendar VPOLL component
+:title: Calendaring and scheduling -- Consensus scheduling -- iCalendar VPOLL component
+:docnumber: 34520
+:copyright-year: 2018
+:language: en
+:doctype: standard
+:edition: 1
+:status: working-draft
+:revdate: 2018-11-19
+:script: Latn
+:technical-committee: CALENDAR
+:fullname: Eric York
+:surname: York
+:givenname: Eric
+:fullname_2: Cyrus Daboo
+:surname_2: Daboo
+:givenname_2: Cyrus
+:fullname_3: Michael Douglass
+:surname_3: Douglass
+:givenname_3: Michael
+:local-cache-only:
+:data-uri-image:
+:toc:
+
+////
+Eric York (editor)
+Apple Inc.
+1 Infinite Loop
+Cupertino, CA  95014
+USA
+
+Email: eyork@apple.com
+URI::  http://www.apple.com/
+
+Cyrus Daboo (editor)
+Apple Inc.
+1 Infinite Loop
+Cupertino, CA  95014
+USA
+
+Email: cyrus@daboo.name
+URI::  http://www.apple.com/
+
+Michael Douglass (editor)
+Rensselaer Polytechnic Institute
+110 8th Street
+Troy, NY  12180
+USA
+
+Email: douglm@rpi.edu
+URI::  http://www.rpi.edu/
+////
+
+
+:sectnums!:
+
+include::sections/00-abstract.adoc[]
+include::sections/00-foreword.adoc[]
+include::sections/00-intro.adoc[]
+
+:sectnums:
+
+include::sections/01-scope.adoc[]
+include::sections/02-normrefs.adoc[]
+include::sections/03-terms.adoc[]
+include::sections/04-consensus.adoc[]
+include::sections/05-icalendar-extensions.adoc[]
+include::sections/06-poll-modes.adoc[]
+include::sections/07-itip-extensions.adoc[]
+include::sections/08-caldav-extensions.adoc[]
+include::sections/09-security.adoc[]
+include::sections/10-iana.adoc[]
+
+include::sections/99-bibliography.adoc[]
+
+include::sections/xa-open-issues.adoc[]
+include::sections/xb-change-log.adoc[]
+
+
