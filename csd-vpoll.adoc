@@ -8,7 +8,7 @@
 :status: working-draft
 :revdate: 2018-11-19
 :script: Latn
-:technical-committee: CALENDAR
+:technical-committee: FREEBUSY
 :fullname: Eric York
 :surname: York
 :givenname: Eric

@@ -2,7 +2,7 @@
 
 = CalConnect Standard: Calendaring and scheduling -- Consensus scheduling -- iCalendar VPOLL component
 
-This work item belongs to TC PUBLISH.
+This work item belongs to TC FREEBUSY.
 
 image:https://travis-ci.com/CalConnect/csd-vpoll.svg?branch=master["Build Status", link="https://travis-ci.com/calconnect/csd-vpoll"]
 
