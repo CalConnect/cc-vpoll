@@ -1,0 +1,33 @@
+<bibitem id="RFC2119">
+  <fetched>2018-11-29</fetched>
+  <title format="plain" language="en" script="Latn">Key words for use in RFCs to Indicate Requirement Levels</title>
+  <uri type="src">https://www.rfc-editor.org/info/rfc2119</uri>
+  <docidentifier type="IETF">RFC 2119</docidentifier>
+  <docidentifier type="DOI">10.17487/RFC2119</docidentifier>
+  <date type="published">
+    <on>1997</on>
+  </date>
+  <contributor>
+    <role type="author"/>
+    <person>
+      <name>
+        <completename language="en">S. Bradner</completename>
+      </name>
+      <affiliation>
+        <organization>
+          <name>IETF</name>
+          <abbreviation>IETF</abbreviation>
+        </organization>
+      </affiliation>
+    </person>
+  </contributor>
+  <language>en</language>
+  <series type="main">
+    <title format="plain" language="en" script="Latn">BCP</title>
+    <number>14</number>
+  </series>
+  <series type="main">
+    <title format="plain" language="en" script="Latn">RFC</title>
+    <number>2119</number>
+  </series>
+</bibitem>

@@ -1,6 +1,6 @@
 = CalConnect Standard: Calendaring and scheduling -- Consensus scheduling -- iCalendar VPOLL component
 :title: Calendaring and scheduling -- Consensus scheduling -- iCalendar VPOLL component
-:docnumber: 51005
+:docnumber: 51006
 :copyright-year: 2018
 :language: en
 :doctype: standard
@@ -19,9 +19,17 @@
 :fullname_3: Michael Douglass
 :surname_3: Douglass
 :givenname_3: Michael
+:draft:
+:toc:
+:stem:
+:xrefstyle: short
+:imagesdir: images
+:docfile: cc-51006.adoc
+:mn-document-class: csd
+:mn-output-extensions: xml,html,pdf
 :local-cache-only:
 :data-uri-image:
-:toc:
+
 
 ////
 Eric York (editor)
