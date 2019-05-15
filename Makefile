@@ -1,14 +1,20 @@
 #!make
 SHELL := /bin/bash
+# Ensure the xml2rfc cache directory exists locally
+IGNORE := $(shell mkdir -p $(HOME)/.cache/xml2rfc)
 
 FORMAT_MARKER := mn-output-
 FORMATS := $(shell grep "$(FORMAT_MARKER)" *.adoc | cut -f 2 -d ' ' | tr ',' '\n' | sort | uniq | tr '\n' ' ')
 
 SRC  := $(filter-out README.adoc, $(wildcard *.adoc))
 XML  := $(patsubst %.adoc,%.xml,$(SRC))
+XMLRFC2  := $(patsubst %.adoc,%.xml,$(SRC))
+XMLRFC3  := $(patsubst %.adoc,%.v3.xml,$(SRC))
 HTML := $(patsubst %.adoc,%.html,$(SRC))
 DOC  := $(patsubst %.adoc,%.doc,$(SRC))
 PDF  := $(patsubst %.adoc,%.pdf,$(SRC))
+TXT  := $(patsubst %.adoc,%.txt,$(SRC))
+NITS := $(patsubst %.adoc,%.nits,$(SRC))
 WSD  := $(wildcard models/*.wsd)
 XMI	 := $(patsubst models/%,xmi/%,$(patsubst %.wsd,%.xmi,$(WSD)))
 PNG	 := $(patsubst models/%,images/%,$(patsubst %.wsd,%.png,$(WSD)))
@@ -25,11 +31,20 @@ endif
 _OUT_FILES := $(foreach FORMAT,$(FORMATS),$(shell echo $(FORMAT) | tr '[:lower:]' '[:upper:]'))
 OUT_FILES  := $(foreach F,$(_OUT_FILES),$($F))
 
-all: images $(OUT_FILES)
+all: $(OUT_FILES)
 
-%.xml %.html %.doc %.pdf:	%.adoc | bundle
+%.v3.xml %.xml %.html %.doc %.pdf %.txt:	%.adoc | bundle
 	FILENAME=$^; \
 	${COMPILE_CMD}
+
+draft-%.nits:	draft-%.txt
+	VERSIONED_NAME=`grep :name: draft-$*.adoc | cut -f 2 -d ' '`; \
+	cp $^ $${VERSIONED_NAME}.txt && \
+	idnits --verbose $${VERSIONED_NAME}.txt > $@ && \
+	cp $@ $${VERSIONED_NAME}.nits && \
+	cat $${VERSIONED_NAME}.nits
+
+%.nits:
 
 images: $(PNG)
 
