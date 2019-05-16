@@ -1,8 +1,8 @@
 = VPOLL: Consensus Scheduling Component for iCalendar
 :doctype: internet-draft
-:name: draft-calext-vpoll-05
+:name: draft-calext-vpoll-00
 :abbrev: VPOLL
-:status: informational
+:status: standard
 :ipr: trust200902
 :submissionType: individual
 :area: Internet

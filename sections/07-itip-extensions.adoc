@@ -14,7 +14,7 @@ attendees.
 There are some extensions to the behavior of iTip methods for a VPOLL
 object and two new methods are defined.
 
-[cols="a,a",options="header"]
+[cols="4a,9a",options="header"]
 |===
 | Method
 | Description
@@ -54,7 +54,7 @@ of properties but MUST contain DTSTAMP, SEQUENCE
 The following table shows the above methods broken down by who can
 send them with VPOLL components.
 
-[cols="a,a",options="header"]
+[cols="4a,9a",options="header"]
 |===
 | Originator
 | Methods
@@ -105,7 +105,7 @@ The presence column uses the following values to assert whether a
 property is required or optional, and the number of times it may
 appear in the iCalendar object.
 
-[cols="a,a",options="header"]
+[cols="2a,10a",options="header"]
 |===
 | Presence Value  | Description
 
@@ -121,7 +121,7 @@ appear in the iCalendar object.
 The following summarizes the methods that are defined for the "VPOLL"
 calendar component.
 
-[cols="a,a",options="header"]
+[cols="4a,9a",options="header"]
 |===
 | Method     | Description
 
@@ -168,7 +168,7 @@ This method type is an iCalendar object that conforms to the
 following property constraints:
 
 .Constraints for a METHOD:PUBLISH of a VPOLL
-[cols="a,a,a",options=header]
+[cols="4a,2a,9a",options=header]
 |===
 | Component/Property | Presence | Comment
 
@@ -259,7 +259,7 @@ This method type is an iCalendar object that conforms to the
 following property constraints:
 
 .Constraints for a METHOD:REQUEST of a VPOLL
-[cols="a,a,a",options=header]
+[cols="4a,2a,9a",options=header]
 |===
 | Component/Property | Presence | Comment
 
@@ -489,7 +489,7 @@ This method type is an iCalendar object that conforms to the
 following property constraints:
 
 .Constraints for a METHOD:REPLY of a VPOLL
-[cols="a,a,a",options=header]
+[cols="8a,2a,18a",options=header]
 |===
 | Component/Property | Presence | Comment
 
@@ -565,7 +565,7 @@ This method type is an iCalendar object that conforms to the
 following property constraints:
 
 .Constraints for a METHOD:CANCEL of a VPOLL
-[cols="a,a,a",options=header]
+[cols="8a,2a,18a",options=header]
 |===
 | Component/Property | Presence | Comment
 
@@ -628,7 +628,7 @@ This method type is an iCalendar object that conforms to the
 following property constraints:
 
 .Constraints for a METHOD:REFRESH of a VPOLL
-[cols="a,a,a",options=header]
+[cols="8a,2a,18a",options=header]
 |===
 | Component/Property | Presence | Comment
 
@@ -691,7 +691,7 @@ This method type is an iCalendar object that conforms to the
 following property constraints:
 
 .Constraints for a METHOD:POLLSTATUS of a VPOLL
-[cols="a,a,a",options=header]
+[cols="8a,2a,18a",options=header]
 |===
 | Component/Property | Presence | Comment
 
