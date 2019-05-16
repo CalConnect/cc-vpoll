@@ -129,6 +129,6 @@ watch-serve: $(NODE_BIN_DIR)/run-p
 
 publish:
 	mkdir -p published  && \
-	cp -a $(basename $(SRC)).* published/ && \
+	cp -a {$(basename $(SRC))}.* published/ && \
 	cp $(firstword $(HTML)) published/index.html; \
 	if [ -d "images" ]; then cp -a images published; fi
