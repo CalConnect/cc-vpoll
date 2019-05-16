@@ -44,6 +44,7 @@
 :docfile: draft-calext-vpoll.adoc
 :mn-document-class: ietf
 :mn-output-extensions: xmlrfc2,txt,html
+:technical-committee: TC Freebusy
 
 
 ////
