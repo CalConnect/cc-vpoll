@@ -80,7 +80,8 @@ URI::  http://www.rpi.edu/
 :sectnums!:
 
 include::sections/00-abstract.adoc[]
-include::sections/00-foreword.adoc[]
+// Not for IETF
+//include::sections/00-foreword.adoc[]
 include::sections/00-intro.adoc[]
 
 :sectnums:
