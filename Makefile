@@ -14,7 +14,7 @@ HTML := $(patsubst %.adoc,%.html,$(SRC))
 DOC  := $(patsubst %.adoc,%.doc,$(SRC))
 PDF  := $(patsubst %.adoc,%.pdf,$(SRC))
 TXT  := $(patsubst %.adoc,%.txt,$(SRC))
-NITS := $(patsubst %.adoc,%.nits,$(SRC))
+NITS := $(patsubst %.adoc,%.nits,$(wildcard draft-*.adoc))
 WSD  := $(wildcard models/*.wsd)
 XMI	 := $(patsubst models/%,xmi/%,$(patsubst %.wsd,%.xmi,$(WSD)))
 PNG	 := $(patsubst models/%,images/%,$(patsubst %.wsd,%.png,$(WSD)))
@@ -31,7 +31,7 @@ endif
 _OUT_FILES := $(foreach FORMAT,$(FORMATS),$(shell echo $(FORMAT) | tr '[:lower:]' '[:upper:]'))
 OUT_FILES  := $(foreach F,$(_OUT_FILES),$($F))
 
-all: $(OUT_FILES)
+all: $(OUT_FILES) nits
 
 %.v3.xml %.xml %.html %.doc %.pdf %.txt:	%.adoc | bundle
 	FILENAME=$^; \
@@ -45,6 +45,8 @@ draft-%.nits:	draft-%.txt
 	cat $${VERSIONED_NAME}.nits
 
 %.nits:
+
+nits: $(NITS)
 
 images: $(PNG)
 

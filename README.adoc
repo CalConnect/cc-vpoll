@@ -14,6 +14,12 @@ This document is available in its rendered forms here:
 * https://calconnect.github.io/csd-vpoll/csd-vpoll.rxl[Relaton XML (Bibliographic item)]
 
 
+* https://calconnect.github.io/csd-vpoll/draft-york-vpoll.html[IETF: VPOLL: Consensus Scheduling Component for iCalendar (HTML)]
+* https://calconnect.github.io/csd-vpoll/draft-york-vpoll.txt[IETF: TXT]
+* https://calconnect.github.io/csd-vpoll/draft-york-vpoll.xml[IETF: RFC XML v2]
+* https://calconnect.github.io/csd-vpoll/draft-york-vpoll.nits[IETF: nits]
+
+
 == Fetching the document
 
 [source,sh]
@@ -23,7 +29,7 @@ git clone https://github.com/CalConnect/csd-vpoll/
 
 == Installing Build Tools
 
-See https://www.metanorma.com/overview/getting-started/
+See https://www.metanorma.com/author/topics/install/
 
 
 == Running via Docker or locally

@@ -23,7 +23,7 @@ before_install:
   - export PATH=$(pwd)/${IDNITS_VER}:${PATH}
   - pip install --user xml2rfc
 script:
-  - make clean all publish
+  - make clean all nits publish
 deploy:
   skip_cleanup: true
   provider: script
