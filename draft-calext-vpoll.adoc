@@ -87,7 +87,7 @@ include::sections/00-intro.adoc[]
 
 //include::sections/01-scope.adoc[]
 //include::sections/02-normrefs.adoc[]
-//include::sections/03-terms.adoc[]
+include::sections/03-terms.adoc[]
 include::sections/04-consensus.adoc[]
 include::sections/05-icalendar-extensions.adoc[]
 include::sections/06-poll-modes.adoc[]

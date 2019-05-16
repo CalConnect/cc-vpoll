@@ -2,6 +2,11 @@
 [[terms]]
 == Terms and definitions
 
+
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and  "OPTIONAL" in this document are to be interpreted as described in <<RFC2119>>.
+
+Additionally the following terms are used:
+
 === consensus scheduling
 
 process whereby users come to some agreement on meeting

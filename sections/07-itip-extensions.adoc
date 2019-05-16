@@ -14,7 +14,7 @@ attendees.
 There are some extensions to the behavior of iTip methods for a VPOLL
 object and two new methods are defined.
 
-[cols="4a,9a",options="header"]
+[cols="a,a",options="header"]
 |===
 | Method
 | Description
