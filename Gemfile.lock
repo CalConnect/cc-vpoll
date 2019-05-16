@@ -110,7 +110,7 @@ GEM
       isodoc (~> 0.9.1)
       metanorma-iso (~> 1.1.0)
       twitter_cldr (~> 4.4.4)
-    metanorma-ietf (1.0.1)
+    metanorma-ietf (1.0.2)
       isodoc (~> 0.9.6)
       metanorma-standoc (~> 1.1.0)
     metanorma-iso (1.1.5)
