@@ -1,5 +1,3 @@
-<?xml version='1.0' encoding='UTF-8'?>
-
 <reference  anchor='RFC5545' target='https://www.rfc-editor.org/info/rfc5545'>
 <front>
 <title>Internet Calendaring and Scheduling Core Object Specification (iCalendar)</title>
