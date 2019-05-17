@@ -142,8 +142,7 @@ Description:: When a VPOLL is stored on a server which is capable of
   SERVER indicates that the server should close the poll, choose the
   winner and submit whenever it is appropriate to do so. +
 +
-[example]
-in BASIC poll-mode, reaching the DTEND of the poll
+For example, in BASIC poll-mode, reaching the DTEND of the poll
 could trigger this server side action.
 +
 Server initiated submission requires that the submitted choice
@@ -175,9 +174,9 @@ pcvalue = "SERVER"  ; The server is responsible for both choosing and
         ;Default is CLIENT
 ----
 
-[example]
+Example::
 The following is an example of this property:
-+
+
 [source]
 ----
 POLL-COMPLETION: SERVER-SUBMIT
@@ -437,10 +436,11 @@ voterparam   = *(
           )
 ----
 
-NOTE: `RSVP=TRUE` MAY be used by the organizer to force the voter to
+Note 1:: `RSVP=TRUE` MAY be used by the organizer to force the voter to
   reset their state and re-vote.
 
-NOTE: `scheduleagentparam`, `scheduleforcesendparam` and
+Note 2::
+`scheduleagentparam`, `scheduleforcesendparam` and
   `schedulestatusparam` are all related to CalDAV scheduling and are
   defined in <<RFC6638>>.  Their semantics are exactly as defined in
   that specification.

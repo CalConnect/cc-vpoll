@@ -97,6 +97,7 @@ include::sections/08-caldav-extensions.adoc[]
 include::sections/09-security.adoc[]
 include::sections/10-iana.adoc[]
 
+include::sections-ietf/50-acknowledgements.adoc[]
 include::sections-ietf/98-references.adoc[]
 
 include::sections/xa-open-issues.adoc[]

@@ -2,7 +2,10 @@
 [appendix,obligation=informative]
 == Change log
 
-V03: 2014-10-28 MD
+Calext V00: 2019-05-17 MD::
+First calext version. Moved source to metanorma. No changes to specification.
+
+V03: 2014-10-28 MD::
 
 * Add VVOTER and VOTE components.
 
@@ -10,13 +13,13 @@ V03: 2014-10-28 MD
 
 * Remove RESPONSE parameter from VOTER.
 
-V03: 2014-05-12 MD
+V03: 2014-05-12 MD::
 
 * Add reply-url property and required parameter.
 
 * Fix ACCEPT-RESPONSE definition.
 
-V02: 2014-05-12 MD
+V02: 2014-05-12 MD::
 
 * Typos fixed, clarifications made.
 
@@ -34,7 +37,7 @@ V02: 2014-05-12 MD
 
 * Added Caldav scheduling section
 
-V01: 2013-08-07 MD
+V01: 2013-08-07 MD::
 
 * Removed method CONFIRM
 
@@ -53,5 +56,5 @@ V01: 2013-08-07 MD
 * Removed bad CalDAV query example.  State that queries cannot
   target the sub-components.
 
-Initial version: 2012-11-02 MD
+Initial version: 2012-11-02 MD::
 
