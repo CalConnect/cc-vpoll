@@ -43,7 +43,7 @@
 :email_3: mikeadouglass@gmail.com
 :docfile: draft-calext-vpoll.adoc
 :mn-document-class: ietf
-:mn-output-extensions: xmlrfc2,txt,html
+:mn-output-extensions: xmlrfc2,txt,html,nits
 :technical-committee: TC Freebusy
 
 
