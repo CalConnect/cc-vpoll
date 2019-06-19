@@ -221,4 +221,5 @@ PLATFORMS
 
 DEPENDENCIES
   metanorma-cli
+  relaton-cli
 
