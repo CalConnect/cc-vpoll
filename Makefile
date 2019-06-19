@@ -42,7 +42,7 @@ documents:
 
 documents/%.xml: documents sources/images sources/%.xml
 	export GLOBIGNORE=sources/$*.adoc; \
-	mv sources/$(addsuffix .*,$*) documents; \
+	cp sources/$(addsuffix .*,$*) documents; \
 	unset GLOBIGNORE
 
 %.xml %.html:	%.adoc | bundle
