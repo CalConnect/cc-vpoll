@@ -3,7 +3,6 @@ dist: xenial
 env:
   global:
     - COMMIT_AUTHOR_EMAIL="$(yq r metanorma.yml metanorma.deploy.email)";
-    - IDNITS_URL=https://tools.ietf.org/tools/idnits/
 rvm:
   - 2.5
 cache: bundler
@@ -25,13 +24,9 @@ before_install:
   - gem install bundler
   - npm install -g puppeteer
   - sudo bash -c "curl -L https://raw.githubusercontent.com/metanorma/metanorma-linux-setup/master/ubuntu.sh | bash"
-  - export IDNITS_VER=$(curl -Ls $IDNITS_URL | grep -e 'tgz' | sed -e 's/.*\(idnits-.*\).tgz.*/\1/') ; echo ${IDNITS_VER}
-  - curl -SL ${IDNITS_URL}${IDNITS_VER} | tar xzv
-  - export PATH=$(pwd)/${IDNITS_VER}:${PATH}
-  - pip install --user xml2rfc
 script:
-  - make clean all publish
-  #- make clean all nits publish
+  #- make clean all publish
+  - make clean all nits publish
 deploy:
   skip_cleanup: true
   provider: script
