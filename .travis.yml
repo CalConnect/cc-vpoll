@@ -25,8 +25,8 @@ before_install:
   - npm install -g puppeteer
   - sudo bash -c "curl -L https://raw.githubusercontent.com/metanorma/metanorma-linux-setup/master/ubuntu.sh | bash"
 script:
-  #- make clean all publish
-  - make clean all nits publish
+  - make clean all publish
+  # - make clean all nits publish
 deploy:
   skip_cleanup: true
   provider: script
