@@ -111,7 +111,7 @@ GEM
       ruby-jing
       thread_safe
       uuidtools
-    metanorma-nist (0.1.0)
+    metanorma-nist (0.1.1)
       asciidoctor (~> 1.5.7)
       htmlentities (~> 4.3.4)
       isodoc (~> 0.10.0)
@@ -192,7 +192,7 @@ GEM
       ruby_deep_clone (~> 0.8.0)
     relaton-itu (0.2.0)
       relaton-iso-bib (~> 0.2.0)
-    relaton-nist (0.2.0)
+    relaton-nist (0.2.1)
       relaton-bib (~> 0.2.0)
     roman-numerals (0.3.0)
     ruby-jing (0.0.1)
