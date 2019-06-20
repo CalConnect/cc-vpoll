@@ -7,18 +7,18 @@
 :submissionType: individual
 :area: Internet
 :intended-series: full-standard
-:revdate: 2019-05-15T00:00:00Z
+:revdate: 2019-05-23T00:00:00Z
 :fullname: Eric York
 :lastname: York
 :forename_initials: E.
-:organization: Apple Inc.
-:street: 1 Infinite Loop
-:city: Cupertino
+:organization: California Things, Inc
+:street: 650 Main Street
+:city: Redwood City
 :state: CA
-:code: 95014
+:code: 94063
 :country: United States of America
-:uri: https://www.apple.com
-:email: eyork@apple.com
+:uri: www.linkedin.com/in/eryork
+:email: eric.york@gmail.com
 :fullname_2: Cyrus Daboo
 :lastname_2: Daboo
 :forename_initials_2: C.
@@ -33,13 +33,13 @@
 :fullname_3: Michael Douglass
 :lastname_3: Douglass
 :forename_initials_3: M.
-:organization_3: Rensselaer Polytechnic Institute
-:street_3: 110 8th Street
+:organization_3: Spherical Cow Group
+:street_3: 226 3rd Street
 :city_3: Troy
 :state_3: NY
 :code_3: 12180
 :country_3: United States of America
-:uri_3: http://www.rpi.edu/
+:uri_3: https://sphericalcowgroup.com/
 :email_3: mikeadouglass@gmail.com
 :docfile: draft-calext-vpoll.adoc
 :mn-document-class: ietf
@@ -80,14 +80,16 @@ URI::  http://www.rpi.edu/
 :sectnums!:
 
 include::sections/00-abstract.adoc[]
-// Not for IETF
+// CSD Foreword is not used in IETF
 //include::sections/00-foreword.adoc[]
 include::sections/00-intro.adoc[]
 
 :sectnums:
 
+// CSD: these sections are not used in IETF
 //include::sections/01-scope.adoc[]
 //include::sections/02-normrefs.adoc[]
+
 include::sections/03-terms.adoc[]
 include::sections/04-consensus.adoc[]
 include::sections/05-icalendar-extensions.adoc[]
@@ -98,6 +100,7 @@ include::sections/09-security.adoc[]
 include::sections/10-iana.adoc[]
 
 include::sections-ietf/50-acknowledgements.adoc[]
+// IETF uses special references
 include::sections-ietf/98-references.adoc[]
 
 include::sections/xa-open-issues.adoc[]
