@@ -1,3 +1,19 @@
+GIT
+  remote: https://github.com/metanorma/relaton-cli
+  revision: 97a0d488327b2b45fd9d1e772b69722537ac6bed
+  specs:
+    relaton-cli (0.2.0)
+      liquid
+      relaton (~> 0.4)
+      thor
+
+GIT
+  remote: https://github.com/metanorma/relaton-ietf
+  revision: 298f54dedd79534b9c7a151a4a5baaa1747847ee
+  specs:
+    relaton-ietf (0.5.0)
+      relaton-iso-bib (~> 0.2.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -168,18 +184,12 @@ GEM
     relaton-bib (0.2.1)
       addressable
       nokogiri (~> 1.8.4)
-    relaton-cli (0.2.0)
-      liquid
-      relaton (~> 0.4)
-      thor
     relaton-gb (0.5.0)
       cnccs (~> 0.1.1)
       gb-agencies (~> 0.0.1)
       relaton-iso-bib (~> 0.2.0)
     relaton-iec (0.3.0)
       addressable
-      relaton-iso-bib (~> 0.2.0)
-    relaton-ietf (0.5.0)
       relaton-iso-bib (~> 0.2.0)
     relaton-iso (0.5.0)
       algoliasearch
@@ -221,5 +231,8 @@ PLATFORMS
 
 DEPENDENCIES
   metanorma-cli
-  relaton-cli
+  relaton-cli!
+  relaton-ietf!
 
+BUNDLED WITH
+   2.0.1

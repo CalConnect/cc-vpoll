@@ -8,15 +8,7 @@ image:https://travis-ci.com/CalConnect/csd-vpoll.svg?branch=master["Build Status
 
 This document is available in its rendered forms here:
 
-* https://calconnect.github.io/csd-vpoll/[CalConnect Standard: Calendaring and scheduling -- Consensus scheduling -- iCalendar VPOLL component (HTML)]
-
-* https://calconnect.github.io/csd-vpoll/documents/draft-york-vpoll.html[IETF draft-york-vpoll: VPOLL: Consensus Scheduling Component for iCalendar (HTML)]
-* https://calconnect.github.io/csd-vpoll/documents/draft-york-vpoll.txt[IETF draft-york-vpoll: TXT]
-* https://calconnect.github.io/csd-vpoll/documents/draft-york-vpoll.xml[IETF draft-york-vpoll: RFC XML v2]
-
-* https://calconnect.github.io/csd-vpoll/documents/draft-calext-vpoll.html[IETF draft-calext-vpoll: VPOLL: Consensus Scheduling Component for iCalendar (HTML)]
-* https://calconnect.github.io/csd-vpoll/documents/draft-calext-vpoll.txt[IETF draft-calext-vpoll: TXT]
-* https://calconnect.github.io/csd-vpoll/documents/draft-calext-vpoll.xml[IETF draft-calext-vpoll: RFC XML v2]
+* https://calconnect.github.io/csd-vpoll/[CalConnect+IETF: Calendaring and scheduling -- Consensus scheduling -- iCalendar VPOLL component (HTML)]
 
 == Fetching the document
 
