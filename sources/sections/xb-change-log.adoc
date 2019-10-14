@@ -2,6 +2,9 @@
 [appendix,obligation=informative]
 == Change log
 
+Calext V01: 2019-10-17 MD::
+Replace VVOTER and VOTER with PARTICIPANT.
+
 Calext V00: 2019-05-17 MD::
 First calext version. Moved source to metanorma. No changes to specification.
 

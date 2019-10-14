@@ -59,20 +59,16 @@ POLL-PROPERTIES:: A new property which defines which icalendar
   significant for voting.  Other properties in the events may differ
   but are not considered significant for the voting process.
 
-VVOTER:: A new component.  There is one of these for each voter and
-  it contains a VOTER property to identify the voter and one VOTE
-  component for each item being voted on.
+PARTICIPANT:: There is one of these components for each voter with
+  the PARTICIPANT-TYPE set to "VOTER". The
+  CALENDAR-ADDRESS property identifies the voter and this component
+  will contain one VOTE component for each item being voted on.
 
 VOTE:: A new component.  There is one of these for each voter and
   choice.  It usually contains at least a POLL-ITEM-ID property to
   identify the choice and a RESPONSE property to provide a vote.
   For more complex poll modes it may contain other information such
   as cost or estimated duration.
-
-VOTER:: A new property.  There is one of these for each voter and it
-  is similar to the <<RFC5545>> ATTENDEE property.  It identifies the
-  VVOTER component to show who is taking part in the voting and
-  their results.
 
 VEVENT:: In our simple use case there will be multiple VEVENT sub-
   components defining the alternatives.  Each will have a different
@@ -97,15 +93,18 @@ UID:sched01-1234567890
 DTSTAMP:20120101T000000Z
 SUMMARY:What to do this week
 DTEND:20120101T000000Z
-BEGIN: VVOTER
-VOTER:mailto:cyrus@example.com
-END VVOTER
-BEGIN: VVOTER
-VOTER:mailto:eric@example.com
-END VVOTER
-BEGIN: VVOTER
-VOTER:mailto:mike@example.com
-END VVOTER
+BEGIN: PARTICIPANT
+PARTICIPANT-TYPE: VOTER
+CALENDAR-ADDRESS:mailto:cyrus@example.com
+END PARTICIPANT
+BEGIN: PARTICIPANT
+PARTICIPANT-TYPE: VOTER
+CALENDAR-ADDRESS:mailto:eric@example.com
+END PARTICIPANT
+BEGIN: PARTICIPANT
+PARTICIPANT-TYPE: VOTER
+CALENDAR-ADDRESS:mailto:mike@example.com
+END PARTICIPANT
 BEGIN:VEVENT.......(with a poll-item-id=1)
 END:VEVENT
 BEGIN:VEVENT.......(with a poll-item-id=2)
@@ -122,7 +121,7 @@ with the value REQUEST.  The VPOLL object will be distributed to all
 the voters, either through iMip or through some VPOLL enabled
 service.
 
-=== The VPOLL Subcomponents: An Overview
+=== The VPOLL Alternative Choices: An Overview
 
 Within the VPOLL component we have the alternatives to vote on.  In
 many respects these are standard <<RFC5545>> components.  For our
@@ -150,12 +149,9 @@ ORGANIZER:: Same as the request.
 
 SUMMARY:: Same as the request.
 
-VVOTER:: One only.
+PARTICIPANT:: One only with a CALENDAR-ADDRESS identifying the voter replying.
 
-VOTER:: One only inside the VVOTER component - the voter replying.
-
-VOTE:: One per item being voted on.  There does not need to be one
-  for each choice.
+VOTE:: One per item being voted on.
 
 POLL-ITEM-ID:: One inside each VOTE component to identify the choice.
 
@@ -166,6 +162,8 @@ by the organizer.  Each REPLY completely replaces the voting record
 for that voter for all components being voted on.  In our example, if
 Eric responds and votes for items 1 and 2 and then responds again
 with a vote for only item 3, the final outcome is one vote on item 3.
+
+NOTE:: This is poll-mode specific behavior?
 
 [example]
 --
@@ -182,8 +180,9 @@ ORGANIZER:mailto:mike@example.com
 UID:sched01-1234567890
 DTSTAMP:20120101T010000Z
 SUMMARY:What to do this week
-BEGIN:VVOTER
-VOTER:mailto:cyrus@example.com
+BEGIN:PARTICIPANT
+PARTICIPANT-TYPE: VOTER
+CALENDAR-ADDRESS:mailto:cyrus@example.com
 BEGIN:VOTE
 POLL-ITEM-ID:1
 RESPONSE:50
@@ -198,7 +197,7 @@ BEGIN:VOTE
 POLL-ITEM-ID:3
 RESPONSE:0
 END:VOTE
-END:VVOTER
+END:PARTICIPANT
 END:VPOLL
 END:VCALENDAR
 ----
@@ -210,8 +209,7 @@ When the organizer receives a response from one or more voters the
 current state of the poll is sent to all voters.  The new iTip method
 POLLSTATUS is used.  The VPOLL can contain a reduced set of
 properties but MUST contain DTSTAMP, SEQUENCE (if not 0), UID,
-ORGANIZER and one or more VVOTER components each populated with a
-VOTER property and zero or more VOTE components.
+ORGANIZER and one or more PARTICIPANT components each populated with zero or more VOTE components.
 
 [example]
 --
@@ -227,8 +225,9 @@ UID:sched01-1234567890
 DTSTAMP:20120101T020000Z
 SEQUENCE:0
 SUMMARY:What to do this week
-BEGIN:VVOTER
-VOTER:mailto:cyrus@example.com
+BEGIN:PARTICIPANT
+PARTICIPANT-TYPE: VOTER
+CALENDAR-ADDRESS:mailto:cyrus@example.com
 BEGIN: VOTE
 POLL-ITEM-ID:1
 RESPONSE:50
@@ -243,9 +242,10 @@ BEGIN:VOTE
 POLL-ITEM-ID:3
 RESPONSE:0
 END:VOTE
-END:VVOTER
-BEGIN:VVOTER
-VOTER:mailto:eric@example.com
+END:PARTICIPANT
+BEGIN:PARTICIPANT
+PARTICIPANT-TYPE: VOTER
+CALENDAR-ADDRESS:mailto:eric@example.com
 BEGIN:VOTE
 POLL-ITEM-ID:1
 RESPONSE:100
@@ -258,7 +258,7 @@ BEGIN:VOTE
 POLL-ITEM-ID:3
 RESPONSE:0
 END:VOTE
-END:VVOTER
+END:PARTICIPANT
 END:VPOLL
 END:VCALENDAR
 ----

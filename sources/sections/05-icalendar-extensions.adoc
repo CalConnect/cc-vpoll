@@ -2,6 +2,21 @@
 [[icalendar-extensions]]
 == iCalendar Extensions
 
+=== Updated Participant Type Value
+
+Participant type property values are defined in section 11.2.1. of
+<<I-D.draft-ietf-calext-eventpub-extensions>>.  This specification updates that type to include the new
+participant type VOTER to provide information about the voter and to contain their votes.
+
+Format Definition::
+This property parameter is redefined by the following notation:
+[source,abnf]
+----
+partvalue       /= "VOTER"
+----
+
+Description:: The new property value indicates that the associated PARTICIPANT component identifies a voter in a VPOLL.
+
 === Updated Relation Type Value
 
 Relationship parameter type values are defined in section 3.2.15. of
@@ -90,7 +105,8 @@ stayinformedparam = "STAY-INFORMED"  "=" ("TRUE" / "FALSE")
                   ; Default is FALSE
 ----
 
-Description:: This parameter MAY be specified on VOTER and, if the
+Description:: This parameter MAY be specified on the CALENDAR-ADDRESS
+  property in the PARTICIPANT component and, if the
   value is TRUE, indicates the voter wishes to be added to the final
   choice as a non participant.
 
@@ -379,72 +395,6 @@ Clients MUST preserve the response value when there is no change
 from the user even if they have a UI with fixed states (e.g.
 yes/no/maybe).
 
-[[new-prop-voter]]
-==== Voter
-
-Property name:: VOTER
-
-Purpose:: This property is used in VVOTER components to indicate
-  recipients of the poll and to identify that component as
-  containing the voters responses.
-
-Value type:: The value type for this property is cal-address.
-
-Property Parameters:: Non-standard, cutype, member, role, rsvp,
-  delto, delfrom, sentby, cn, dir, lang or stayinformed parameters
-  can be specified on this property.
-
-Conformance:: This property MAY be specified in a VPOLL component or
-  its sub-components.
-
-Description:: This property appears in the VVOTER component only and
-  indicates a recipient of the poll and their responses.
-
-Format Definition::
-This property is defined by the following notation:
-[source,abnf]
-----
-voter = "VOTER" voterparams ":" cal-address CRLF
-
-voterparam   = *(
-             ;
-             ; The following are OPTIONAL,
-             ; but MUST NOT occur more than once.
-             ;
-             (";" cutypeparam) / (";" memberparam) /
-             (";" roleparam) /
-             (";" rsvpparam) / (";" deltoparam) /
-             (";" delfromparam) / (";" sentbyparam) /
-             (";" cnparam) / (";" dirparam) /
-             (";" languageparam) /
-             (";" stayinformedparam) /
-
-             ;
-             ; The following are OPTIONAL, but MUST NOT occur
-             ; more than once. They are defined in RFC6638
-             ;
-             (";" scheduleagentparam) /
-             (";" scheduleforcesendparam) /
-             (";" schedulestatusparam) /
-
-             ;
-             ; The following is OPTIONAL,
-             ; and MAY occur more than once.
-             ;
-             (";" other-param)
-             ;
-          )
-----
-
-Note 1:: `RSVP=TRUE` MAY be used by the organizer to force the voter to
-  reset their state and re-vote.
-
-Note 2::
-`scheduleagentparam`, `scheduleforcesendparam` and
-  `schedulestatusparam` are all related to CalDAV scheduling and are
-  defined in <<RFC6638>>.  Their semantics are exactly as defined in
-  that specification.
-
 === New Components
 
 ==== VPOLL Component
@@ -460,7 +410,7 @@ This property is defined by the following notation:
 ----
 pollc    = "BEGIN" ":" "VPOLL" CRLF
             pollprop
-            *voterc *eventc *todoc *journalc *freebusyc
+            *participantc *eventc *todoc *journalc *freebusyc
             *availabilityc *alarmc *iana-comp *x-comp
             "END" ":" "VPOLL" CRLF
 
@@ -508,9 +458,9 @@ Description:: This component provides a mechanism by which voters can
 vote on provided choices.  The outcome depends upon the POLL-MODE
 in effect. +
 +
-The VVOTER components in VPOLL requests provide information on
+The PARTICIPANT components in VPOLL requests provide information on
 each recipient who will be voting - both their identity through
-the VOTER property and their votes through the VOTE components. +
+the CALENDAR-ADDRESS property and their votes through the VOTE components. +
 +
 If specified, the "DTSTART" property defines the start or opening
 of the poll active period.  If absent the poll is presumed to have
@@ -531,59 +481,14 @@ warnings to the user when polls are due to start or end.
 
 TODO: Need some text to describe what relative alarms are relative to.
 
-==== VVOTER Component
-
-Component name:: VPOLL
-
-Purpose:: This component contains identification of the recipient and
-  voter and their responses.
-
-Format Definition::
-This property is defined by the following notation:
-[source,abnf]
-----
-voterc   = "BEGIN" ":" "VVOTER" CRLF
-           voterprop
-           *votec *iana-comp *x-comp
-           "END" ":" "VVOTER" CRLF
-
-voterprop = *(
-           ;
-           ; The following are REQUIRED,
-           ; but MUST NOT occur more than once.
-           ;
-           dtstamp  / voter /
-           ;
-           ; The following are OPTIONAL,
-           ; but MUST NOT occur more than once.
-           ;
-           created / description / last-mod / seq /
-           status / summary / url /
-           ;
-           ; The following are OPTIONAL,
-           ; and MAY occur more than once.
-           ;
-           attach / categories / comment /
-           contact / rstatus / related /
-           resources / x-prop / iana-prop
-           ;
-           )
-----
-
-Description:: This component contains a VOTER property identifying a
-recipient and voter and zero or more VOTE components containing
-their responses. +
-+
-The VOTER property in VVOTER objects refers to a recipient who
-will be voting - RSVP=TRUE is used by the organizer to force the
-voter to reset their state and re-vote
-
 ==== VOTE Component
 
-Component name:: VPOLL
+Component name:: VOTE
 
 Purpose:: This component provides a mechanism by which voters can
   vote on provided choices.
+
+Conformance:: This component may be specified zero or more times in a PARTICIPANT component which identifies the voter.
 
 Format Definition::
 This property is defined by the following notation:
@@ -610,14 +515,15 @@ voteprop = *(
            )
 ----
 
-Description:: This component identifies voters and contains their
-responses. +
+Description:: This component appears inside the PARTICIPANT component
+with a PARTICIPANT-TYPE of VOTER to identify the voter. This component
+contains that participants responses. +
 +
-The required and optional properties and their meanings depend
+The required and optional properties and their meanings will depend
 upon the POLL-MODE in effect. +
 +
 For any POLL-MODE, POLL-ITEM-ID is used to associate the
-information to a choice supplied by the organizer. +
+information to a choice supplied by the organizer. This means that each VOTE component only provides information about that choice.+
 +
 If allowed by the POLL-MODE a VOTE component without a POLL-ITEM-
 ID may be provided in a REPLY to indicate a possible new choice or

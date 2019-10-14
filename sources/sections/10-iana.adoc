@@ -31,7 +31,6 @@ added to the registry defined in <<RFC5545,section=8.2.3>>:
 | POLL-PROPERTIES | Current | <<new-prop-poll-properties>>
 | POLL-WINNER     | Current | <<new-prop-poll-winner>>
 | RESPONSE        | Current | <<new-prop-response>>
-| VOTER           | Current | <<new-prop-voter>>
 
 |===
 

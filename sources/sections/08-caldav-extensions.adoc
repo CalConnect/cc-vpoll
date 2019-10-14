@@ -150,7 +150,7 @@ Description:: The CALDAV:vpoll-max-active is used to specify a
   VPOLLs.
 
 Definition::
-[source,xml]
+[source]
 ----
 <!ELEMENT vpoll-max-active (#PCDATA)>
 PCDATA value: a numeric value (integer greater than zero)
@@ -180,10 +180,9 @@ Conformance:: This property MAY be defined on any calendar
   <<RFC2518,section=12.14.1>>).
 
 Description:: The `CALDAV:vpoll-max-voters` is used to specify a
-  numeric value that indicates the maximum number of VOTER
-  properties for any one instance of a VPOLL calendar object
-  resource stored in a calendar collection.  Any attempt to store a
-  calendar object resource with more VOTER properties per instance
+  numeric value that indicates the maximum number of voters for any one instance of a VPOLL calendar object
+  resource stored in a calendar collection. Any attempt to store a
+  calendar object resource with more voters per instance
   than this value MUST result in an error, with the CALDAV:
   `vpoll-max-voters` precondition <<caldav-additional-preconditions>>
   being violated.  In the absence of this property, the client can
@@ -191,7 +190,7 @@ Description:: The `CALDAV:vpoll-max-voters` is used to specify a
   calendar component.
 
 Definition::
-[source,xml]
+[source]
 ----
 <!ELEMENT vpoll-max-voters (#PCDATA)>
 PCDATA value: a numeric value (integer greater than zero)
@@ -217,7 +216,8 @@ Each section of Appendix A "Scheduling Privileges Summary" is
 extended to include VPOLL.
 
 Any reference to the ATTENDEE property should be read to include the
-VOTER property.  That is, for scheduling purposes the VOTER property
+CALENDAR-ADDRESS property contained in the PARTICIPANT compoents.
+That is, for scheduling purposes the CALENDAR-ADDRESS property
 is handled in exactly the same manner as the ATTENDEE property.
 
 [[caldav-additional-preconditions]]
@@ -251,7 +251,7 @@ The new preconditions are:
 
 (CALDAV:vpoll-max-voters):: The VPOLL resource submitted in the PUT
   request, or targeted by a COPY or MOVE request, MUST have a number
-  of VOTER properties less than or equal to the value of the
+  of voters represented by PARTICIPANT components less than or equal to the value of the
   `CALDAV:vpoll-max-voters` property value <<vpoll-max-voters>> on the
   calendar collection where the resource will be stored;
 

@@ -31,7 +31,7 @@ MUST have: either one or more POLL-ITEM-ID
 properties with a RESPONSE param matching that
 from a REQUEST or a VFREEBUSY or VAVAILABILITY
 child component showing overall busy/available
-time. The VPOLL MUST have one VOTER only.
+time. The VPOLL MUST have one voter only.
 
 | ADD            | Not supported for VPOLL.
 | CANCEL         | There MUST be a single VPOLL component with UID
@@ -47,7 +47,7 @@ error if no matching poll is found.
 | POLLSTATUS     | Used to send the current state of the poll to
 all voters. The VPOLL can contain a reduced set
 of properties but MUST contain DTSTAMP, SEQUENCE
-(if not 0), UID, ORGANIZER and VOTER.
+(if not 0), UID, ORGANIZER and PARTICIPANTS.
 
 |===
 
@@ -149,7 +149,7 @@ requester.
 | POLLSTATUS | Used to send the current state of the poll to all
 voters. The VPOLL can contain a reduced set of
 properties but MUST contain DTSTAMP, SEQUENCE (if
-not 0), UID, ORGANIZER and VOTER.
+not 0), UID, ORGANIZER and PARTICIPANT.
 
 |===
 
@@ -163,6 +163,9 @@ expected usage is for encapsulating an arbitrary poll as an iCalendar
 object.  The "Organizer" may subsequently update (with another
 "PUBLISH" method) or cancel (with a "CANCEL" method) a previously
 published "VPOLL" calendar component.
+
+Note:: Not clear how useful this is but needs some work on transmitting the
+  current vote without any voter identification.
 
 This method type is an iCalendar object that conforms to the
 following property constraints:
@@ -202,13 +205,13 @@ following property constraints:
 | URL                | 0 or 1   |
 | IANA-PROPERTY      | 0+       |
 | X-PROPERTY         | 0+       |
-| VOTER              | 0        |
+| PARTICIPANT        | 0+       | Only PARTICIPANT components with PARTICIPANT-TYPE not equal to "VOTER" - that is, no voters
 | REQUEST-STATUS     | 0        |
 | VALARM             | 0+       |
-| VEVENT             | 0+       | Depending upon the poll mode in effect there MAY be candidate components included in the poll component. If voting has already taken place, these components MUST include the VOTER property to indicate each voters current response.
+| VEVENT             | 0+       | Depending upon the poll mode in effect there MAY be candidate components included in the poll component.
 | VFREEBUSY          | 0        |
-| VJOURNAL           | 0+       | Depending upon the poll mode in effect there MAY be candidate components included in the poll component. If voting has already taken place, these components MUST include the VOTER property to indicate each voters current response.
-| VTODO              | 0+       | Depending upon the poll mode in effect there MAY be candidate components included in the poll component. If voting has already taken place, these components MUST include the VOTER property to indicate each voters current response.
+| VJOURNAL           | 0+       | Depending upon the poll mode in effect there MAY be candidate components included in the poll component.
+| VTODO              | 0+       | Depending upon the poll mode in effect there MAY be candidate components included in the poll component.
 | VTIMEZONE          | 0+       | MUST be present if any date/time refers to a timezone.
 | IANA-COMPONENT     | 0+       |
 | X-COMPONENT        | 0+       |
@@ -265,7 +268,7 @@ following property constraints:
 
 | METHOD             | 1        | MUST be REQUEST.
 | VPOLL              | 1        |
-| VOTER              | 1+       |
+| PARTICIPANT        | 1+       | Identified as voters with the PARTICIPANT-TYPE=VOTER
 | DTSTAMP            | 1        |
 | DTSTART            | 0 or 1   | If present defines the start of the poll. Otherwise the poll starts when it is created and distributed.
 | ORGANIZER          | 1        |
@@ -302,10 +305,10 @@ following property constraints:
 | VTIMEZONE          | 0+       | MUST be present if any date/time refers to a timezone.
 | IANA-COMPONENT     | 0+       |
 | X-COMPONENT        | 0+       |
-| VEVENT             | 0+       | Depending upon the poll mode in effect there MAY be candidate components included in the poll component. If voting has already taken place, these components MUST include the VOTER property to indicate each voters current response.
+| VEVENT             | 0+       | Depending upon the poll mode in effect there MAY be candidate components included in the poll component.
 | VFREEBUSY          | 0        |
-| VJOURNAL           | 0+       | Depending upon the poll mode in effect there MAY be candidate components included in the poll component. If voting has already taken place, these components MUST include the VOTER property to indicate each voters current response.
-| VTODO              | 0+       | Depending upon the poll mode in effect there MAY be candidate components included in the poll component. If voting has already taken place, these components MUST include the VOTER property to indicate each voters current response.
+| VJOURNAL           | 0+       | Depending upon the poll mode in effect there MAY be candidate components included in the poll component.
+| VTODO              | 0+       | Depending upon the poll mode in effect there MAY be candidate components included in the poll component.
 
 |===
 
@@ -441,7 +444,7 @@ MUST NOT make changes to the original message.
 
 The "Organizer" of an poll may also request updated status from one
 or more "Voters".  The "Organizer" sends a "REQUEST" method to the
-"Voter" and sets the "VOTER;RSVP=TRUE" property parameter.  The
+"Voter" and sets the "RSVP=TRUE" property parameter on the PARTICIPANT CALENDAR-ADDRESS.  The
 "SEQUENCE" property for the poll is not changed from its previous
 value.  A recipient will determine that the only change in the
 "REQUEST" is that their "RSVP" property parameter indicates a request
@@ -454,10 +457,10 @@ The "REPLY" method in a "VPOLL" calendar component is used to respond
 (e.g., accept or decline) to a "REQUEST" or to reply to a delegation
 "REQUEST".  When used to provide a delegation response, the
 "Delegator" SHOULD include the calendar address of the "Delegate" on
-the "DELEGATED-TO" property parameter of the "Delegator's" "Voter"
+the "DELEGATED-TO" property parameter of the "Delegator's" "CALENDAR-ADDRESS"
 property.  The "Delegate" SHOULD include the calendar address of the
 "Delegator" on the "DELEGATED-FROM" property parameter of the
-"Delegate's" "Voter" property.
+"Delegate's" "CALENDAR-ADDRESS" property.
 
 The "REPLY" method is also used when processing of a "REQUEST" fails.
 Depending on the value of the "REQUEST-STATUS" property, no action
@@ -496,8 +499,7 @@ following property constraints:
 | METHOD             | 1        | MUST be REPLY.
 | VPOLL              | 1+       | All components MUST have the same
 |                    |          | UID.
-| VOTER              | 1        | MUST be the address of the Voter
-|                    |          | replying.
+| PARTICIPANT        | 1        | Identifies the Voter replying.
 | DTSTAMP            | 1        |
 | ORGANIZER          | 1        |
 | UID                | 1        | MUST be the UID of the original
@@ -571,7 +573,7 @@ following property constraints:
 
 | METHOD             | 1        | MUST be CANCEL.
 | VPOLL              | 1+       | All must have the same UID.
-| VOTER              | 0+       | MUST include some or all Voters being removed from the poll. MUST include some or all Voters if the entire poll is cancelled.
+| PARTICIPANT        | 0+       | MUST include some or all Voters being removed from the poll. MUST include some or all Voters if the entire poll is cancelled.
 | UID                | 1        | MUST be the UID of the original REQUEST.
 | DTSTAMP            | 1        |
 | ORGANIZER          | 1        |
@@ -634,7 +636,7 @@ following property constraints:
 
 | METHOD             | 1        | MUST be REFRESH.
 | VPOLL              | 1        |
-| VOTER              | 1        | MUST be the address of requester.
+| PARTICIPANT        | 1        | MUST identify the requester as a voter.
 | DTSTAMP            | 1        |
 | ORGANIZER          | 1        |
 | UID                | 1        | MUST be the UID associated with original REQUEST.
@@ -682,8 +684,8 @@ following property constraints:
 The "POLLSTATUS" method in a "VPOLL" calendar component is used to
 inform recipients of the current status of the poll in a compact
 manner.  The "Organizer" MUST be present in the confirmed poll
-component.  "Voters" MUST NOT be present.  The selected component(s)
-according to the poll mode MUST also be present in the poll
+component.  All "Voters" MUST be present.  The selected component(s)
+according to the poll mode SHOULD NOT be present in the poll
 component.  Clients receiving this message may store the confirmed
 items in their calendars.
 
@@ -697,12 +699,12 @@ following property constraints:
 
 | METHOD             | 1        | MUST equal POLLSTATUS.
 | VPOLL              | 1+       |
+| PARTICIPANT        | 1+       | The voters containing their current vote
 | COMPLETED          | 0 or 1   | Only present for a completed poll
 | DTSTAMP            | 1        |
 | DTSTART            | 0 or 1   |
 | ORGANIZER          | 1        |
 | SUMMARY            | 1        | Can be null.
-| VOTER              | 1+       |
 | UID                | 1        |
 | SEQUENCE           | 0 or 1   | MUST be present if value is greater than 0; MAY be present if 0.
 | ACCEPT-RESPONSE    | 0        |
@@ -729,10 +731,10 @@ following property constraints:
 | X-PROPERTY         | 0+       |
 | REQUEST-STATUS     | 0        |
 | VALARM             | 0+       |
-| VEVENT             | 0+       | All candidate components MUST be present but in a reduced form sufficient to provide the voting status.
+| VEVENT             | 0        | All candidate components SHOULD NOT be present.
 | VFREEBUSY          | 0        |
-| VJOURNAL           | 0+       | All candidate components MUST be present but in a reduced form sufficient to provide the voting status.
-| VTODO              | 0+       | All candidate components MUST be present but in a reduced form sufficient to provide the voting status.
+| VJOURNAL           | 0        | All candidate components SHOULD NOT be present.
+| VTODO              | 0        | All candidate components SHOULD NOT be present.
 | VTIMEZONE          | 0+       | MUST be present if any date/time refers to a timezone.
 | IANA-COMPONENT     | 0+       |
 

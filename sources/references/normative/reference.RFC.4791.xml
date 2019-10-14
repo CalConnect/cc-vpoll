@@ -1,5 +1,3 @@
-<?xml version='1.0' encoding='UTF-8'?>
-
 <reference  anchor='RFC4791' target='https://www.rfc-editor.org/info/rfc4791'>
 <front>
 <title>Calendaring Extensions to WebDAV (CalDAV)</title>

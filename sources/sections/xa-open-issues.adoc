@@ -2,8 +2,11 @@
 [appendix,obligation=informative]
 == Open issues
 
+public-comment: Not documented and was a parameter on something.
+Really sounds like a PARTICIPANT or VOTE property
+
 Notifications: Need to do a section on what Notifications to
-  support.
+  support. +
   A.  VPOLL is about to end and you haven't voted on it yet.
   Instead reuse VALARMS to notify the user?
 
@@ -13,10 +16,10 @@ Future: Restarting a confirmed/completed VPOLL  What to do with
   Stress VPOLL UID MUST be unique
   Changing status back from CONFIRMED MUST adjust status of any
   events booked as a result of confirmation.
-  MUST winning event be cancelled for POLL-MODE basic?  No - VOTER
+  MUST winning event be cancelled for POLL-MODE basic?  No - voter
   has indicated now unable to attend - want to revote
 
-Future: Voting on a confirmed/completed VPOLL  Can a VOTER vote after
+Future: Voting on a confirmed/completed VPOLL  Can a voter vote after
   completion?  May be unable to attend and wants to indicate.
   Requires retention of VPOLL
   retention period
@@ -34,7 +37,7 @@ ORGANIZER/ATTENDEE validity  Can a user create a poll with scheduled
 Update to existing event after poll confirm  When voting on existing
   event - winning properties ONLY are merged in to the real event.
 
-Need to write down what isn't valid in a VPOLL
+Need to write down what isn't valid in a VPOLL +
   a.  Can't change POLL-MODE
 
 Guide for ATTENDEE roles
@@ -56,7 +59,9 @@ PRODID:-//BedeworkCaldavTest//BedeworkCaldavTest
 METHOD: REPLY
 BEGIN:VPOLL
 ORGANIZER:mailto:douglm@mysite.edu
-VOTER:mailto:eric@example.com
+BEGIN:PARTICIPANT
+PARTICIPANT-TYPE: VOTER
+CALENDAR-ADDRESS:mailto:eric@example.com
 UID:sched01-1234567890
 DTSTAMP:20120101T010000Z
 SEQUENCE:0
@@ -64,6 +69,7 @@ SUMMARY:What to do this week
 BEGIN:VFREEBUSY
 .......
 END:VFREEBUSY
+END:PARTICIPANT
 END:VPOLL
 END:VCALENDAR
 ----
