@@ -1,13 +1,13 @@
 = VPOLL: Consensus Scheduling Component for iCalendar
 :doctype: internet-draft
-:name: draft-calext-vpoll-00
+:name: draft-ietf-calext-vpoll-00
 :abbrev: VPOLL
 :status: standard
 :ipr: trust200902
 :submissionType: individual
 :area: Internet
 :intended-series: full-standard
-:revdate: 2019-05-23T00:00:00Z
+:revdate: 2019-11-05T00:00:00Z
 :fullname: Eric York
 :lastname: York
 :forename_initials: E.

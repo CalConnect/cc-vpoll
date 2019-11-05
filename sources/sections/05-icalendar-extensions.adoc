@@ -523,7 +523,7 @@ The required and optional properties and their meanings will depend
 upon the POLL-MODE in effect. +
 +
 For any POLL-MODE, POLL-ITEM-ID is used to associate the
-information to a choice supplied by the organizer. This means that each VOTE component only provides information about that choice.+
+information to a choice supplied by the organizer. This means that each VOTE component only provides information about that choice. +
 +
 If allowed by the POLL-MODE a VOTE component without a POLL-ITEM-
 ID may be provided in a REPLY to indicate a possible new choice or
