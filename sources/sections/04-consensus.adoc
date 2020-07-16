@@ -4,14 +4,17 @@
 
 This specification defines components and properties which can be
 used for simple consensus scheduling but also have the generality to
-handle more complex cases.  To provide an easy (and for many -
+handle more complex cases.  To provide an easy (and for many a
 sufficient) introduction to consensus scheduling and VPOLL we will
 outline the flow of information for the simple case of voting on a
-number of meeting alternatives which differ only in time.  In
+number of meeting alternatives which differ only in time of the meeting.  In
 addition the voters will all be potential attendees.
 
-This specification not only defines data structures but adds a new
-iTip method used when consensus has been reached.  This document will
+This specification not only defines data structures but adds new
+iTip methods, one used when consensus has been reached and one to
+distribute the current status of the poll.
+
+This document will
 show how a VPOLL object is used to inform voters of the state of a
 simple vote on some alternatives.
 
