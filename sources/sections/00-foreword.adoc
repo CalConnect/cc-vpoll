@@ -22,7 +22,7 @@ of any patent rights identified during the development of the document
 will be provided in the Introduction.
 
 ////
-TODO: re-enable when we finish the IPR policy
+// TODO: re-enable when we finish the IPR policy
 and/or on the CalConnect list of patent
 declarations received (see www.calconnect.com/patents).
 ////

@@ -479,7 +479,7 @@ are not components to be voted on and MUST NOT contain a POLL-
 ITEM-ID property.  VALARM sub-components may be used to provide
 warnings to the user when polls are due to start or end.
 
-TODO: Need some text to describe what relative alarms are relative to.
+// TODO: Need some text to describe what relative alarms are relative to.
 
 ==== VOTE Component
 
