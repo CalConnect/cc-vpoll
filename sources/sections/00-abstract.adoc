@@ -1,5 +1,6 @@
 
-[abstract]
+.Abstract
+
 This specification introduces a new iCalendar component which allows
 for consensus scheduling, that is, voting on a number of alternative
 meeting or task alternatives.

@@ -19,9 +19,6 @@
 :fullname_3: Michael Douglass
 :surname_3: Douglass
 :givenname_3: Michael
-:draft:
-:toc:
-:stem:
 :xrefstyle: short
 :imagesdir: images
 :docfile: cc-51006.adoc
@@ -61,13 +58,10 @@ URI::  http://www.rpi.edu/
 ////
 
 
-:sectnums!:
 
 include::sections/00-abstract.adoc[]
 include::sections/00-foreword.adoc[]
 include::sections/00-intro.adoc[]
-
-:sectnums:
 
 include::sections/01-scope.adoc[]
 include::sections/02-normrefs.adoc[]

@@ -205,7 +205,7 @@ PCDATA value: a numeric value (integer greater than zero)
 
 ==== CalDAV:even-more-properties
 
-TODO: vpoll-supported-mode poll options - e.g "vpoll-basic"
+// TODO: vpoll-supported-mode poll options - e.g "vpoll-basic"
 
 
 ==== Extensions to CalDAV scheduling

@@ -1,13 +1,14 @@
 = VPOLL: Consensus Scheduling Component for iCalendar
 :doctype: internet-draft
-:name: draft-ietf-calext-vpoll-00
+:docnumber: draft-ietf-calext-vpoll-00
 :abbrev: VPOLL
 :status: standard
 :ipr: trust200902
-:submissionType: individual
+:submission-type: IETF
 :area: Internet
-:intended-series: full-standard
-:revdate: 2019-11-05T00:00:00Z
+:intended-series: standard
+:consensus: true
+:revdate: 2019-11-05
 :fullname: Eric York
 :lastname: York
 :forename_initials: E.
@@ -43,7 +44,7 @@
 :email_3: mikeadouglass@gmail.com
 :docfile: draft-ietf-calext-vpoll.adoc
 :mn-document-class: ietf
-:mn-output-extensions: xmlrfc2,txt,html,nits
+:mn-output-extensions: rfc,txt,html
 :technical-committee: TC Freebusy
 
 
@@ -77,14 +78,11 @@ URI::  http://www.rpi.edu/
 ////
 
 
-:sectnums!:
 
 include::sections/00-abstract.adoc[]
 // CSD Foreword is not used in IETF
 //include::sections/00-foreword.adoc[]
 include::sections/00-intro.adoc[]
-
-:sectnums:
 
 // CSD: these sections are not used in IETF
 //include::sections/01-scope.adoc[]
@@ -101,7 +99,8 @@ include::sections/10-iana.adoc[]
 
 include::sections-ietf/50-acknowledgements.adoc[]
 // IETF uses special references
-include::sections-ietf/98-references.adoc[]
+include::sections/02-normrefs.adoc[]
+include::sections-ietf/99-bibliography.adoc[]
 
 include::sections/xa-open-issues.adoc[]
 include::sections/xb-change-log.adoc[]
