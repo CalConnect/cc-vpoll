@@ -40,5 +40,5 @@
 * [[[RFC6638,IETF RFC 6638]]], _AUTOFILL_
 //Daboo, C. and B. Desruisseaux, "Scheduling Extensions to CalDAV", RFC 6638, DOI 10.17487/RFC6638, June 2012, <http://www.rfc-editor.org/info/rfc6638>.
 
-* [[[I-D.draft-ietf-calext-eventpub-extensions,IETF I-D.draft-ietf-calext-eventpub-extensions]]], _AUTOFILL_
+* [[[I-D.ietf-calext-eventpub-extensions,IETF I-D.ietf-calext-eventpub-extensions]]], _AUTOFILL_
 // Daboo, C., "New Properties for iCalendar", draft-daboo-icalendar-extensions-09 (work in progress), July 2014.

@@ -5,7 +5,7 @@
 === Updated Participant Type Value
 
 Participant type property values are defined in section 11.2.1. of
-<<I-D.draft-ietf-calext-eventpub-extensions>>.  This specification updates that type to include the new
+<<I-D.ietf-calext-eventpub-extensions>>.  This specification updates that type to include the new
 participant type VOTER to provide information about the voter and to contain their votes.
 
 Format Definition::
