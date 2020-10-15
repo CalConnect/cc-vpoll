@@ -1,0 +1,72 @@
+<bibdata type="standard">
+<title language="en" format="text/plain" type="main">VPOLL: Consensus Scheduling Component for iCalendar</title>
+<title language="en" format="text/plain" type="abbrev">VPOLL</title>
+<uri>www.linkedin.com/in/eryork</uri>
+
+
+<contributor>
+<role type="author"/>
+<person>
+<name>
+<completename>Eric York</completename>
+</name>
+<email>eric.york@gmail.com</email>
+</person>
+</contributor>
+<contributor>
+<role type="author"/>
+<person>
+<name>
+<completename>Cyrus Daboo</completename>
+</name>
+<email>cyrus@daboo.name</email>
+</person>
+</contributor>
+<contributor>
+<role type="author"/>
+<person>
+<name>
+<completename>Michael Douglass</completename>
+</name>
+<email>mikeadouglass@gmail.com</email>
+</person>
+</contributor>
+<contributor>
+<role type="publisher"/>
+<organization>
+<name>Internet Engineering Task Force</name>
+<abbreviation>IETF</abbreviation>
+</organization>
+</contributor>
+<version>
+<revision-date>2020-10-13T00:00:00Z</revision-date>
+</version>
+<language>en</language>
+<script>Latn</script>
+<status>
+<stage>standard</stage>
+</status>
+<copyright>
+<from>2020</from>
+<owner>
+<organization>
+<name>Internet Engineering Task Force</name>
+<abbreviation>IETF</abbreviation>
+</organization>
+</owner>
+</copyright>
+<series type="stream">
+<title>IETF</title>
+</series>
+<series type="intended">
+<title>full-standard</title>
+</series>
+<ext>
+<doctype>internet-draft</doctype>
+<area>Internet</area>
+<ipr>trust200902</ipr>
+<pi>
+<toc>yes</toc>
+</pi>
+</ext>
+</bibdata>
