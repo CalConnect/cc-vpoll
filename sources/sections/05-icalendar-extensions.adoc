@@ -5,7 +5,7 @@
 === Updated Participant Type Value
 
 Participant type property values are defined in section 11.2.1. of
-<<I-D.ietf-calext-eventpub-extensions>>.  This specification updates that type to include the new
+<<RFC9073>>.  This specification updates that type to include the new
 participant type VOTER to provide information about the voter and to contain their votes.
 
 Format Definition::
@@ -338,6 +338,8 @@ Property name:: REPLY-URL
 
 Purpose:: This property may be used in scheduling messages to
   indicate additional reply methods, for example a web-service.
+
+Value type:: URI
 
 Property Parameters:: Non-standard, required or iana parameters can
   be specified on this property.

@@ -96,18 +96,18 @@ UID:sched01-1234567890
 DTSTAMP:20120101T000000Z
 SUMMARY:What to do this week
 DTEND:20120101T000000Z
-BEGIN: PARTICIPANT
+BEGIN:PARTICIPANT
 PARTICIPANT-TYPE: VOTER
 CALENDAR-ADDRESS:mailto:cyrus@example.com
-END PARTICIPANT
-BEGIN: PARTICIPANT
+END:PARTICIPANT
+BEGIN:PARTICIPANT
 PARTICIPANT-TYPE: VOTER
 CALENDAR-ADDRESS:mailto:eric@example.com
-END PARTICIPANT
-BEGIN: PARTICIPANT
+END:PARTICIPANT
+BEGIN:PARTICIPANT
 PARTICIPANT-TYPE: VOTER
 CALENDAR-ADDRESS:mailto:mike@example.com
-END PARTICIPANT
+END:PARTICIPANT
 BEGIN:VEVENT.......(with a poll-item-id=1)
 END:VEVENT
 BEGIN:VEVENT.......(with a poll-item-id=2)
@@ -161,12 +161,12 @@ POLL-ITEM-ID:: One inside each VOTE component to identify the choice.
 RESPONSE:: One inside each VOTE component to specify the vote.
 
 Note that a voter can send a number of REPLYs for each REQUEST sent
-by the organizer.  Each REPLY completely replaces the voting record
+by the organizer.  in BASIC mode each REPLY completely replaces the voting record
 for that voter for all components being voted on.  In our example, if
 Eric responds and votes for items 1 and 2 and then responds again
 with a vote for only item 3, the final outcome is one vote on item 3.
 
-NOTE:: This is poll-mode specific behavior?
+NOTE:: This is poll-mode specific behavior.
 
 [example]
 --
