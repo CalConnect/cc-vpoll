@@ -37,6 +37,19 @@ ORGANIZER/ATTENDEE validity  Can a user create a poll with scheduled
 Update to existing event after poll confirm  When voting on existing
   event - winning properties ONLY are merged in to the real event.
 
+=== Advertising tasks
+
+Use VPOLL for advertising a task to a pool of possible ATTENDEEs and then select the respondent to assign one or more assignees.
+
+Introduce POLL-MODE:ASSIGNMENT
+
+Need to indicate number of assignees required.
+
+Potentially different types of response e.g. ACCEPT or DECLINE, or a weighting e.g. 0 - 100
+
+Take into FREEBUSY discussion.
+
+
 Need to write down what isn't valid in a VPOLL +
   a.  Can't change POLL-MODE
 
