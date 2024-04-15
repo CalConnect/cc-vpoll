@@ -35,7 +35,7 @@ time. The VPOLL MUST have one voter only.
 
 | ADD            | Not supported for VPOLL.
 | CANCEL         | There MUST be a single VPOLL component with UID
-|                | matching that of the poll being cancelled.
+matching that of the poll being cancelled.
 | REFRESH        | The organizer returns a METHOD:REQUEST with the
 current full state, or a METHOD:CANCEL or an
 error if no matching poll is found.
@@ -167,57 +167,9 @@ published "VPOLL" calendar component.
 Note:: Not clear how useful this is but needs some work on transmitting the
   current vote without any voter identification.
 
-This method type is an iCalendar object that conforms to the
-following property constraints:
-
-.Constraints for a METHOD:PUBLISH of a VPOLL
-[cols="a,a,a",options=header]
-|===
-| Component/Property | Presence | Comment
-
-| METHOD             | 1        | MUST equal PUBLISH.
-| VPOLL              | 1+       |
-| DTSTAMP            | 1        |
-| DTSTART            | 0 or 1   | If present defines the start of the poll. Otherwise the poll starts when it is created and distributed.
-| ORGANIZER          | 1        |
-| SUMMARY            | 1        | Can be null.
-| UID                | 1        |
-| SEQUENCE           | 0 or 1   | MUST be present if value is greater than 0; MAY be present if 0.
-| ACCEPT-RESPONSE    | 0 or 1   |
-| ATTACH             | 0+       |
-| CATEGORIES         | 0+       |
-| CLASS              | 0 or 1   |
-| COMMENT            | 0+       |
-| COMPLETED          | 0 or 1   |
-| CONTACT            | 0 or 1   |
-| CREATED            | 0 or 1   |
-| DESCRIPTION        | 0 or 1   | Can be null.
-| DTEND              | 0 or 1   | If present, DURATION MUST NOT be present.
-| DURATION           | 0 or 1   | If present, DTEND MUST NOT be present.
-| LAST-MODIFIED      | 0 or 1   |
-| POLL-ITEM-ID       | 0        |
-| POLL-MODE          | 0 or 1   |
-| POLL-PROPERTIES    | 0 or 1   |
-| PRIORITY           | 0 or 1   |
-| RELATED-TO         | 0+       |
-| RESOURCES          | 0+       |
-| STATUS             | 0 or 1   | MAY be one of COMPLETED/CONFIRMED/CANCELLED.
-| URL                | 0 or 1   |
-| IANA-PROPERTY      | 0+       |
-| X-PROPERTY         | 0+       |
-| PARTICIPANT        | 0+       | Only PARTICIPANT components with PARTICIPANT-TYPE not equal to "VOTER" - that is, no voters
-| REQUEST-STATUS     | 0        |
-| VALARM             | 0+       |
-| VEVENT             | 0+       | Depending upon the poll mode in effect there MAY be candidate components included in the poll component.
-| VFREEBUSY          | 0        |
-| VJOURNAL           | 0+       | Depending upon the poll mode in effect there MAY be candidate components included in the poll component.
-| VTODO              | 0+       | Depending upon the poll mode in effect there MAY be candidate components included in the poll component.
-| VTIMEZONE          | 0+       | MUST be present if any date/time refers to a timezone.
-| IANA-COMPONENT     | 0+       |
-| X-COMPONENT        | 0+       |
-
-|===
-
+This method type has a "METHOD" property with the value "PUBLISH"
+and one or more complete VPOLL objects that conform to the
+property constraints defined in section <<component-vpoll>>.
 
 ==== Method: REQUEST
 
@@ -258,59 +210,9 @@ calendar component.
 
 For the "REQUEST" method only a single iCalendar object is permitted.
 
-This method type is an iCalendar object that conforms to the
-following property constraints:
-
-.Constraints for a METHOD:REQUEST of a VPOLL
-[cols="a,a,a",options=header]
-|===
-| Component/Property | Presence | Comment
-
-| METHOD             | 1        | MUST be REQUEST.
-| VPOLL              | 1        |
-| PARTICIPANT        | 1+       | Identified as voters with the PARTICIPANT-TYPE=VOTER
-| DTSTAMP            | 1        |
-| DTSTART            | 0 or 1   | If present defines the start of the poll. Otherwise the poll starts when it is created and distributed.
-| ORGANIZER          | 1        |
-| SEQUENCE           | 0 or 1   | MUST be present if value is greater than 0; MAY be present if 0.
-| SUMMARY            | 1        | Can be null.
-| UID                | 1        |
-| ACCEPT-RESPONSE    | 0 or 1   |
-| ATTACH             | 0+       |
-| CATEGORIES         | 0+       |
-| CLASS              | 0 or 1   |
-| COMMENT            | 0+       |
-| COMPLETED          | 0 or 1   |
-| CONTACT            | 0+       |
-| CREATED            | 0 or 1   |
-| DESCRIPTION        | 0 or 1   | Can be null.
-| DTEND              | 0 or 1   | If present, DURATION MUST NOT be present.
-| DURATION           | 0 or 1   | If present, DTEND MUST NOT be present.
-| GEO                | 0 or 1   |
-| LAST-MODIFIED      | 0 or 1   |
-| LOCATION           | 0 or 1   |
-| POLL-ITEM-ID       | 0        |
-| POLL-MODE          | 0 or 1   |
-| POLL-PROPERTIES    | 0 or 1   |
-| PRIORITY           | 0 or 1   |
-| RELATED-TO         | 0+       |
-| REQUEST-STATUS     | 0        |
-| RESOURCES          | 0+       |
-| STATUS             | 0 or 1   | MAY be one of COMPLETED/CONFIRMED/CANCELLED.
-| TRANSP             | 0 or 1   |
-| URL                | 0 or 1   |
-| IANA-PROPERTY      | 0+       |
-| X-PROPERTY         | 0+       |
-| VALARM             | 0+       |
-| VTIMEZONE          | 0+       | MUST be present if any date/time refers to a timezone.
-| IANA-COMPONENT     | 0+       |
-| X-COMPONENT        | 0+       |
-| VEVENT             | 0+       | Depending upon the poll mode in effect there MAY be candidate components included in the poll component.
-| VFREEBUSY          | 0        |
-| VJOURNAL           | 0+       | Depending upon the poll mode in effect there MAY be candidate components included in the poll component.
-| VTODO              | 0+       | Depending upon the poll mode in effect there MAY be candidate components included in the poll component.
-
-|===
+This method type has a "METHOD" property with the value "REQUEST"
+and a single complete VPOLL object that conforms to the
+property constraints defined in section <<component-vpoll>>.
 
 ===== Rescheduling a poll
 
@@ -332,7 +234,6 @@ description for the poll.  If the recipient CUA of a "REQUEST" method
 finds that the "UID" property value already exists on the calendar
 and that the "SEQUENCE" property value in the "REQUEST" is the same
 as the value for the existing poll, then the "REQUEST" method
-
 describes an update of the poll details, but not a rescheduling of
 the POLL.
 
@@ -488,8 +389,11 @@ The optional properties listed in the table below (those listed as
 "0+" or "0 or 1") MUST NOT be changed from those of the original
 request.  (But see comments on VFREEBUSY and VAVAILABILITY)
 
-This method type is an iCalendar object that conforms to the
-following property constraints:
+This method type has a "METHOD" property with the value "REPLY"
+and a single VPOLL object. That object MUST contain the properties
+shown below. All other properties or components SHOULD NOT be present and MUST be
+ignored by the recipient if present.
+
 
 .Constraints for a METHOD:REPLY of a VPOLL
 [cols="a,a,a",options=header]
@@ -506,43 +410,9 @@ following property constraints:
 |                    |          | REQUEST.
 | SEQUENCE           | 0 or 1   | If non-zero, MUST be the sequence number of the original REQUEST. MAY be present if 0.
 | ACCEPT-RESPONSE    | 0 or 1   |
-| ATTACH             | 0+       |
-| CATEGORIES         | 0+       |
-| CLASS              | 0 or 1   |
-| COMMENT            | 0+       |
-| COMPLETED          | 0 or 1   |
-| CONTACT            | 0+       |
-| CREATED            | 0 or 1   |
-| DESCRIPTION        | 0 or 1   |
-| DTEND              | 0 or 1   | If present, DURATION MUST NOT be present.
-| DTSTART            | 0 or 1   |
-| DURATION           | 0 or 1   | If present, DTEND MUST NOT be present.
-| GEO                | 0 or 1   |
-
-| LAST-MODIFIED      | 0 or 1   |
-| LOCATION           | 0 or 1   |
 | POLL-ITEM-ID       | 1+       | One per item being voted on.
-| POLL-MODE          | 0        |
-| POLL-PROPERTIES    | 0        |
-| PRIORITY           | 0 or 1   |
-| RELATED-TO         | 0+       |
-| RESOURCES          | 0+       |
-| REQUEST-STATUS     | 0+       |
-| STATUS             | 0 or 1   |
-| SUMMARY            | 0 or 1   |
-| TRANSP             | 0 or 1   |
-| URL                | 0 or 1   |
-| IANA-PROPERTY      | 0+       |
-| X-PROPERTY         | 0+       |
-| VALARM             | 0        |
-| VTIMEZONE          | 0 or 1   | MUST be present if any date/time refers to a timezone.
-| IANA-COMPONENT     | 0+       |
-| X-COMPONENT        | 0+       |
-| VEVENT             | 0        |
 | VFREEBUSY          | 0 or 1   | A voter may respond with a VFREEBUSY component indicating that the ORGANIZER may select some other time which is not marked as busy.
 | VAVAILABILITY      | 0        | A voter may respond with a VAVAILABILITY component indicating that the ORGANIZER may select some other time which is shown as available.
-| VJOURNAL           | 0        |
-| VTODO              | 0        |
 
 |===
 
@@ -563,8 +433,10 @@ incremented as described in <<component-revisions>>.
 Once a CANCEL message has been sent to all voters no further voting
 may take place.  The poll is considered closed.
 
-This method type is an iCalendar object that conforms to the
-following property constraints:
+This method type has a "METHOD" property with the value "CANCEL"
+and one or more VPOLL objects. Those objects MUST contain the properties
+shown below. All other properties or components SHOULD NOT be present and MUST be
+ignored by the recipient if present.
 
 .Constraints for a METHOD:CANCEL of a VPOLL
 [cols="a,a,a",options=header]
@@ -573,61 +445,25 @@ following property constraints:
 
 | METHOD             | 1        | MUST be CANCEL.
 | VPOLL              | 1+       | All must have the same UID.
-| PARTICIPANT        | 0+       | MUST include some or all Voters being removed from the poll. MUST include some or all Voters if the entire poll is cancelled.
+| PARTICIPANT        | 0+       | Any included participents are being removed from the poll. Otherwise the entire poll is cancelled.
 | UID                | 1        | MUST be the UID of the original REQUEST.
 | DTSTAMP            | 1        |
 | ORGANIZER          | 1        |
 | SEQUENCE           | 1        |
-| ATTACH             | 0+       |
-| ACCEPT-RESPONSE    | 0        |
-| COMMENT            | 0+       |
-| COMPLETED          | 0 or 1   |
-| CATEGORIES         | 0+       |
-| CLASS              | 0 or 1   |
-| CONTACT            | 0+       |
-| CREATED            | 0 or 1   |
-| DESCRIPTION        | 0 or 1   |
-| DTEND              | 0 or 1   | If present, DURATION MUST NOT be present.
-| DTSTART            | 0 or 1   |
-| DURATION           | 0 or 1   | If present, DTEND MUST NOT be present.
-
-| GEO                | 0 or 1   |
-| LAST-MODIFIED      | 0 or 1   |
-| LOCATION           | 0 or 1   |
-| POLL-ITEM-ID       | 0        |
-| POLL-MODE          | 0        |
-| POLL-PROPERTIES    | 0        |
-| PRIORITY           | 0 or 1   |
-| RELATED-TO         | 0+       |
-| RESOURCES          | 0+       |
-| STATUS             | 0 or 1   | MUST be set to CANCELLED to cancel the entire event. If uninviting specific Attendees, then MUST NOT be included.
-| SUMMARY            | 0 or 1   |
-| TRANSP             | 0 or 1   |
-| URL                | 0 or 1   |
-| IANA-PROPERTY      | 0+       |
-| X-PROPERTY         | 0+       |
-| REQUEST-STATUS     | 0        |
-| VALARM             | 0        |
-| VTIMEZONE          | 0+       | MUST be present if any date/time refers to a timezone.
-| IANA-COMPONENT     | 0+       |
-| X-COMPONENT        | 0+       |
-| VTODO              | 0        |
-| VJOURNAL           | 0        |
-| VEVENT             | 0        |
-| VFREEBUSY          | 0        |
 
 |===
 
 ==== Method: REFRESH
 
 The "REFRESH" method in a "VPOLL" calendar component is used by
-"Voters" of an existing event to request an updated description from
-the poll "Organizer".  The "REFRESH" method must specify the "UID"
-property of the poll to update.  The "Organizer" responds with the
-latest description and version of the poll.
+"Voters" of an existing event to request an updated vpoll status from
+the poll "Organizer". The "REFRESH" method MUST specify the "UID"
+property of the poll to update.  The "Organizer" responds with a
+METHOD=REQUEST giving the latest status and version of the poll.
 
-This method type is an iCalendar object that conforms to the
-following property constraints:
+This method type has a "METHOD" property with the value "REFRESH"
+and a single VPOLL object. That object MUST contain the properties
+shown below and no others.
 
 .Constraints for a METHOD:REFRESH of a VPOLL
 [cols="a,a,a",options=header]
@@ -640,42 +476,6 @@ following property constraints:
 | DTSTAMP            | 1        |
 | ORGANIZER          | 1        |
 | UID                | 1        | MUST be the UID associated with original REQUEST.
-| COMMENT            | 0+       |
-| COMPLETED          | 0        |
-| IANA-PROPERTY      | 0+       |
-| X-PROPERTY         | 0+       |
-| ACCEPT-RESPONSE    | 0        |
-| ATTACH             | 0        |
-| CATEGORIES         | 0        |
-| CLASS              | 0        |
-| CONTACT            | 0        |
-| CREATED            | 0        |
-| DESCRIPTION        | 0        |
-| DTEND              | 0        |
-| DTSTART            | 0        |
-| DURATION           | 0        |
-| GEO                | 0        |
-| LAST-MODIFIED      | 0        |
-| LOCATION           | 0        |
-| POLL-ITEM-ID       | 0        |
-| POLL-MODE          | 0        |
-| POLL-PROPERTIES    | 0        |
-| PRIORITY           | 0        |
-| RELATED-TO         | 0        |
-| REQUEST-STATUS     | 0        |
-| RESOURCES          | 0        |
-| SEQUENCE           | 0        |
-| STATUS             | 0        |
-| SUMMARY            | 0        |
-| URL                | 0        |
-| VALARM             | 0        |
-| VTIMEZONE          | 0+       |
-| IANA-COMPONENT     | 0+       |
-| X-COMPONENT        | 0+       |
-| VTODO              | 0        |
-| VJOURNAL           | 0        |
-| VEVENT             | 0        |
-| VFREEBUSY          | 0        |
 
 |===
 
@@ -688,6 +488,10 @@ component.  All "Voters" MUST be present.  The selected component(s)
 according to the poll mode SHOULD NOT be present in the poll
 component.  Clients receiving this message may store the confirmed
 items in their calendars.
+
+This method type has a "METHOD" property with the value "POLLSTATUS"
+and one or more VPOLL objects. Those objects MUST contain the properties
+shown below and no others.
 
 This method type is an iCalendar object that conforms to the
 following property constraints:
@@ -707,37 +511,5 @@ following property constraints:
 | SUMMARY            | 1        | Can be null.
 | UID                | 1        |
 | SEQUENCE           | 0 or 1   | MUST be present if value is greater than 0; MAY be present if 0.
-| ACCEPT-RESPONSE    | 0        |
-
-| ATTACH             | 0        |
-| CATEGORIES         | 0        |
-| CLASS              | 0        |
-| COMMENT            | 0+       |
-| CONTACT            | 0        |
-| CREATED            | 0 or 1   |
-| DESCRIPTION        | 0 or 1   | Can be null.
-| DTEND              | 0 or 1   | If present, DURATION MUST NOT be present.
-| DURATION           | 0 or 1   | If present, DTEND MUST NOT be present.
-| LAST-MODIFIED      | 0 or 1   |
-| POLL-ITEM-ID       | 0        |
-| POLL-MODE          | 0 or 1   |
-| POLL-PROPERTIES    | 0        |
-| PRIORITY           | 0 or 1   |
-| RELATED-TO         | 0+       |
-| RESOURCES          | 0+       |
-| STATUS             | 0 or 1   | MAY be one of TENTATIVE/CONFIRMED/CANCELLED.
-| URL                | 0 or 1   |
-| IANA-PROPERTY      | 0+       |
-| X-PROPERTY         | 0+       |
-| REQUEST-STATUS     | 0        |
-| VALARM             | 0+       |
-| VEVENT             | 0        | All candidate components SHOULD NOT be present.
-| VFREEBUSY          | 0        |
-| VJOURNAL           | 0        | All candidate components SHOULD NOT be present.
-| VTODO              | 0        | All candidate components SHOULD NOT be present.
-| VTIMEZONE          | 0+       | MUST be present if any date/time refers to a timezone.
-| IANA-COMPONENT     | 0+       |
-
-| X-COMPONENT        | 0+       |
 
 |===
