@@ -1,13 +1,13 @@
 = VPOLL: Consensus Scheduling Component for iCalendar
 :doctype: internet-draft
-:docnumber: draft-ietf-calext-vpoll-03
+:docnumber: draft-ietf-calext-vpoll-05
 :abbrev: VPOLL
 :status: standard
 :ipr: trust200902
 :submissionType: individual
 :area: Internet
 :intended-series: full-standard
-:revdate: 2022-03-05
+:revdate: 2023-11-06
 :fullname: Eric York
 :lastname: York
 :forename_initials: E.
@@ -49,12 +49,12 @@ include::sections/00-intro.adoc[]
 
 include::sections/03-terms.adoc[]
 include::sections/04-consensus.adoc[]
-include::sections/05-icalendar-extensions.adoc[]
-include::sections/06-poll-modes.adoc[]
-include::sections/07-itip-extensions.adoc[]
-include::sections/08-caldav-extensions.adoc[]
-include::sections/09-security.adoc[]
-include::sections/10-iana.adoc[]
+include::sections/30-icalendar-extensions.adoc[]
+include::sections/40-poll-modes.adoc[]
+include::sections/50-itip-extensions.adoc[]
+include::sections/60-caldav-extensions.adoc[]
+include::sections/70-security.adoc[]
+include::sections/80-iana.adoc[]
 
 include::sections-ietf/50-acknowledgements.adoc[]
 // IETF uses special references
