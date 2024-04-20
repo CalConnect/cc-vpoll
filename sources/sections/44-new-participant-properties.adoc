@@ -180,7 +180,8 @@ Format Definition::
 This property is defined by the following notation:
 [source,abnf]
 ----
-participation-status = "PARTICIPATION-STATUS" participation-statusparams ":"
+participation-status = "PARTICIPATION-STATUS"
+                       participation-statusparams ":"
               NEEDS-ACTION / ; No status
                     ; has yet been set by the participant.
 
@@ -219,7 +220,8 @@ Format Definition::
 This property is defined by the following notation:
 [source,abnf]
 ----
-participation-delfrom = "PARTICIPATION-DELEGATED-FROM" participation-delfromparams ":"
+participation-delfrom = "PARTICIPATION-DELEGATED-FROM"
+                        participation-delfromparams ":"
               CAL-ADDRESS
               *("," CAL-ADDRESS)
               iana-token ("," iana-token) CRLF
@@ -248,7 +250,8 @@ Format Definition::
 This property is defined by the following notation:
 [source,abnf]
 ----
-participation-delto = "PARTICIPATION-DELEGATED-TO" participation-deltoparams ":"
+participation-delto = "PARTICIPATION-DELEGATED-TO"
+                      participation-deltoparams ":"
               CAL-ADDRESS
               *("," CAL-ADDRESS)
               iana-token ("," iana-token) CRLF
