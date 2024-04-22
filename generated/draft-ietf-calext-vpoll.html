@@ -13,7 +13,7 @@ for consensus scheduling, that is, voting on a number of alternative
 meeting or task alternatives. 
     " name="description">
 <meta content="xml2rfc 3.21.0" name="generator">
-<meta content="draft-ietf-calext-vpoll-05" name="ietf.draft">
+<meta content="draft-ietf-calext-vpoll-06" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.21.0
     Python 3.8.10
@@ -1227,7 +1227,7 @@ li > p:last-of-type:only-child {
 <dt class="label-workgroup">Workgroup:</dt>
 <dd class="workgroup">Network Working Group</dd>
 <dt class="label-internet-draft">Internet-Draft:</dt>
-<dd class="internet-draft">draft-ietf-calext-vpoll-05</dd>
+<dd class="internet-draft">draft-ietf-calext-vpoll-06</dd>
 <dt class="label-">:</dt>
 <dd></dd>
 <dt class="label-published">Published:</dt>
@@ -1849,13 +1849,13 @@ date and or time for the meeting.<a href="#section-3.1-2.24.1" class="pilcrow">�
         <dd class="break"></dd>
 </dl>
 </div>
-<div id="_990f55e9-63bb-a0db-e12d-124fd55920f6">
+<div id="_bf31580e-f86c-3dd0-7d1c-d9e3191c3686">
 <p id="section-3.1-3" class="keepWithNext">EXAMPLE<a href="#section-3.1-3" class="pilcrow">¶</a></p>
 </div>
 <div id="_15d95852-c59d-c60e-a11e-d511470988bc">
 <p id="section-3.1-4">VPOLL with 3 voters and 3 alternative meetings:<a href="#section-3.1-4" class="pilcrow">¶</a></p>
 </div>
-<div id="_7a413db4-e384-37aa-d60e-1688e6957816">
+<div id="_1b406635-df91-5250-fdda-7709e394b411">
 <div class="sourcecode" id="section-3.1-5">
 <pre>BEGIN:VCALENDAR
 VERSION:2.0
@@ -1872,14 +1872,17 @@ DTEND:20120101T000000Z
 BEGIN:PARTICIPANT
 PARTICIPANT-TYPE: VOTER
 CALENDAR-ADDRESS:mailto:cyrus@example.com
+UID:schedpart-7890123456
 END:PARTICIPANT
 BEGIN:PARTICIPANT
 PARTICIPANT-TYPE: VOTER
 CALENDAR-ADDRESS:mailto:eric@example.com
+UID:schedpart-0987654321
 END:PARTICIPANT
 BEGIN:PARTICIPANT
 PARTICIPANT-TYPE: VOTER,OWNER
 CALENDAR-ADDRESS:mailto:mike@example.com
+UID:schedpart-1234567890
 END:PARTICIPANT
 BEGIN:VEVENT.......(with a poll-item-id=1)
 END:VEVENT
@@ -2014,13 +2017,13 @@ with a vote for only item 3, the final outcome is one vote on item 3.<a href="#s
         <dd class="break"></dd>
 </dl>
 </div>
-<div id="_b337c246-7b39-59dc-5f25-9f69c2fb384a">
+<div id="_6991f0ca-77aa-5c94-757d-a2cc32501cef">
 <p id="section-3.3-5" class="keepWithNext">EXAMPLE<a href="#section-3.3-5" class="pilcrow">¶</a></p>
 </div>
 <div id="_afdfe7c5-1340-2a39-053d-f3685d980cd8">
 <p id="section-3.3-6">REPLY VPOLL from Cyrus:<a href="#section-3.3-6" class="pilcrow">¶</a></p>
 </div>
-<div id="_55f2d534-66c5-617d-f29d-c947712435e3">
+<div id="_12a4bbdc-4e74-0632-319c-44b4e269ba8e">
 <div class="sourcecode" id="section-3.3-7">
 <pre>BEGIN:VCALENDAR
 VERSION:2.0
@@ -2033,6 +2036,7 @@ SUMMARY:What to do this week
 BEGIN:PARTICIPANT
 PARTICIPANT-TYPE: VOTER
 CALENDAR-ADDRESS:mailto:cyrus@example.com
+UID:schedpart-7890123456
 BEGIN:VOTE
 POLL-ITEM-ID:1
 RESPONSE:50
@@ -2066,10 +2070,10 @@ POLLSTATUS is used.  The VPOLL can contain a reduced set of
 properties but MUST contain DTSTAMP, SEQUENCE (if not 0), UID, and
 one or more PARTICIPANT components each populated with zero or more VOTE components.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
 </div>
-<div id="_b5d3bb0c-294d-bac1-6cd1-dd4c5bdef69c">
+<div id="_4b5ee431-cdca-f631-7e26-307a1bb8d59d">
 <p id="section-3.4-2" class="keepWithNext">EXAMPLE<a href="#section-3.4-2" class="pilcrow">¶</a></p>
 </div>
-<div id="_a575d708-6201-229d-a7ed-bba87e1387af">
+<div id="_1728f8f8-280d-d140-8a4f-d8277d70b12f">
 <div class="breakable sourcecode" id="section-3.4-3">
 <pre>BEGIN:VCALENDAR
 VERSION:2.0
@@ -2083,6 +2087,7 @@ SUMMARY:What to do this week
 BEGIN:PARTICIPANT
 PARTICIPANT-TYPE: VOTER
 CALENDAR-ADDRESS:mailto:cyrus@example.com
+UID:schedpart-7890123456
 BEGIN: VOTE
 POLL-ITEM-ID:1
 RESPONSE:50
@@ -2101,6 +2106,7 @@ END:PARTICIPANT
 BEGIN:PARTICIPANT
 PARTICIPANT-TYPE: VOTER
 CALENDAR-ADDRESS:mailto:eric@example.com
+UID:schedpart-0987654321
 BEGIN:VOTE
 POLL-ITEM-ID:1
 RESPONSE:100
@@ -2117,6 +2123,7 @@ END:PARTICIPANT
 BEGIN:PARTICIPANT
 PARTICIPANT-TYPE: VOTER,OWNER
 CALENDAR-ADDRESS:mailto:mike@example.com
+UID:schedpart-1234567890
 BEGIN: VOTE
 POLL-ITEM-ID:1
 RESPONSE:50
@@ -2160,13 +2167,13 @@ COMPLETION property is set to SERVER-SUBMIT the server will submit
 the winning choice and when it has done so set the STATUS to
 "SUBMITTED".<a href="#section-3.5-2" class="pilcrow">¶</a></p>
 </div>
-<div id="_27c0bfdc-84ca-38b4-769f-262350de5fe6">
+<div id="_e8fe0eb5-8721-c764-8ae9-f5683ae45a5c">
 <p id="section-3.5-3" class="keepWithNext">EXAMPLE<a href="#section-3.5-3" class="pilcrow">¶</a></p>
 </div>
 <div id="_41c9ab16-00a6-e6f8-cdd6-f63015d098a0">
 <p id="section-3.5-4">VPOLL confirmation:<a href="#section-3.5-4" class="pilcrow">¶</a></p>
 </div>
-<div id="_fed3c5d0-307f-8969-a711-625fc1e4e960">
+<div id="_601bec4e-7336-8b8e-a52d-e3a778c81b6a">
 <div class="sourcecode" id="section-3.5-5">
 <pre>BEGIN:VCALENDAR
 VERSION:2.0
@@ -2184,6 +2191,7 @@ POLL-WINNER:3
 BEGIN:PARTICIPANT
 PARTICIPANT-TYPE: OWNER
 CALENDAR-ADDRESS:mailto:mike@example.com
+UID:schedpart-1234567890
 END:PARTICIPANT
 BEGIN:VEVENT.......(with a poll-item-id=1)
 END:VEVENT
@@ -7033,18 +7041,28 @@ Really sounds like a PARTICIPANT or VOTE property<a href="#appendix-A-1" class="
 <div id="_86d209de-987f-5942-724e-f0c473c8fc27">
 <p id="appendix-A.1-9">Need to add example of freebusy in response<a href="#appendix-A.1-9" class="pilcrow">¶</a></p>
 </div>
-<div id="_7f242e5d-84c3-2e47-1c3f-2d0d81be9fee">
+<div id="_d041b46e-7ac6-4c34-8e33-f52f05bebf2e">
 <div class="sourcecode" id="appendix-A.1-10">
 <pre>BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//BedeworkCaldavTest//BedeworkCaldavTest
 METHOD: REPLY
 BEGIN:VPOLL
-ORGANIZER:mailto:douglm@mysite.edu
+BEGIN:PARTICIPANT
+PARTICIPANT-TYPE: OWNER
+CALENDAR-ADDRESS:mailto:douglm@mysite.edu
+UID:schedpart-1234567890
+DTSTAMP:20120101T010000Z
+SEQUENCE:0
+SUMMARY:What to do this week
+BEGIN:VFREEBUSY
+.......
+END:VFREEBUSY
+END:PARTICIPANT
 BEGIN:PARTICIPANT
 PARTICIPANT-TYPE: VOTER
 CALENDAR-ADDRESS:mailto:eric@example.com
-UID:sched01-1234567890
+UID:schedpart-0987654321
 DTSTAMP:20120101T010000Z
 SEQUENCE:0
 SUMMARY:What to do this week

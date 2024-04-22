@@ -9,7 +9,7 @@ Expires: 24 October 2024                                   22 April 2024
 
 
           VPOLL: Consensus Scheduling Component for iCalendar
-                       draft-ietf-calext-vpoll-05
+                       draft-ietf-calext-vpoll-06
 
 Abstract
 
@@ -73,13 +73,13 @@ Table of Contents
      3.5.  VPOLL Completion  . . . . . . . . . . . . . . . . . . . .  11
      3.6.  Other Responses . . . . . . . . . . . . . . . . . . . . .  12
    4.  iCalendar Extensions  . . . . . . . . . . . . . . . . . . . .  12
-     4.1.  Updated Participant Type Value  . . . . . . . . . . . . .  12
+     4.1.  Updated Participant Type Value  . . . . . . . . . . . . .  13
      4.2.  Updated Relation Type Value . . . . . . . . . . . . . . .  13
      4.3.  Updated Status Value  . . . . . . . . . . . . . . . . . .  13
      4.4.  New Property Parameters . . . . . . . . . . . . . . . . .  14
        4.4.1.  Required  . . . . . . . . . . . . . . . . . . . . . .  14
        4.4.2.  Stay-Informed . . . . . . . . . . . . . . . . . . . .  14
-     4.5.  New Properties  . . . . . . . . . . . . . . . . . . . . .  14
+     4.5.  New Properties  . . . . . . . . . . . . . . . . . . . . .  15
        4.5.1.  Accept-Response . . . . . . . . . . . . . . . . . . .  15
        4.5.2.  Poll-Completion . . . . . . . . . . . . . . . . . . .  15
        4.5.3.  Poll-Item-Id  . . . . . . . . . . . . . . . . . . . .  16
@@ -353,14 +353,17 @@ Internet-Draft                    VPOLL                       April 2024
    BEGIN:PARTICIPANT
    PARTICIPANT-TYPE: VOTER
    CALENDAR-ADDRESS:mailto:cyrus@example.com
+   UID:schedpart-7890123456
    END:PARTICIPANT
    BEGIN:PARTICIPANT
    PARTICIPANT-TYPE: VOTER
    CALENDAR-ADDRESS:mailto:eric@example.com
+   UID:schedpart-0987654321
    END:PARTICIPANT
    BEGIN:PARTICIPANT
    PARTICIPANT-TYPE: VOTER,OWNER
    CALENDAR-ADDRESS:mailto:mike@example.com
+   UID:schedpart-1234567890
    END:PARTICIPANT
    BEGIN:VEVENT.......(with a poll-item-id=1)
    END:VEVENT
@@ -384,15 +387,15 @@ Internet-Draft                    VPOLL                       April 2024
    usual [RFC5545] properties some extra properties are used for a
    VPOLL.
 
-   POLL-ITEM-ID  This provides a unique reference to the sub-component
-      within the VPOLL.  It's value SHOULD be a small integer.
-
 
 
 York & Douglass          Expires 24 October 2024                [Page 7]
 
 Internet-Draft                    VPOLL                       April 2024
 
+
+   POLL-ITEM-ID  This provides a unique reference to the sub-component
+      within the VPOLL.  It's value SHOULD be a small integer.
 
 3.3.  VPOLL responses
 
@@ -442,9 +445,6 @@ Internet-Draft                    VPOLL                       April 2024
 
 
 
-
-
-
 York & Douglass          Expires 24 October 2024                [Page 8]
 
 Internet-Draft                    VPOLL                       April 2024
@@ -461,6 +461,7 @@ Internet-Draft                    VPOLL                       April 2024
    BEGIN:PARTICIPANT
    PARTICIPANT-TYPE: VOTER
    CALENDAR-ADDRESS:mailto:cyrus@example.com
+   UID:schedpart-7890123456
    BEGIN:VOTE
    POLL-ITEM-ID:1
    RESPONSE:50
@@ -497,7 +498,6 @@ Internet-Draft                    VPOLL                       April 2024
    BEGIN:VPOLL
    UID:sched01-1234567890
    DTSTAMP:20120101T020000Z
-   SEQUENCE:0
 
 
 
@@ -506,10 +506,12 @@ York & Douglass          Expires 24 October 2024                [Page 9]
 Internet-Draft                    VPOLL                       April 2024
 
 
+   SEQUENCE:0
    SUMMARY:What to do this week
    BEGIN:PARTICIPANT
    PARTICIPANT-TYPE: VOTER
    CALENDAR-ADDRESS:mailto:cyrus@example.com
+   UID:schedpart-7890123456
    BEGIN: VOTE
    POLL-ITEM-ID:1
    RESPONSE:50
@@ -528,6 +530,7 @@ Internet-Draft                    VPOLL                       April 2024
    BEGIN:PARTICIPANT
    PARTICIPANT-TYPE: VOTER
    CALENDAR-ADDRESS:mailto:eric@example.com
+   UID:schedpart-0987654321
    BEGIN:VOTE
    POLL-ITEM-ID:1
    RESPONSE:100
@@ -544,16 +547,13 @@ Internet-Draft                    VPOLL                       April 2024
    BEGIN:PARTICIPANT
    PARTICIPANT-TYPE: VOTER,OWNER
    CALENDAR-ADDRESS:mailto:mike@example.com
+   UID:schedpart-1234567890
    BEGIN: VOTE
    POLL-ITEM-ID:1
    RESPONSE:50
    COMMENT:Work on iTIP
    END:VOTE
    BEGIN:VOTE
-   POLL-ITEM-ID:2
-   RESPONSE:100
-   COMMENT:Work on WebDAV
-   END:VOTE
 
 
 
@@ -562,6 +562,10 @@ York & Douglass          Expires 24 October 2024               [Page 10]
 Internet-Draft                    VPOLL                       April 2024
 
 
+   POLL-ITEM-ID:2
+   RESPONSE:100
+   COMMENT:Work on WebDAV
+   END:VOTE
    BEGIN:VOTE
    POLL-ITEM-ID:3
    RESPONSE:0
@@ -609,10 +613,6 @@ Internet-Draft                    VPOLL                       April 2024
 
 
 
-
-
-
-
 York & Douglass          Expires 24 October 2024               [Page 11]
 
 Internet-Draft                    VPOLL                       April 2024
@@ -634,6 +634,7 @@ Internet-Draft                    VPOLL                       April 2024
    BEGIN:PARTICIPANT
    PARTICIPANT-TYPE: OWNER
    CALENDAR-ADDRESS:mailto:mike@example.com
+   UID:schedpart-1234567890
    END:PARTICIPANT
    BEGIN:VEVENT.......(with a poll-item-id=1)
    END:VEVENT
@@ -660,12 +661,11 @@ Internet-Draft                    VPOLL                       April 2024
 
 4.  iCalendar Extensions
 
-4.1.  Updated Participant Type Value
 
-   Participant type property values are defined in section 11.2.1. of
-   [RFC9073].  This specification updates that type to include the new
-   participant type VOTER to provide information about the voter and to
-   contain their votes.
+
+
+
+
 
 
 
@@ -673,6 +673,13 @@ York & Douglass          Expires 24 October 2024               [Page 12]
 
 Internet-Draft                    VPOLL                       April 2024
 
+
+4.1.  Updated Participant Type Value
+
+   Participant type property values are defined in section 11.2.1. of
+   [RFC9073].  This specification updates that type to include the new
+   participant type VOTER to provide information about the voter and to
+   contain their votes.
 
    Format Definition  This property parameter is redefined by the
       following notation:
@@ -709,6 +716,20 @@ Internet-Draft                    VPOLL                       April 2024
    Format Definition  This property parameter is redefined by the
       following notation:
 
+
+
+
+
+
+
+
+
+
+York & Douglass          Expires 24 October 2024               [Page 13]
+
+Internet-Draft                    VPOLL                       April 2024
+
+
    statvalue /= statvalue-poll
       ; Status values for "VPOLL".
    statvalue-poll = "IN-PROCESS"
@@ -722,13 +743,6 @@ Internet-Draft                    VPOLL                       April 2024
 
    Description  These values allow clients and servers to handle the
       choosing and submission of winning choices.
-
-
-
-York & Douglass          Expires 24 October 2024               [Page 13]
-
-Internet-Draft                    VPOLL                       April 2024
-
 
       If the client is choosing and the server submitting then the
       client should set the POLL-WINNER property, set the status to
@@ -764,6 +778,14 @@ Internet-Draft                    VPOLL                       April 2024
       when the poll is confirmed.
 
    Format Definition  This parameter is defined by the following
+
+
+
+York & Douglass          Expires 24 October 2024               [Page 14]
+
+Internet-Draft                    VPOLL                       April 2024
+
+
       notation:
 
    stayinformedparam = "STAY-INFORMED"  "=" ("TRUE" / "FALSE")
@@ -775,16 +797,6 @@ Internet-Draft                    VPOLL                       April 2024
       non participant.
 
 4.5.  New Properties
-
-
-
-
-
-
-York & Douglass          Expires 24 October 2024               [Page 14]
-
-Internet-Draft                    VPOLL                       April 2024
-
 
 4.5.1.  Accept-Response
 
@@ -823,6 +835,13 @@ Internet-Draft                    VPOLL                       April 2024
       client or server is responsible for choosing and/or submitting the
       winner(s).
 
+
+
+York & Douglass          Expires 24 October 2024               [Page 15]
+
+Internet-Draft                    VPOLL                       April 2024
+
+
    Description  When a VPOLL is stored on a server which is capable of
       handling choosing and submission of winning choices a value of
       SERVER indicates that the server should close the poll, choose the
@@ -833,14 +852,6 @@ Internet-Draft                    VPOLL                       April 2024
 
       Server initiated submission requires that the submitted choice
       MUST be a valid calendaring component.
-
-
-
-
-York & Douglass          Expires 24 October 2024               [Page 15]
-
-Internet-Draft                    VPOLL                       April 2024
-
 
       POLL-COMPLETION=SERVER-SUBMIT allows the client to set the poll-
       winner, set the status to CONFIRMED and then store the poll on the
@@ -879,6 +890,14 @@ Internet-Draft                    VPOLL                       April 2024
 
    Value type  INTEGER
 
+
+
+
+York & Douglass          Expires 24 October 2024               [Page 16]
+
+Internet-Draft                    VPOLL                       April 2024
+
+
    Property Parameters  Non-standard parameters can be specified on this
       property.
 
@@ -888,15 +907,6 @@ Internet-Draft                    VPOLL                       April 2024
    Description  In a METHOD:REQUEST each choice component MUST have a
       POLL-ITEM-ID property.  Each set of components with the same POLL-
       ITEM-ID value represents one overall set of items to be voted on.
-
-
-
-
-
-York & Douglass          Expires 24 October 2024               [Page 16]
-
-Internet-Draft                    VPOLL                       April 2024
-
 
       POLL-ITEM-ID SHOULD be a unique small integer for each component
       or set of components.  If it remains the same between REQUESTs
@@ -936,16 +946,6 @@ Internet-Draft                    VPOLL                       April 2024
       specification.  These may allow for such modes as ranking or task
       assignment.
 
-   Format Definition  This property is defined by the following
-      notation:
-
-   pollmode = "POLL-MODE" pollmodeparams ":"
-                ("BASIC" / iana-token / other-token) CRLF
-
-   pollmodeparams = *(";" other-param)
-
-
-
 
 
 
@@ -953,6 +953,14 @@ York & Douglass          Expires 24 October 2024               [Page 17]
 
 Internet-Draft                    VPOLL                       April 2024
 
+
+   Format Definition  This property is defined by the following
+      notation:
+
+   pollmode = "POLL-MODE" pollmodeparams ":"
+                ("BASIC" / iana-token / other-token) CRLF
+
+   pollmodeparams = *(";" other-param)
 
 4.5.5.  Poll-properties
 
@@ -994,14 +1002,6 @@ Internet-Draft                    VPOLL                       April 2024
    Conformance  This property MAY be specified in a VPOLL component.
 
    Description  For poll confirmation each child component MUST have a
-      POLL-ITEM-ID property.  For basic mode the VPOLL component SHOULD
-      have a POLL-WINNER property which MUST correspond to one of the
-      POLL-ITEM-ID properties and indicates which sub-component was the
-      winner.
-
-   Format Definition  This property is defined by the following
-      notation:
-
 
 
 
@@ -1009,6 +1009,14 @@ York & Douglass          Expires 24 October 2024               [Page 18]
 
 Internet-Draft                    VPOLL                       April 2024
 
+
+      POLL-ITEM-ID property.  For basic mode the VPOLL component SHOULD
+      have a POLL-WINNER property which MUST correspond to one of the
+      POLL-ITEM-ID properties and indicates which sub-component was the
+      winner.
+
+   Format Definition  This property is defined by the following
+      notation:
 
    pollwinner = "POLL-WINNER" pollwinnerparams ":"
                     integer CRLF
@@ -1050,14 +1058,6 @@ Internet-Draft                    VPOLL                       April 2024
 
    Property name  RESPONSE
 
-   Purpose  To specify a response vote.
-
-   Value type  INTEGER
-
-   Format Definition  This property is defined by the following
-      notation:
-
-
 
 
 
@@ -1065,6 +1065,13 @@ York & Douglass          Expires 24 October 2024               [Page 19]
 
 Internet-Draft                    VPOLL                       April 2024
 
+
+   Purpose  To specify a response vote.
+
+   Value type  INTEGER
+
+   Format Definition  This property is defined by the following
+      notation:
 
    response = "RESPONSE" response-params ":" integer CRLF
                     ; integer value 0..100
@@ -1101,13 +1108,6 @@ Internet-Draft                    VPOLL                       April 2024
 
    Format Definition  This property is defined by the following
       notation:
-
-
-
-
-
-
-
 
 
 
@@ -3311,11 +3311,21 @@ Internet-Draft                    VPOLL                       April 2024
    PRODID:-//BedeworkCaldavTest//BedeworkCaldavTest
    METHOD: REPLY
    BEGIN:VPOLL
-   ORGANIZER:mailto:douglm@mysite.edu
+   BEGIN:PARTICIPANT
+   PARTICIPANT-TYPE: OWNER
+   CALENDAR-ADDRESS:mailto:douglm@mysite.edu
+   UID:schedpart-1234567890
+   DTSTAMP:20120101T010000Z
+   SEQUENCE:0
+   SUMMARY:What to do this week
+   BEGIN:VFREEBUSY
+   .......
+   END:VFREEBUSY
+   END:PARTICIPANT
    BEGIN:PARTICIPANT
    PARTICIPANT-TYPE: VOTER
    CALENDAR-ADDRESS:mailto:eric@example.com
-   UID:sched01-1234567890
+   UID:schedpart-0987654321
    DTSTAMP:20120101T010000Z
    SEQUENCE:0
    SUMMARY:What to do this week
@@ -3345,6 +3355,13 @@ Appendix B.  Change log
 
       *  Fix ACCEPT-RESPONSE definition.
 
+
+
+York & Douglass          Expires 24 October 2024               [Page 60]
+
+Internet-Draft                    VPOLL                       April 2024
+
+
    V02: 2014-05-12 MD
       *  Typos fixed, clarifications made.
 
@@ -3353,14 +3370,6 @@ Appendix B.  Change log
 
       *  Changed STAY-INFORMED to remove boolean value type and state
          explicit TRUE/FALSE values.
-
-
-
-
-York & Douglass          Expires 24 October 2024               [Page 60]
-
-Internet-Draft                    VPOLL                       April 2024
-
 
       *  iTip: Allow VPOLL DTSTART to be optional and allow
          VAVAILABILITY as subcomponent
@@ -3399,15 +3408,6 @@ Authors' Addresses
 
    Michael Douglass
    Email: mdouglass@bedework.com
-
-
-
-
-
-
-
-
-
 
 
 

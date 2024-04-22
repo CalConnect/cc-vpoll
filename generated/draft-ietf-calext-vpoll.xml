@@ -4,13 +4,13 @@
 <title language="en" format="text/plain" type="main">VPOLL: Consensus Scheduling Component for iCalendar</title>
 
 <title language="en" format="text/plain" type="abbrev">VPOLL</title>
-<uri>www.linkedin.com/in/eryork</uri><docidentifier primary="true">draft-ietf-calext-vpoll-05</docidentifier><docnumber>draft-ietf-calext-vpoll-05</docnumber><contributor><role type="author"/><person>
+<uri>www.linkedin.com/in/eryork</uri><docidentifier primary="true">draft-ietf-calext-vpoll-06</docidentifier><docnumber>draft-ietf-calext-vpoll-06</docnumber><contributor><role type="author"/><person>
 <name><completename>Eric York</completename></name>
 <email>eric.york@gmail.com</email></person></contributor><contributor><role type="author"/><person>
 <name><completename>Michael Douglass</completename></name>
 <email>mdouglass@bedework.com</email></person></contributor><contributor><role type="publisher"/><organization>
 <name>Internet Engineering Task Force</name>
-<abbreviation>IETF</abbreviation></organization></contributor><version><revision-date>2023-11-06</revision-date></version><language>en</language><script>Latn</script><status><stage>standard</stage></status><copyright><from>2024</from><owner><organization>
+<abbreviation>IETF</abbreviation></organization></contributor><version><revision-date>2024-04-22</revision-date></version><language>en</language><script>Latn</script><status><stage>standard</stage></status><copyright><from>2024</from><owner><organization>
 <name>Internet Engineering Task Force</name>
 <abbreviation>IETF</abbreviation></organization></owner></copyright><series type="stream">
 <title>IETF</title>
@@ -183,9 +183,9 @@ date and or time for the meeting.</p>
 </dd>
 </dl>
 
-<example id="_990f55e9-63bb-a0db-e12d-124fd55920f6"><p id="_15d95852-c59d-c60e-a11e-d511470988bc">VPOLL with 3 voters and 3 alternative meetings:</p>
+<example id="_bf31580e-f86c-3dd0-7d1c-d9e3191c3686"><p id="_15d95852-c59d-c60e-a11e-d511470988bc">VPOLL with 3 voters and 3 alternative meetings:</p>
 
-<sourcecode id="_7a413db4-e384-37aa-d60e-1688e6957816">BEGIN:VCALENDAR
+<sourcecode id="_1b406635-df91-5250-fdda-7709e394b411">BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Example//Example
 METHOD:REQUEST
@@ -200,14 +200,17 @@ DTEND:20120101T000000Z
 BEGIN:PARTICIPANT
 PARTICIPANT-TYPE: VOTER
 CALENDAR-ADDRESS:mailto:cyrus@example.com
+UID:schedpart-7890123456
 END:PARTICIPANT
 BEGIN:PARTICIPANT
 PARTICIPANT-TYPE: VOTER
 CALENDAR-ADDRESS:mailto:eric@example.com
+UID:schedpart-0987654321
 END:PARTICIPANT
 BEGIN:PARTICIPANT
 PARTICIPANT-TYPE: VOTER,OWNER
 CALENDAR-ADDRESS:mailto:mike@example.com
+UID:schedpart-1234567890
 END:PARTICIPANT
 BEGIN:VEVENT.......(with a poll-item-id=1)
 END:VEVENT
@@ -285,9 +288,9 @@ with a vote for only item 3, the final outcome is one vote on item 3.</p>
 </dd>
 </dl>
 
-<example id="_b337c246-7b39-59dc-5f25-9f69c2fb384a"><p id="_afdfe7c5-1340-2a39-053d-f3685d980cd8">REPLY VPOLL from Cyrus:</p>
+<example id="_6991f0ca-77aa-5c94-757d-a2cc32501cef"><p id="_afdfe7c5-1340-2a39-053d-f3685d980cd8">REPLY VPOLL from Cyrus:</p>
 
-<sourcecode id="_55f2d534-66c5-617d-f29d-c947712435e3">BEGIN:VCALENDAR
+<sourcecode id="_12a4bbdc-4e74-0632-319c-44b4e269ba8e">BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Example//Example
 METHOD: REPLY
@@ -298,6 +301,7 @@ SUMMARY:What to do this week
 BEGIN:PARTICIPANT
 PARTICIPANT-TYPE: VOTER
 CALENDAR-ADDRESS:mailto:cyrus@example.com
+UID:schedpart-7890123456
 BEGIN:VOTE
 POLL-ITEM-ID:1
 RESPONSE:50
@@ -327,7 +331,7 @@ POLLSTATUS is used.  The VPOLL can contain a reduced set of
 properties but MUST contain DTSTAMP, SEQUENCE (if not 0), UID, and
 one or more PARTICIPANT components each populated with zero or more VOTE components.</p>
 
-<example id="_b5d3bb0c-294d-bac1-6cd1-dd4c5bdef69c"><sourcecode id="_a575d708-6201-229d-a7ed-bba87e1387af">BEGIN:VCALENDAR
+<example id="_4b5ee431-cdca-f631-7e26-307a1bb8d59d"><sourcecode id="_1728f8f8-280d-d140-8a4f-d8277d70b12f">BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Example//Example
 METHOD: POLLSTATUS
@@ -339,6 +343,7 @@ SUMMARY:What to do this week
 BEGIN:PARTICIPANT
 PARTICIPANT-TYPE: VOTER
 CALENDAR-ADDRESS:mailto:cyrus@example.com
+UID:schedpart-7890123456
 BEGIN: VOTE
 POLL-ITEM-ID:1
 RESPONSE:50
@@ -357,6 +362,7 @@ END:PARTICIPANT
 BEGIN:PARTICIPANT
 PARTICIPANT-TYPE: VOTER
 CALENDAR-ADDRESS:mailto:eric@example.com
+UID:schedpart-0987654321
 BEGIN:VOTE
 POLL-ITEM-ID:1
 RESPONSE:100
@@ -373,6 +379,7 @@ END:PARTICIPANT
 BEGIN:PARTICIPANT
 PARTICIPANT-TYPE: VOTER,OWNER
 CALENDAR-ADDRESS:mailto:mike@example.com
+UID:schedpart-1234567890
 BEGIN: VOTE
 POLL-ITEM-ID:1
 RESPONSE:50
@@ -411,9 +418,9 @@ COMPLETION property is set to SERVER-SUBMIT the server will submit
 the winning choice and when it has done so set the STATUS to
 "SUBMITTED".</p>
 
-<example id="_27c0bfdc-84ca-38b4-769f-262350de5fe6"><p id="_41c9ab16-00a6-e6f8-cdd6-f63015d098a0">VPOLL confirmation:</p>
+<example id="_e8fe0eb5-8721-c764-8ae9-f5683ae45a5c"><p id="_41c9ab16-00a6-e6f8-cdd6-f63015d098a0">VPOLL confirmation:</p>
 
-<sourcecode id="_fed3c5d0-307f-8969-a711-625fc1e4e960">BEGIN:VCALENDAR
+<sourcecode id="_601bec4e-7336-8b8e-a52d-e3a778c81b6a">BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Example//Example
 METHOD: REQUEST
@@ -429,6 +436,7 @@ POLL-WINNER:3
 BEGIN:PARTICIPANT
 PARTICIPANT-TYPE: OWNER
 CALENDAR-ADDRESS:mailto:mike@example.com
+UID:schedpart-1234567890
 END:PARTICIPANT
 BEGIN:VEVENT.......(with a poll-item-id=1)
 END:VEVENT
@@ -2991,16 +2999,26 @@ Really sounds like a PARTICIPANT or VOTE property</p>
 
 <p id="_86d209de-987f-5942-724e-f0c473c8fc27">Need to add example of freebusy in response</p>
 
-<sourcecode id="_7f242e5d-84c3-2e47-1c3f-2d0d81be9fee">BEGIN:VCALENDAR
+<sourcecode id="_d041b46e-7ac6-4c34-8e33-f52f05bebf2e">BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//BedeworkCaldavTest//BedeworkCaldavTest
 METHOD: REPLY
 BEGIN:VPOLL
-ORGANIZER:mailto:douglm@mysite.edu
+BEGIN:PARTICIPANT
+PARTICIPANT-TYPE: OWNER
+CALENDAR-ADDRESS:mailto:douglm@mysite.edu
+UID:schedpart-1234567890
+DTSTAMP:20120101T010000Z
+SEQUENCE:0
+SUMMARY:What to do this week
+BEGIN:VFREEBUSY
+.......
+END:VFREEBUSY
+END:PARTICIPANT
 BEGIN:PARTICIPANT
 PARTICIPANT-TYPE: VOTER
 CALENDAR-ADDRESS:mailto:eric@example.com
-UID:sched01-1234567890
+UID:schedpart-0987654321
 DTSTAMP:20120101T010000Z
 SEQUENCE:0
 SUMMARY:What to do this week
