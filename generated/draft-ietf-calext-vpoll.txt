@@ -5,7 +5,7 @@
 Network Working Group                                            E. York
 Internet-Draft                                                          
 Intended status: Standards Track                             M. Douglass
-Expires: 22 October 2024                                   20 April 2024
+Expires: 24 October 2024                                   22 April 2024
 
 
           VPOLL: Consensus Scheduling Component for iCalendar
@@ -32,7 +32,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 22 October 2024.
+   This Internet-Draft will expire on 24 October 2024.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-York & Douglass          Expires 22 October 2024                [Page 1]
+York & Douglass          Expires 24 October 2024                [Page 1]
 
 Internet-Draft                    VPOLL                       April 2024
 
@@ -71,31 +71,31 @@ Table of Contents
      3.3.  VPOLL responses . . . . . . . . . . . . . . . . . . . . .   8
      3.4.  VPOLL updates . . . . . . . . . . . . . . . . . . . . . .   9
      3.5.  VPOLL Completion  . . . . . . . . . . . . . . . . . . . .  11
-     3.6.  Other Responses . . . . . . . . . . . . . . . . . . . . .  11
+     3.6.  Other Responses . . . . . . . . . . . . . . . . . . . . .  12
    4.  iCalendar Extensions  . . . . . . . . . . . . . . . . . . . .  12
      4.1.  Updated Participant Type Value  . . . . . . . . . . . . .  12
-     4.2.  Updated Relation Type Value . . . . . . . . . . . . . . .  12
+     4.2.  Updated Relation Type Value . . . . . . . . . . . . . . .  13
      4.3.  Updated Status Value  . . . . . . . . . . . . . . . . . .  13
-     4.4.  New Property Parameters . . . . . . . . . . . . . . . . .  13
-       4.4.1.  Required  . . . . . . . . . . . . . . . . . . . . . .  13
+     4.4.  New Property Parameters . . . . . . . . . . . . . . . . .  14
+       4.4.1.  Required  . . . . . . . . . . . . . . . . . . . . . .  14
        4.4.2.  Stay-Informed . . . . . . . . . . . . . . . . . . . .  14
      4.5.  New Properties  . . . . . . . . . . . . . . . . . . . . .  14
-       4.5.1.  Accept-Response . . . . . . . . . . . . . . . . . . .  14
+       4.5.1.  Accept-Response . . . . . . . . . . . . . . . . . . .  15
        4.5.2.  Poll-Completion . . . . . . . . . . . . . . . . . . .  15
        4.5.3.  Poll-Item-Id  . . . . . . . . . . . . . . . . . . . .  16
-       4.5.4.  Poll-Mode . . . . . . . . . . . . . . . . . . . . . .  16
-       4.5.5.  Poll-properties . . . . . . . . . . . . . . . . . . .  17
-       4.5.6.  Poll-Winner . . . . . . . . . . . . . . . . . . . . .  17
-       4.5.7.  Reply-URL . . . . . . . . . . . . . . . . . . . . . .  18
+       4.5.4.  Poll-Mode . . . . . . . . . . . . . . . . . . . . . .  17
+       4.5.5.  Poll-properties . . . . . . . . . . . . . . . . . . .  18
+       4.5.6.  Poll-Winner . . . . . . . . . . . . . . . . . . . . .  18
+       4.5.7.  Reply-URL . . . . . . . . . . . . . . . . . . . . . .  19
        4.5.8.  Response  . . . . . . . . . . . . . . . . . . . . . .  19
-     4.6.  New Components  . . . . . . . . . . . . . . . . . . . . .  19
-       4.6.1.  VPOLL Component . . . . . . . . . . . . . . . . . . .  19
+     4.6.  New Components  . . . . . . . . . . . . . . . . . . . . .  20
+       4.6.1.  VPOLL Component . . . . . . . . . . . . . . . . . . .  20
        4.6.2.  VOTE Component  . . . . . . . . . . . . . . . . . . .  22
    5.  Poll Modes  . . . . . . . . . . . . . . . . . . . . . . . . .  23
      5.1.  POLL-MODE:BASIC . . . . . . . . . . . . . . . . . . . . .  24
        5.1.1.  Property restrictions . . . . . . . . . . . . . . . .  24
        5.1.2.  Outcome reporting . . . . . . . . . . . . . . . . . .  24
-   6.  New Participant Properties  . . . . . . . . . . . . . . . . .  24
+   6.  New Participant Properties for iTip . . . . . . . . . . . . .  24
      6.1.  Kind  . . . . . . . . . . . . . . . . . . . . . . . . . .  24
      6.2.  Redefined participation type  . . . . . . . . . . . . . .  25
      6.3.  Participation-status  . . . . . . . . . . . . . . . . . .  29
@@ -103,25 +103,26 @@ Table of Contents
      6.5.  Participation delegated to  . . . . . . . . . . . . . . .  30
      6.6.  Member of . . . . . . . . . . . . . . . . . . . . . . . .  31
      6.7.  Lang  . . . . . . . . . . . . . . . . . . . . . . . . . .  31
+     6.8.  Expect reply  . . . . . . . . . . . . . . . . . . . . . .  32
    7.  iTip With Participants  . . . . . . . . . . . . . . . . . . .  32
-     7.1.  Attendee parameters mapping . . . . . . . . . . . . . . .  32
-   8.  iTIP Extensions . . . . . . . . . . . . . . . . . . . . . . .  33
+     7.1.  Attendee parameters mapping . . . . . . . . . . . . . . .  33
 
 
 
-York & Douglass          Expires 22 October 2024                [Page 2]
+York & Douglass          Expires 24 October 2024                [Page 2]
 
 Internet-Draft                    VPOLL                       April 2024
 
 
-     8.1.  Methods . . . . . . . . . . . . . . . . . . . . . . . . .  33
+   8.  iTIP Extensions . . . . . . . . . . . . . . . . . . . . . . .  33
+     8.1.  Methods . . . . . . . . . . . . . . . . . . . . . . . . .  34
      8.2.  Interoperability Models . . . . . . . . . . . . . . . . .  35
        8.2.1.  Delegation  . . . . . . . . . . . . . . . . . . . . .  35
        8.2.2.  Acting on Behalf of Other Calendar Users  . . . . . .  35
        8.2.3.  Component Revisions . . . . . . . . . . . . . . . . .  35
        8.2.4.  Message Sequencing  . . . . . . . . . . . . . . . . .  35
      8.3.  Application Protocol Elements . . . . . . . . . . . . . .  35
-       8.3.1.  Methods for VPOLL Calendar Components . . . . . . . .  35
+       8.3.1.  Methods for VPOLL Calendar Components . . . . . . . .  36
        8.3.2.  Method: PUBLISH . . . . . . . . . . . . . . . . . . .  37
        8.3.3.  Method: REQUEST . . . . . . . . . . . . . . . . . . .  38
        8.3.4.  Method: REPLY . . . . . . . . . . . . . . . . . . . .  42
@@ -164,8 +165,7 @@ Internet-Draft                    VPOLL                       April 2024
 
 
 
-
-York & Douglass          Expires 22 October 2024                [Page 3]
+York & Douglass          Expires 24 October 2024                [Page 3]
 
 Internet-Draft                    VPOLL                       April 2024
 
@@ -221,7 +221,7 @@ Internet-Draft                    VPOLL                       April 2024
 
 
 
-York & Douglass          Expires 22 October 2024                [Page 4]
+York & Douglass          Expires 24 October 2024                [Page 4]
 
 Internet-Draft                    VPOLL                       April 2024
 
@@ -268,22 +268,19 @@ Internet-Draft                    VPOLL                       April 2024
 
    UID  The usual [RFC5545] property.
 
-   ORGANIZER  The usual [RFC5545] property.  In general this need not be
-      an organizer of any of the alternatives.  In this simple outline
-      we assume it is the same.
-
    SUMMARY  The usual [RFC5545] property.  This optional but recommended
       property provides the a short title to the poll.
 
+   DESCRIPTION  The usual [RFC5545] property.  This optional property
+      provides more details.
 
 
-York & Douglass          Expires 22 October 2024                [Page 5]
+
+
+York & Douglass          Expires 24 October 2024                [Page 5]
 
 Internet-Draft                    VPOLL                       April 2024
 
-
-   DESCRIPTION  The usual [RFC5545] property.  This optional property
-      provides more details.
 
    DTEND  The usual [RFC5545] property.  This optional property provides
       a poll closing time and date after which the VPOLL is no longer
@@ -333,7 +330,10 @@ Internet-Draft                    VPOLL                       April 2024
 
 
 
-York & Douglass          Expires 22 October 2024                [Page 6]
+
+
+
+York & Douglass          Expires 24 October 2024                [Page 6]
 
 Internet-Draft                    VPOLL                       April 2024
 
@@ -346,7 +346,6 @@ Internet-Draft                    VPOLL                       April 2024
    POLL-MODE:BASIC
    POLL-COMPLETION:SERVER-SUBMIT
    POLL-PROPERTIES:DTSTART,LOCATION
-   ORGANIZER:mailto:mike@example.com
    UID:sched01-1234567890
    DTSTAMP:20120101T000000Z
    SUMMARY:What to do this week
@@ -360,7 +359,7 @@ Internet-Draft                    VPOLL                       April 2024
    CALENDAR-ADDRESS:mailto:eric@example.com
    END:PARTICIPANT
    BEGIN:PARTICIPANT
-   PARTICIPANT-TYPE: VOTER
+   PARTICIPANT-TYPE: VOTER,OWNER
    CALENDAR-ADDRESS:mailto:mike@example.com
    END:PARTICIPANT
    BEGIN:VEVENT.......(with a poll-item-id=1)
@@ -386,15 +385,14 @@ Internet-Draft                    VPOLL                       April 2024
    VPOLL.
 
    POLL-ITEM-ID  This provides a unique reference to the sub-component
+      within the VPOLL.  It's value SHOULD be a small integer.
 
 
 
-York & Douglass          Expires 22 October 2024                [Page 7]
+York & Douglass          Expires 24 October 2024                [Page 7]
 
 Internet-Draft                    VPOLL                       April 2024
 
-
-      within the VPOLL.  It's value SHOULD be a small integer.
 
 3.3.  VPOLL responses
 
@@ -408,8 +406,6 @@ Internet-Draft                    VPOLL                       April 2024
       behavior.
 
    UID  Same as the request.
-
-   ORGANIZER  Same as the request.
 
    SUMMARY  Same as the request.
 
@@ -445,7 +441,11 @@ Internet-Draft                    VPOLL                       April 2024
 
 
 
-York & Douglass          Expires 22 October 2024                [Page 8]
+
+
+
+
+York & Douglass          Expires 24 October 2024                [Page 8]
 
 Internet-Draft                    VPOLL                       April 2024
 
@@ -455,7 +455,6 @@ Internet-Draft                    VPOLL                       April 2024
    PRODID:-//Example//Example
    METHOD: REPLY
    BEGIN:VPOLL
-   ORGANIZER:mailto:mike@example.com
    UID:sched01-1234567890
    DTSTAMP:20120101T010000Z
    SUMMARY:What to do this week
@@ -482,39 +481,31 @@ Internet-Draft                    VPOLL                       April 2024
 
 3.4.  VPOLL updates
 
-   When the organizer receives a response from one or more voters the
+   When the owner receives a response from one or more voters the
    current state of the poll is sent to all voters.  The new iTip method
    POLLSTATUS is used.  The VPOLL can contain a reduced set of
-   properties but MUST contain DTSTAMP, SEQUENCE (if not 0), UID,
-   ORGANIZER and one or more PARTICIPANT components each populated with
-   zero or more VOTE components.
+   properties but MUST contain DTSTAMP, SEQUENCE (if not 0), UID, and
+   one or more PARTICIPANT components each populated with zero or more
+   VOTE components.
 
    EXAMPLE
-
-
-
-
-
-
-
-
-
-
-
-York & Douglass          Expires 22 October 2024                [Page 9]
-
-Internet-Draft                    VPOLL                       April 2024
-
 
    BEGIN:VCALENDAR
    VERSION:2.0
    PRODID:-//Example//Example
    METHOD: POLLSTATUS
    BEGIN:VPOLL
-   ORGANIZER:mailto:mike@example.com
    UID:sched01-1234567890
    DTSTAMP:20120101T020000Z
    SEQUENCE:0
+
+
+
+York & Douglass          Expires 24 October 2024                [Page 9]
+
+Internet-Draft                    VPOLL                       April 2024
+
+
    SUMMARY:What to do this week
    BEGIN:PARTICIPANT
    PARTICIPANT-TYPE: VOTER
@@ -550,17 +541,34 @@ Internet-Draft                    VPOLL                       April 2024
    RESPONSE:0
    END:VOTE
    END:PARTICIPANT
-   END:VPOLL
-   END:VCALENDAR
+   BEGIN:PARTICIPANT
+   PARTICIPANT-TYPE: VOTER,OWNER
+   CALENDAR-ADDRESS:mailto:mike@example.com
+   BEGIN: VOTE
+   POLL-ITEM-ID:1
+   RESPONSE:50
+   COMMENT:Work on iTIP
+   END:VOTE
+   BEGIN:VOTE
+   POLL-ITEM-ID:2
+   RESPONSE:100
+   COMMENT:Work on WebDAV
+   END:VOTE
 
 
 
-
-
-York & Douglass          Expires 22 October 2024               [Page 10]
+York & Douglass          Expires 24 October 2024               [Page 10]
 
 Internet-Draft                    VPOLL                       April 2024
 
+
+   BEGIN:VOTE
+   POLL-ITEM-ID:3
+   RESPONSE:0
+   END:VOTE
+   END:PARTICIPANT
+   END:VPOLL
+   END:VCALENDAR
 
 3.5.  VPOLL Completion
 
@@ -583,12 +591,38 @@ Internet-Draft                    VPOLL                       April 2024
 
    VPOLL confirmation:
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+York & Douglass          Expires 24 October 2024               [Page 11]
+
+Internet-Draft                    VPOLL                       April 2024
+
+
    BEGIN:VCALENDAR
    VERSION:2.0
    PRODID:-//Example//Example
    METHOD: REQUEST
    BEGIN:VPOLL
-   ORGANIZER:mailto:douglm@example.com
    UID:sched01-1234567890
    DTSTAMP:20120101T030000Z
    COMPLETED:20120101T030000Z
@@ -597,6 +631,10 @@ Internet-Draft                    VPOLL                       April 2024
    SUMMARY:What to do this week
    STATUS:CONFIRMED
    POLL-WINNER:3
+   BEGIN:PARTICIPANT
+   PARTICIPANT-TYPE: OWNER
+   CALENDAR-ADDRESS:mailto:mike@example.com
+   END:PARTICIPANT
    BEGIN:VEVENT.......(with a poll-item-id=1)
    END:VEVENT
    BEGIN:VEVENT.......(with a poll-item-id=2)
@@ -610,13 +648,6 @@ Internet-Draft                    VPOLL                       April 2024
 
    A voter being asked to choose between a number of ORGANIZER supplied
    alternatives may find none of them acceptable or may simply not care.
-
-
-
-York & Douglass          Expires 22 October 2024               [Page 11]
-
-Internet-Draft                    VPOLL                       April 2024
-
 
    An alternative response, which may be disallowed by the ORGANIZER, is
    to send back the respondees availability or freebusy or even one or
@@ -635,6 +666,13 @@ Internet-Draft                    VPOLL                       April 2024
    [RFC9073].  This specification updates that type to include the new
    participant type VOTER to provide information about the voter and to
    contain their votes.
+
+
+
+York & Douglass          Expires 24 October 2024               [Page 12]
+
+Internet-Draft                    VPOLL                       April 2024
+
 
    Format Definition  This property parameter is redefined by the
       following notation:
@@ -662,18 +700,6 @@ Internet-Draft                    VPOLL                       April 2024
       value indicates that the associated property references a VPOLL
       component which contains the current component.
 
-
-
-
-
-
-
-
-York & Douglass          Expires 22 October 2024               [Page 12]
-
-Internet-Draft                    VPOLL                       April 2024
-
-
 4.3.  Updated Status Value
 
    Status property values are defined in section 3.8.1.11. of [RFC5545].
@@ -696,6 +722,13 @@ Internet-Draft                    VPOLL                       April 2024
 
    Description  These values allow clients and servers to handle the
       choosing and submission of winning choices.
+
+
+
+York & Douglass          Expires 24 October 2024               [Page 13]
+
+Internet-Draft                    VPOLL                       April 2024
+
 
       If the client is choosing and the server submitting then the
       client should set the POLL-WINNER property, set the status to
@@ -723,13 +756,6 @@ Internet-Draft                    VPOLL                       April 2024
       value is TRUE, indicates the organizer requires all replies to be
       made via the specified service rather than iTip replies.
 
-
-
-York & Douglass          Expires 22 October 2024               [Page 13]
-
-Internet-Draft                    VPOLL                       April 2024
-
-
 4.4.2.  Stay-Informed
 
    Parameter name  STAY-INFORMED
@@ -749,6 +775,16 @@ Internet-Draft                    VPOLL                       April 2024
       non participant.
 
 4.5.  New Properties
+
+
+
+
+
+
+York & Douglass          Expires 24 October 2024               [Page 14]
+
+Internet-Draft                    VPOLL                       April 2024
+
 
 4.5.1.  Accept-Response
 
@@ -779,13 +815,6 @@ Internet-Draft                    VPOLL                       April 2024
 
    acceptresponseparams = *(";" other-param)
 
-
-
-York & Douglass          Expires 22 October 2024               [Page 14]
-
-Internet-Draft                    VPOLL                       April 2024
-
-
 4.5.2.  Poll-Completion
 
    Property name  POLL-COMPLETION
@@ -804,6 +833,14 @@ Internet-Draft                    VPOLL                       April 2024
 
       Server initiated submission requires that the submitted choice
       MUST be a valid calendaring component.
+
+
+
+
+York & Douglass          Expires 24 October 2024               [Page 15]
+
+Internet-Draft                    VPOLL                       April 2024
+
 
       POLL-COMPLETION=SERVER-SUBMIT allows the client to set the poll-
       winner, set the status to CONFIRMED and then store the poll on the
@@ -833,15 +870,6 @@ Internet-Draft                    VPOLL                       April 2024
 
    POLL-COMPLETION: SERVER-SUBMIT
 
-
-
-
-
-York & Douglass          Expires 22 October 2024               [Page 15]
-
-Internet-Draft                    VPOLL                       April 2024
-
-
 4.5.3.  Poll-Item-Id
 
    Property name  POLL-ITEM-ID
@@ -860,6 +888,15 @@ Internet-Draft                    VPOLL                       April 2024
    Description  In a METHOD:REQUEST each choice component MUST have a
       POLL-ITEM-ID property.  Each set of components with the same POLL-
       ITEM-ID value represents one overall set of items to be voted on.
+
+
+
+
+
+York & Douglass          Expires 24 October 2024               [Page 16]
+
+Internet-Draft                    VPOLL                       April 2024
+
 
       POLL-ITEM-ID SHOULD be a unique small integer for each component
       or set of components.  If it remains the same between REQUESTs
@@ -890,14 +927,6 @@ Internet-Draft                    VPOLL                       April 2024
    Conformance  This property MAY be specified in a VPOLL component or
       its sub-components.
 
-
-
-
-York & Douglass          Expires 22 October 2024               [Page 16]
-
-Internet-Draft                    VPOLL                       April 2024
-
-
    Description  The poll mode defines how the votes are applied to
       obtain a result.  BASIC mode, the default, means that the voters
       are selecting one component (or group of components) with a given
@@ -914,6 +943,16 @@ Internet-Draft                    VPOLL                       April 2024
                 ("BASIC" / iana-token / other-token) CRLF
 
    pollmodeparams = *(";" other-param)
+
+
+
+
+
+
+York & Douglass          Expires 24 October 2024               [Page 17]
+
+Internet-Draft                    VPOLL                       April 2024
+
 
 4.5.5.  Poll-properties
 
@@ -947,13 +986,6 @@ Internet-Draft                    VPOLL                       April 2024
    Purpose  This property is used in a basic mode VPOLL to indicate
       which of the VPOLL sub-components won.
 
-
-
-York & Douglass          Expires 22 October 2024               [Page 17]
-
-Internet-Draft                    VPOLL                       April 2024
-
-
    Value type  INTEGER
 
    Property Parameters  Non-standard parameters can be specified on this
@@ -969,6 +1001,14 @@ Internet-Draft                    VPOLL                       April 2024
 
    Format Definition  This property is defined by the following
       notation:
+
+
+
+
+York & Douglass          Expires 24 October 2024               [Page 18]
+
+Internet-Draft                    VPOLL                       April 2024
+
 
    pollwinner = "POLL-WINNER" pollwinnerparams ":"
                     integer CRLF
@@ -999,17 +1039,6 @@ Internet-Draft                    VPOLL                       April 2024
    Format Definition  This property is defined by the following
       notation:
 
-
-
-
-
-
-
-York & Douglass          Expires 22 October 2024               [Page 18]
-
-Internet-Draft                    VPOLL                       April 2024
-
-
    reply-url = "REPLY-URL" reply-urlparams ":" uri CRLF
 
    reply-urlparams = *(
@@ -1027,6 +1056,15 @@ Internet-Draft                    VPOLL                       April 2024
 
    Format Definition  This property is defined by the following
       notation:
+
+
+
+
+
+York & Douglass          Expires 24 October 2024               [Page 19]
+
+Internet-Draft                    VPOLL                       April 2024
+
 
    response = "RESPONSE" response-params ":" integer CRLF
                     ; integer value 0..100
@@ -1058,14 +1096,6 @@ Internet-Draft                    VPOLL                       April 2024
 
    Component name  VPOLL
 
-
-
-
-York & Douglass          Expires 22 October 2024               [Page 19]
-
-Internet-Draft                    VPOLL                       April 2024
-
-
    Purpose  This component provides a mechanism by which voters can vote
       on provided choices.
 
@@ -1087,37 +1117,7 @@ Internet-Draft                    VPOLL                       April 2024
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-York & Douglass          Expires 22 October 2024               [Page 20]
+York & Douglass          Expires 24 October 2024               [Page 20]
 
 Internet-Draft                    VPOLL                       April 2024
 
@@ -1133,7 +1133,7 @@ Internet-Draft                    VPOLL                       April 2024
              ; The following are REQUIRED,
              ; but MUST NOT occur more than once.
              ;
-             dtstamp / uid / organizer /
+             dtstamp / uid /
              ;
              ; The following are OPTIONAL,
              ; but MUST NOT occur more than once.
@@ -1173,7 +1173,7 @@ Internet-Draft                    VPOLL                       April 2024
 
 
 
-York & Douglass          Expires 22 October 2024               [Page 21]
+York & Douglass          Expires 24 October 2024               [Page 21]
 
 Internet-Draft                    VPOLL                       April 2024
 
@@ -1229,7 +1229,7 @@ Internet-Draft                    VPOLL                       April 2024
 
 
 
-York & Douglass          Expires 22 October 2024               [Page 22]
+York & Douglass          Expires 24 October 2024               [Page 22]
 
 Internet-Draft                    VPOLL                       April 2024
 
@@ -1285,7 +1285,7 @@ Internet-Draft                    VPOLL                       April 2024
 
 
 
-York & Douglass          Expires 22 October 2024               [Page 23]
+York & Douglass          Expires 24 October 2024               [Page 23]
 
 Internet-Draft                    VPOLL                       April 2024
 
@@ -1320,12 +1320,12 @@ Internet-Draft                    VPOLL                       April 2024
    winning entity to be distributed to the participants through iTip or
    some other protocol.
 
-6.  New Participant Properties
+6.  New Participant Properties for iTip
 
    The following properties are defined to be used within PARTICIPANT
-   and take the place of ATTENDEE and ORGANIZER properties and
-   parameters.  These are not solely for VPOLL but may be used in any
-   future component.
+   during scheduling and take the place of ATTENDEE and ORGANIZER
+   properties and parameters.  These are not solely for VPOLL but may be
+   used in any future component.
 
 6.1.  Kind
 
@@ -1341,7 +1341,7 @@ Internet-Draft                    VPOLL                       April 2024
 
 
 
-York & Douglass          Expires 22 October 2024               [Page 24]
+York & Douglass          Expires 24 October 2024               [Page 24]
 
 Internet-Draft                    VPOLL                       April 2024
 
@@ -1397,7 +1397,7 @@ Internet-Draft                    VPOLL                       April 2024
 
 
 
-York & Douglass          Expires 22 October 2024               [Page 25]
+York & Douglass          Expires 24 October 2024               [Page 25]
 
 Internet-Draft                    VPOLL                       April 2024
 
@@ -1405,6 +1405,8 @@ Internet-Draft                    VPOLL                       April 2024
       Note that the kind of participant, for example individual or
       group, is defined in the KIND property specified here.
 
+      Some of the roles are required for the participant to be a
+      schedulable object.  These are the roles that are shown below. *
       Do we need a separate registry or should we extend that one?
 
    Format Definition  This property is defined by the following
@@ -1451,9 +1453,7 @@ Internet-Draft                    VPOLL                       April 2024
 
 
 
-
-
-York & Douglass          Expires 22 October 2024               [Page 26]
+York & Douglass          Expires 24 October 2024               [Page 26]
 
 Internet-Draft                    VPOLL                       April 2024
 
@@ -1472,8 +1472,10 @@ Internet-Draft                    VPOLL                       April 2024
 
                                  Table 1
 
-   To map PARTICIPANT-TYPE or jscalendar roles to [RFC5545] ROLE values
-   use the following.
+   The following table shows those roles that MUST appear in the
+   PARTICIPANT-TYPE for group-scheduling.  Additionally, the mapping
+   PARTICIPANT-TYPE or jscalendar roles to [RFC5545] ATTENDEE and
+   ORGANIZER values are shown.
 
 
 
@@ -1507,9 +1509,7 @@ Internet-Draft                    VPOLL                       April 2024
 
 
 
-
-
-York & Douglass          Expires 22 October 2024               [Page 27]
+York & Douglass          Expires 24 October 2024               [Page 27]
 
 Internet-Draft                    VPOLL                       April 2024
 
@@ -1565,7 +1565,7 @@ Internet-Draft                    VPOLL                       April 2024
 
 
 
-York & Douglass          Expires 22 October 2024               [Page 28]
+York & Douglass          Expires 24 October 2024               [Page 28]
 
 Internet-Draft                    VPOLL                       April 2024
 
@@ -1621,7 +1621,7 @@ Internet-Draft                    VPOLL                       April 2024
 
 
 
-York & Douglass          Expires 22 October 2024               [Page 29]
+York & Douglass          Expires 24 October 2024               [Page 29]
 
 Internet-Draft                    VPOLL                       April 2024
 
@@ -1677,7 +1677,7 @@ Internet-Draft                    VPOLL                       April 2024
 
 
 
-York & Douglass          Expires 22 October 2024               [Page 30]
+York & Douglass          Expires 24 October 2024               [Page 30]
 
 Internet-Draft                    VPOLL                       April 2024
 
@@ -1733,10 +1733,32 @@ Internet-Draft                    VPOLL                       April 2024
 
 
 
-York & Douglass          Expires 22 October 2024               [Page 31]
+York & Douglass          Expires 24 October 2024               [Page 31]
 
 Internet-Draft                    VPOLL                       April 2024
 
+
+6.8.  Expect reply
+
+   Property name  EXPECT-REPLY
+
+   Purpose  If true, the organizer is expecting the participant to
+      notify them of their participation status.
+
+   Property Parameters  Non-standard or iana parameters can be specified
+      on this property.
+
+   Conformance  This property MAY be specified once in the PARTICIPANT
+      component.
+
+   Format Definition  This property is defined by the following
+      notation:
+
+   expect-reply = "EXPECT-REPLY"
+                 expect-replyparams ":"
+                 ( "TRUE" / "FALSE") CRLF
+
+   expect-replyparams = *(";" other-param)
 
 7.  iTip With Participants
 
@@ -1747,7 +1769,35 @@ Internet-Draft                    VPOLL                       April 2024
    For all existing schedulable and publishable components, VEVENT,
    VTODO, VFREEBUSY, and VAVAILABILITY; the ORGANIZER and ATTENDEE
    properties MUST be supplied as appropriate.  For new components such
-   as VPOLL defined here, only PARTICIPANT components MUST be used.
+   as VPOLL, defined here, only PARTICIPANT components MUST be used.
+
+   Note that extensions to the [RFC5546] specification for VPOLL will be
+   dealt with in later sections.
+
+   A participant object that takes part in group scheduling MUST have
+   the following characteristics:
+
+   *  It MUST have a calendar address ([RFC5545] CALENDAR-ADDRESS,
+      [RFC8984] calendarAddress).
+
+   *  It must have one or more scheduling role defined.  (PARTICIPANT-
+      TYPE or [RFC8984] role)
+
+
+
+
+
+
+
+York & Douglass          Expires 24 October 2024               [Page 32]
+
+Internet-Draft                    VPOLL                       April 2024
+
+
+   Scheduling with PARTICIPANT components behaves exactly as with
+   ATTENDEE and ORGANIZER properties.  When iTip specifies the setting
+   of ATTENDEE or ORGANIZER parameters then the appropriate PARTICIPANT
+   property will be set.
 
 7.1.  Attendee parameters mapping
 
@@ -1785,20 +1835,20 @@ Internet-Draft                    VPOLL                       April 2024
 
                                   Table 3
 
-
-
-
-
-York & Douglass          Expires 22 October 2024               [Page 32]
-
-Internet-Draft                    VPOLL                       April 2024
-
-
 8.  iTIP Extensions
 
    This specification introduces a number of extensions to [RFC5546].
    In group scheduling the parties involved are organizer and attendees.
-   In VPOLL the parties are organizer and voters.
+   In VPOLL the parties are owner and voter participants.
+
+
+
+
+
+York & Douglass          Expires 24 October 2024               [Page 33]
+
+Internet-Draft                    VPOLL                       April 2024
+
 
    For many of the iTip processing rules the voters take the place of
    attendees.
@@ -1807,48 +1857,6 @@ Internet-Draft                    VPOLL                       April 2024
 
    There are some extensions to the behavior of iTip methods for a VPOLL
    object and two new methods are defined.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-York & Douglass          Expires 22 October 2024               [Page 33]
-
-Internet-Draft                    VPOLL                       April 2024
-
 
     +================+================================================+
     | Method         | Description                                    |
@@ -1872,9 +1880,9 @@ Internet-Draft                    VPOLL                       April 2024
     | CANCEL         | There MUST be a single VPOLL component with    |
     |                | UID matching that of the poll being cancelled. |
     +----------------+------------------------------------------------+
-    | REFRESH        | The organizer returns a METHOD:REQUEST with    |
-    |                | the current full state, or a METHOD:CANCEL or  |
-    |                | an error if no matching poll is found.         |
+    | REFRESH        | The owner returns a METHOD:REQUEST with the    |
+    |                | current full state, or a METHOD:CANCEL or an   |
+    |                | error if no matching poll is found.            |
     +----------------+------------------------------------------------+
     | COUNTER        | Not supported for VPOLL.                       |
     +----------------+------------------------------------------------+
@@ -1883,33 +1891,28 @@ Internet-Draft                    VPOLL                       April 2024
     | POLLSTATUS     | Used to send the current state of the poll to  |
     |                | all voters.  The VPOLL can contain a reduced   |
     |                | set of properties but MUST contain DTSTAMP,    |
-    |                | SEQUENCE (if not 0), UID, ORGANIZER and        |
-    |                | PARTICIPANTS.                                  |
+    |                | SEQUENCE (if not 0), UID and PARTICIPANTS.     |
+    |                | One PARTICIPANT MUST be the owner.             |
     +----------------+------------------------------------------------+
 
                                   Table 4
 
-   The following table shows the above methods broken down by who can
-   send them with VPOLL components.
 
 
 
 
-
-
-
-
-
-
-York & Douglass          Expires 22 October 2024               [Page 34]
+York & Douglass          Expires 24 October 2024               [Page 34]
 
 Internet-Draft                    VPOLL                       April 2024
 
 
+   The following table shows the above methods broken down by who can
+   send them with VPOLL components.
+
       +============+================================================+
       | Originator | Methods                                        |
       +============+================================================+
-      | Organizer  | CANCEL, PUBLISH, REQUEST, POLLSTATUS           |
+      | Owner      | CANCEL, PUBLISH, REQUEST, POLLSTATUS           |
       +------------+------------------------------------------------+
       | Voter      | REPLY, REFRESH, REQUEST (only when delegating) |
       +------------+------------------------------------------------+
@@ -1918,8 +1921,8 @@ Internet-Draft                    VPOLL                       April 2024
 
 8.2.  Interoperability Models
 
-   Most of the standard iTip specification applies with respect to
-   organizer and voters.
+   Most of the standard iTip specification applies with respect to owner
+   and voters.
 
 8.2.1.  Delegation
 
@@ -1948,19 +1951,23 @@ Internet-Draft                    VPOLL                       April 2024
 
 8.3.  Application Protocol Elements
 
+
+
+
+
+
+
+York & Douglass          Expires 24 October 2024               [Page 35]
+
+Internet-Draft                    VPOLL                       April 2024
+
+
 8.3.1.  Methods for VPOLL Calendar Components
 
    This section defines the property set restrictions for the method
    types that are applicable to the "VPOLL" calendar component.  Each
    method is defined using a table that clarifies the property
    constraints that define the particular method.
-
-
-
-York & Douglass          Expires 22 October 2024               [Page 35]
-
-Internet-Draft                    VPOLL                       April 2024
-
 
    The presence column uses the following values to assert whether a
    property is required or optional, and the number of times it may
@@ -2006,14 +2013,7 @@ Internet-Draft                    VPOLL                       April 2024
 
 
 
-
-
-
-
-
-
-
-York & Douglass          Expires 22 October 2024               [Page 36]
+York & Douglass          Expires 24 October 2024               [Page 36]
 
 Internet-Draft                    VPOLL                       April 2024
 
@@ -2040,15 +2040,14 @@ Internet-Draft                    VPOLL                       April 2024
    +------------+------------------------------------------------------+
    | CANCEL     | Cancel a poll.                                       |
    +------------+------------------------------------------------------+
-   | REFRESH    | A request is sent to an Organizer by a Voter         |
+   | REFRESH    | A request is sent to a poll owner by a voter         |
    |            | asking for the latest version of a poll to be        |
    |            | resent to the requester.                             |
    +------------+------------------------------------------------------+
    | POLLSTATUS | Used to send the current state of the poll to        |
    |            | all voters.  The VPOLL can contain a reduced         |
    |            | set of properties but MUST contain DTSTAMP,          |
-   |            | SEQUENCE (if not 0), UID, ORGANIZER and              |
-   |            | PARTICIPANT.                                         |
+   |            | SEQUENCE (if not 0), UID, and PARTICIPANT.           |
    +------------+------------------------------------------------------+
 
                                   Table 7
@@ -2057,10 +2056,10 @@ Internet-Draft                    VPOLL                       April 2024
 
    The "PUBLISH" method in a "VPOLL" calendar component is an
    unsolicited posting of an iCalendar object.  Any CU may add published
-   components to their calendar.  The "Organizer" MUST be present in a
-   published iCalendar component.  "Voters" MUST NOT be present.  Its
-   expected usage is for encapsulating an arbitrary poll as an iCalendar
-   object.  The "Organizer" may subsequently update (with another
+   components to their calendar.  An owner participant MUST be present
+   in a published iCalendar component.  "Voters" MUST NOT be present.
+   Its expected usage is for encapsulating an arbitrary poll as an
+   iCalendar object.  The "Owner" may subsequently update (with another
    "PUBLISH" method) or cancel (with a "CANCEL" method) a previously
    published "VPOLL" calendar component.
 
@@ -2069,7 +2068,8 @@ Internet-Draft                    VPOLL                       April 2024
 
 
 
-York & Douglass          Expires 22 October 2024               [Page 37]
+
+York & Douglass          Expires 24 October 2024               [Page 37]
 
 Internet-Draft                    VPOLL                       April 2024
 
@@ -2101,11 +2101,11 @@ Internet-Draft                    VPOLL                       April 2024
       "Voter" to another CU.
 
    *  For an existing "VPOLL" calendar component, change the role of
-      "Organizer" to another CU.
+      "Owner" to another CU.
 
-   The "Organizer" originates the "REQUEST".  The recipients of the
+   The "Owner" originates the "REQUEST".  The recipients of the
    "REQUEST" method are the CUs voting in the poll, the "Voters".
-   "Voters" use the "REPLY" method to convey votes to the "Organizer".
+   "Voters" use the "REPLY" method to convey votes to the "Owner".
 
    The "UID" and "SEQUENCE" properties are used to distinguish the
    various uses of the "REQUEST" method.  If the "UID" property value in
@@ -2125,7 +2125,7 @@ Internet-Draft                    VPOLL                       April 2024
 
 
 
-York & Douglass          Expires 22 October 2024               [Page 38]
+York & Douglass          Expires 24 October 2024               [Page 38]
 
 Internet-Draft                    VPOLL                       April 2024
 
@@ -2154,11 +2154,11 @@ Internet-Draft                    VPOLL                       April 2024
    the POLL.
 
    The update "REQUEST" method is the appropriate response to a
-   "REFRESH" method sent from a "Voter" to the "Organizer" of a poll.
+   "REFRESH" method sent from a "Voter" to the "Owner" of a poll.
 
-   The "Organizer" of a poll may also send unsolicited "REQUEST"
-   methods.  The unsolicited "REQUEST" methods may be used to update the
-   details of the poll without rescheduling it, to update the "RESPONSE"
+   The "Owner" of a poll may also send unsolicited "REQUEST" methods.
+   The unsolicited "REQUEST" methods may be used to update the details
+   of the poll without rescheduling it, to update the "RESPONSE"
    parameter of "Voters", or to reconfirm the poll.
 
 8.3.3.3.  Confirmation of a Poll
@@ -2181,7 +2181,7 @@ Internet-Draft                    VPOLL                       April 2024
 
 
 
-York & Douglass          Expires 22 October 2024               [Page 39]
+York & Douglass          Expires 24 October 2024               [Page 39]
 
 Internet-Draft                    VPOLL                       April 2024
 
@@ -2193,66 +2193,65 @@ Internet-Draft                    VPOLL                       April 2024
    following workflow.  Any "Voter" may delegate their right to vote in
    a poll to another CU.  The implication is that the delegate
    participates in lieu of the original "Voter", NOT in addition to the
-   "Voter".  The delegator MUST notify the "Organizer" of this action
-   using the steps outlined below.  Implementations may support or
-   restrict delegation as they see fit.  For instance, some
-   implementations may restrict a delegate from delegating a "REQUEST"
-   to another CU.
+   "Voter".  The delegator MUST notify the "Owner" of this action using
+   the steps outlined below.  Implementations may support or restrict
+   delegation as they see fit.  For instance, some implementations may
+   restrict a delegate from delegating a "REQUEST" to another CU.
 
    The "Delegator" of a poll forwards the existing "REQUEST" to the
    "Delegate".  The "REQUEST" method MUST include a "Voter" property
    with the calendar address of the "Delegate".  The "Delegator" MUST
-   also send a "REPLY" method to the "Organizer" with the "Delegator's"
+   also send a "REPLY" method to the "Owner" with the "Delegator's"
    "Voter" property "DELEGATED-TO" parameter set to the calendar address
    of the "Delegate".  Also, a new "Voter" property for the "Delegate"
    MUST be included and must specify the calendar user address set in
    the "DELEGATED-TO" parameter, as above.
 
    In response to the request, the "Delegate" MUST send a "REPLY" method
-   to the "Organizer", and optionally to the "Delegator".  The "REPLY"
+   to the "Owner", and optionally to the "Delegator".  The "REPLY"
 
-   method SHOULD include the "Voter" property with the "DELEGATED-FROM"
-   parameter value of the "Delegator's" calendar address.
+   method SHOULD include the "Voter" participant with the "PARTICIPANT-
+   DELEGATED-FROM" property value of the "Delegator's" calendar address.
 
    The "Delegator" may continue to receive updates to the poll even
    though they will not be attending.  This is accomplished by the
-   "Delegator" setting their "role" attribute to "NON-PARTICIPANT" in
-   the "REPLY" to the "Organizer".
+   "Delegator" setting their "role" attribute to "INFORMATIONAL" in the
+   "REPLY" to the "Owner".
 
-8.3.3.6.  Changing the Organizer
+8.3.3.6.  Changing the Owner
 
-   The situation may arise where the "Organizer" of a "VPOLL" is no
-   longer able to perform the "Organizer" role and abdicates without
-   passing on the "Organizer" role to someone else.  When this occurs,
-   the "Voters" of the "VPOLL" may use out-of-band mechanisms to
-   communicate the situation and agree upon a new "Organizer".  The new
-   "Organizer" should then send out a new "REQUEST" with a modified
-   version of the "VPOLL" in which the "SEQUENCE" number has been
-   incremented and the "ORGANIZER" property has been changed to the new
-   "Organizer".
-
+   The situation may arise where the "Owner" of a "VPOLL" is no longer
+   able to perform the "Owner" role and abdicates without passing on the
+   "Owner" role to someone else.  When this occurs, the "Voters" of the
+   "VPOLL" may use out-of-band mechanisms to communicate the situation
+   and agree upon a new "Owner".  The new "Owner" should then send out a
+   new "REQUEST" with a modified version of the "VPOLL" in which the
+   "SEQUENCE" number has been incremented and the owner role assigned to
+   the appropriate "PARTICIPANT".
 
 
 
 
 
 
-York & Douglass          Expires 22 October 2024               [Page 40]
+
+
+
+York & Douglass          Expires 24 October 2024               [Page 40]
 
 Internet-Draft                    VPOLL                       April 2024
 
 
-8.3.3.7.  Sending on Behalf of the Organizer
+8.3.3.7.  Sending on Behalf of the Owner
 
    There are a number of scenarios that support the need for a "Calendar
-   User" to act on behalf of the "Organizer" without explicit role
-   changing.  This might be the case if the CU designated as "Organizer"
-   is sick or unable to perform duties associated with that function.
-   In these cases, iTIP supports the notion of one CU acting on behalf
-   of another.  Using the "SENT-BY" parameter, a "Calendar User" could
-   send an updated "VPOLL" "REQUEST".  In the case where one CU sends on
-   behalf of another CU, the "Voter" responses are still directed back
-   towards the CU designated as "Organizer".
+   User" to act on behalf of the "Owner" without explicit role changing.
+   This might be the case if the CU designated as "Owner" is sick or
+   unable to perform duties associated with that function.  In these
+   cases, iTIP supports the notion of one CU acting on behalf of
+   another.  In the case where one CU sends on behalf of another CU, the
+   "Voter" responses are still directed back towards the CU designated
+   as "Owner".
 
 8.3.3.8.  Forwarding to an Uninvited CU
 
@@ -2261,21 +2260,21 @@ Internet-Draft                    VPOLL                       April 2024
    associated with the "VPOLL" calendar component.  The current "Voter"
    participating in the "VPOLL" calendar component does this by
    forwarding the original "REQUEST" method to the new CU.  The new CU
-   can send a "REPLY" to the "Organizer" of the "VPOLL" calendar
-   component.  The reply contains a "Voter" property for the new CU.
+   can send a "REPLY" to the "Owner" of the "VPOLL" calendar component.
+   The reply contains a "Voter" participant component for the new CU.
 
-   The "Organizer" ultimately decides whether or not the new CU becomes
-   part of the poll and is not obligated to do anything with a "REPLY"
-   from a new (uninvited) CU.  If the "Organizer" does not want the new
-   CU to be part of the poll, the new "Voter" property is not added to
-   the "VPOLL" calendar component.  The "Organizer" MAY send the CU a
-   "CANCEL" message to indicate that they will not be added to the poll.
+   The "Owner" ultimately decides whether the new CU becomes part of the
+   poll and is not obligated to do anything with a "REPLY" from a new
+   (uninvited) CU.  If the "Owner" does not want the new CU to be part
+   of the poll, the new "Voter" is not added to the "VPOLL" calendar
+   component.  The "Owner" MAY send the CU a "CANCEL" message to
+   indicate that they will not be added to the poll.
 
-   If the "Organizer" decides to add the new CU, the new "Voter"
-   property is added to the "VPOLL" calendar component.  Furthermore,
-   the "Organizer" is free to change any "Voter" property parameter from
-   the values supplied by the new CU to something the "Organizer"
-   considers appropriate.  The "Organizer" SHOULD send the new CU a
+   If the "Owner" decides to add the new CU, a new participant for the
+   "Voter" is added to the "VPOLL" calendar component.  Furthermore, the
+   "Owner" is free to change any "Voter" participant property values
+   from the values supplied by the new CU to something the "Owner"
+   considers appropriate.  The "Owner" SHOULD send the new CU a
    "REQUEST" message to inform them that they have been added.
 
    When forwarding a "REQUEST" to another CU, the forwarding "Voter"
@@ -2283,23 +2282,21 @@ Internet-Draft                    VPOLL                       April 2024
 
 8.3.3.9.  Updating Voter Status
 
-   The "Organizer" of an poll may also request updated status from one
-   or more "Voters".  The "Organizer" sends a "REQUEST" method to the
-   "Voter" and sets the "RSVP=TRUE" property parameter on the
-   PARTICIPANT CALENDAR-ADDRESS.  The "SEQUENCE" property for the poll
-   is not changed from its previous value.  A recipient will determine
-   that the only change in the "REQUEST" is that their "RSVP" property
-   parameter indicates a request for updated status.  The recipient
+   The "Owner" of a poll may also request updated status from one or
+   more "Voters".  The "Owner" sends a "REQUEST" method to the "Voter"
+   and sets the "EXPECT-REPLY" property value to TRUE.  The "SEQUENCE"
+   property for the poll is not changed from its previous value.  A
+   recipient will determine that the only change in the "REQUEST" is
+   that their "EXPECT-REPLY" property indicates a request for updated
+   status.  The recipient SHOULD respond with a "REPLY" method
+   indicating their current vote with respect to the "REQUEST".
 
 
 
-York & Douglass          Expires 22 October 2024               [Page 41]
+York & Douglass          Expires 24 October 2024               [Page 41]
 
 Internet-Draft                    VPOLL                       April 2024
 
-
-   SHOULD respond with a "REPLY" method indicating their current vote
-   with respect to the "REQUEST".
 
 8.3.4.  Method: REPLY
 
@@ -2316,21 +2313,21 @@ Internet-Draft                    VPOLL                       April 2024
    Depending on the value of the "REQUEST-STATUS" property, no action
    may have been performed.
 
-   The "Organizer" of a poll may receive the "REPLY" method from a CU
-   not in the original "REQUEST".  For example, a "REPLY" may be
-   received from a "Delegate" to a poll.  In addition, the "REPLY"
-   method may be received from an unknown CU (a "Party Crasher").  This
-   uninvited "Voter" may be accepted, or the "Organizer" may cancel the
-   poll for the uninvited "Voter" by sending a "CANCEL" method to the
-   uninvited "Voter".
+   The "Owner" of a poll may receive the "REPLY" method from a CU not in
+   the original "REQUEST".  For example, a "REPLY" may be received from
+   a "Delegate" to a poll.  In addition, the "REPLY" method may be
+   received from an unknown CU (a "Party Crasher").  This uninvited
+   "Voter" may be accepted, or the "Owner" may cancel the poll for the
+   uninvited "Voter" by sending a "CANCEL" method to the uninvited
+   "Voter".
 
-   A "Voter" MAY include a message to the "Organizer" using the
-   "COMMENT" property.  For example, if the user indicates a low
-   interest and wants to let the "Organizer" know why, the reason can be
-   expressed in the "COMMENT" property value.
+   A "Voter" MAY include a message to the "Owner" using the "COMMENT"
+   property in the PARTICIPANT component.  For example, if the user
+   indicates a low interest and wants to let the "Owner" know why, the
+   reason can be expressed in the "COMMENT" property value.
 
-   The "Organizer" may also receive a "REPLY" from one CU on behalf of
-   another.  Like the scenario enumerated above for the "Organizer",
+   The "Owner" may also receive a "REPLY" from one CU on behalf of
+   another.  Like the scenario enumerated above for the "Owner",
    "Voters" may have another CU respond on their behalf.  This is done
    using the "SENT-BY" parameter.
 
@@ -2349,7 +2346,10 @@ Internet-Draft                    VPOLL                       April 2024
 
 
 
-York & Douglass          Expires 22 October 2024               [Page 42]
+
+
+
+York & Douglass          Expires 24 October 2024               [Page 42]
 
 Internet-Draft                    VPOLL                       April 2024
 
@@ -2368,8 +2368,6 @@ Internet-Draft                    VPOLL                       April 2024
    +-----------------+----------+-------------------------------------+
    | DTSTAMP         | 1        |                                     |
    +-----------------+----------+-------------------------------------+
-   | ORGANIZER       | 1        |                                     |
-   +-----------------+----------+-------------------------------------+
    | UID             | 1        | MUST be the UID of the original     |
    +-----------------+----------+-------------------------------------+
    |                 |          | REQUEST.                            |
@@ -2384,12 +2382,12 @@ Internet-Draft                    VPOLL                       April 2024
    +-----------------+----------+-------------------------------------+
    | VFREEBUSY       | 0 or 1   | A voter may respond with a          |
    |                 |          | VFREEBUSY component indicating that |
-   |                 |          | the ORGANIZER may select some other |
+   |                 |          | the "Owner" may select some other   |
    |                 |          | time which is not marked as busy.   |
    +-----------------+----------+-------------------------------------+
    | VAVAILABILITY   | 0        | A voter may respond with a          |
    |                 |          | VAVAILABILITY component indicating  |
-   |                 |          | that the ORGANIZER may select some  |
+   |                 |          | that the "Owner" may select some    |
    |                 |          | other time which is shown as        |
    |                 |          | available.                          |
    +-----------------+----------+-------------------------------------+
@@ -2400,20 +2398,22 @@ Internet-Draft                    VPOLL                       April 2024
 
    The "CANCEL" method in a "VPOLL" calendar component is used to send a
    cancellation notice of an existing poll request to the affected
-   "Voters".  The message is sent by the "Organizer" of the poll.
+   "Voters".  The message is sent by the "Owner" of the poll.
 
 
 
 
-York & Douglass          Expires 22 October 2024               [Page 43]
+
+
+York & Douglass          Expires 24 October 2024               [Page 43]
 
 Internet-Draft                    VPOLL                       April 2024
 
 
-   The "Organizer" MUST send a "CANCEL" message to each "Voter" affected
-   by the cancellation.  This can be done using a single "CANCEL"
-   message for all "Voters" or by using multiple messages with different
-   subsets of the affected "Voters" in each.
+   The "Owner" MUST send a "CANCEL" message to each "Voter" affected by
+   the cancellation.  This can be done using a single "CANCEL" message
+   for all "Voters" or by using multiple messages with different subsets
+   of the affected "Voters" in each.
 
    When a "VPOLL" is cancelled, the "SEQUENCE" property value MUST be
    incremented as described in Section 8.2.3.
@@ -2443,8 +2443,6 @@ Internet-Draft                    VPOLL                       April 2024
      +-------------+----------+-------------------------------------+
      | DTSTAMP     | 1        |                                     |
      +-------------+----------+-------------------------------------+
-     | ORGANIZER   | 1        |                                     |
-     +-------------+----------+-------------------------------------+
      | SEQUENCE    | 1        |                                     |
      +-------------+----------+-------------------------------------+
 
@@ -2454,14 +2452,16 @@ Internet-Draft                    VPOLL                       April 2024
 
    The "REFRESH" method in a "VPOLL" calendar component is used by
    "Voters" of an existing event to request an updated vpoll status from
-   the poll "Organizer".  The "REFRESH" method MUST specify the "UID"
-   property of the poll to update.  The "Organizer" responds with a
+   the poll "Owner".  The "REFRESH" method MUST specify the "UID"
+   property of the poll to update.  The "Owner" responds with a
    METHOD=REQUEST giving the latest status and version of the poll.
 
 
 
 
-York & Douglass          Expires 22 October 2024               [Page 44]
+
+
+York & Douglass          Expires 24 October 2024               [Page 44]
 
 Internet-Draft                    VPOLL                       April 2024
 
@@ -2482,8 +2482,6 @@ Internet-Draft                    VPOLL                       April 2024
       +--------------------+----------+----------------------------+
       | DTSTAMP            | 1        |                            |
       +--------------------+----------+----------------------------+
-      | ORGANIZER          | 1        |                            |
-      +--------------------+----------+----------------------------+
       | UID                | 1        | MUST be the UID associated |
       |                    |          | with original REQUEST.     |
       +--------------------+----------+----------------------------+
@@ -2494,11 +2492,11 @@ Internet-Draft                    VPOLL                       April 2024
 
    The "POLLSTATUS" method in a "VPOLL" calendar component is used to
    inform recipients of the current status of the poll in a compact
-   manner.  The "Organizer" MUST be present in the confirmed poll
-   component.  All "Voters" MUST be present.  The selected component(s)
-   according to the poll mode SHOULD NOT be present in the poll
-   component.  Clients receiving this message may store the confirmed
-   items in their calendars.
+   manner.  The "Owner" participant MUST be present in the confirmed
+   poll component.  All "Voters" MUST be present.  The selected
+   component(s) according to the poll mode SHOULD NOT be present in the
+   poll component.  Clients receiving this message may store the
+   confirmed items in their calendars.
 
    This method type has a "METHOD" property with the value "POLLSTATUS"
    and one or more VPOLL objects.  Those objects MUST contain the
@@ -2517,7 +2515,9 @@ Internet-Draft                    VPOLL                       April 2024
 
 
 
-York & Douglass          Expires 22 October 2024               [Page 45]
+
+
+York & Douglass          Expires 24 October 2024               [Page 45]
 
 Internet-Draft                    VPOLL                       April 2024
 
@@ -2538,8 +2538,6 @@ Internet-Draft                    VPOLL                       April 2024
      | DTSTAMP     | 1        |                                     |
      +-------------+----------+-------------------------------------+
      | DTSTART     | 0 or 1   |                                     |
-     +-------------+----------+-------------------------------------+
-     | ORGANIZER   | 1        |                                     |
      +-------------+----------+-------------------------------------+
      | SUMMARY     | 1        | Can be null.                        |
      +-------------+----------+-------------------------------------+
@@ -2570,15 +2568,16 @@ Internet-Draft                    VPOLL                       April 2024
 
    Namespace  urn:ietf:params:xml:ns:caldav
 
+   Purpose  Specifies the calendar component types (e.g., VEVENT, VTODO,
 
 
 
-York & Douglass          Expires 22 October 2024               [Page 46]
+
+York & Douglass          Expires 24 October 2024               [Page 46]
 
 Internet-Draft                    VPOLL                       April 2024
 
 
-   Purpose  Specifies the calendar component types (e.g., VEVENT, VTODO,
       etc.) and combination of types that may be included in a VPOLL
       component.
 
@@ -2629,7 +2628,8 @@ Internet-Draft                    VPOLL                       April 2024
 
 
 
-York & Douglass          Expires 22 October 2024               [Page 47]
+
+York & Douglass          Expires 24 October 2024               [Page 47]
 
 Internet-Draft                    VPOLL                       April 2024
 
@@ -2685,7 +2685,7 @@ Internet-Draft                    VPOLL                       April 2024
 
 
 
-York & Douglass          Expires 22 October 2024               [Page 48]
+York & Douglass          Expires 24 October 2024               [Page 48]
 
 Internet-Draft                    VPOLL                       April 2024
 
@@ -2741,7 +2741,7 @@ Internet-Draft                    VPOLL                       April 2024
 
 
 
-York & Douglass          Expires 22 October 2024               [Page 49]
+York & Douglass          Expires 24 October 2024               [Page 49]
 
 Internet-Draft                    VPOLL                       April 2024
 
@@ -2797,7 +2797,7 @@ Internet-Draft                    VPOLL                       April 2024
 
 
 
-York & Douglass          Expires 22 October 2024               [Page 50]
+York & Douglass          Expires 24 October 2024               [Page 50]
 
 Internet-Draft                    VPOLL                       April 2024
 
@@ -2853,7 +2853,7 @@ Internet-Draft                    VPOLL                       April 2024
 
 
 
-York & Douglass          Expires 22 October 2024               [Page 51]
+York & Douglass          Expires 24 October 2024               [Page 51]
 
 Internet-Draft                    VPOLL                       April 2024
 
@@ -2909,7 +2909,7 @@ Internet-Draft                    VPOLL                       April 2024
 
 
 
-York & Douglass          Expires 22 October 2024               [Page 52]
+York & Douglass          Expires 24 October 2024               [Page 52]
 
 Internet-Draft                    VPOLL                       April 2024
 
@@ -2965,7 +2965,7 @@ Internet-Draft                    VPOLL                       April 2024
 
 
 
-York & Douglass          Expires 22 October 2024               [Page 53]
+York & Douglass          Expires 24 October 2024               [Page 53]
 
 Internet-Draft                    VPOLL                       April 2024
 
@@ -3021,7 +3021,7 @@ Internet-Draft                    VPOLL                       April 2024
 
 
 
-York & Douglass          Expires 22 October 2024               [Page 54]
+York & Douglass          Expires 24 October 2024               [Page 54]
 
 Internet-Draft                    VPOLL                       April 2024
 
@@ -3077,7 +3077,7 @@ Internet-Draft                    VPOLL                       April 2024
 
 
 
-York & Douglass          Expires 22 October 2024               [Page 55]
+York & Douglass          Expires 24 October 2024               [Page 55]
 
 Internet-Draft                    VPOLL                       April 2024
 
@@ -3133,7 +3133,7 @@ Internet-Draft                    VPOLL                       April 2024
 
 
 
-York & Douglass          Expires 22 October 2024               [Page 56]
+York & Douglass          Expires 24 October 2024               [Page 56]
 
 Internet-Draft                    VPOLL                       April 2024
 
@@ -3189,7 +3189,7 @@ Internet-Draft                    VPOLL                       April 2024
 
 
 
-York & Douglass          Expires 22 October 2024               [Page 57]
+York & Douglass          Expires 24 October 2024               [Page 57]
 
 Internet-Draft                    VPOLL                       April 2024
 
@@ -3245,7 +3245,7 @@ Appendix A.  Open issues
 
 
 
-York & Douglass          Expires 22 October 2024               [Page 58]
+York & Douglass          Expires 24 October 2024               [Page 58]
 
 Internet-Draft                    VPOLL                       April 2024
 
@@ -3301,7 +3301,7 @@ A.1.  Advertising tasks
 
 
 
-York & Douglass          Expires 22 October 2024               [Page 59]
+York & Douglass          Expires 24 October 2024               [Page 59]
 
 Internet-Draft                    VPOLL                       April 2024
 
@@ -3357,7 +3357,7 @@ Appendix B.  Change log
 
 
 
-York & Douglass          Expires 22 October 2024               [Page 60]
+York & Douglass          Expires 24 October 2024               [Page 60]
 
 Internet-Draft                    VPOLL                       April 2024
 
@@ -3413,4 +3413,4 @@ Authors' Addresses
 
 
 
-York & Douglass          Expires 22 October 2024               [Page 61]
+York & Douglass          Expires 24 October 2024               [Page 61]
