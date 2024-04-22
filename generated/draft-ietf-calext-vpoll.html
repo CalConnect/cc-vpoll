@@ -1217,7 +1217,7 @@ li > p:last-of-type:only-child {
 </tr></thead>
 <tfoot><tr>
 <td class="left">York &amp; Douglass</td>
-<td class="center">Expires 22 October 2024</td>
+<td class="center">Expires 24 October 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1232,12 +1232,12 @@ li > p:last-of-type:only-child {
 <dd></dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-04-20" class="published">20 April 2024</time>
+<time datetime="2024-04-22" class="published">22 April 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-10-22">22 October 2024</time></dd>
+<dd class="expires"><time datetime="2024-10-24">24 October 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1279,7 +1279,7 @@ meeting or task alternatives.<a href="#section-abstract-1" class="pilcrow">¶</a
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 22 October 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 24 October 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1430,7 +1430,7 @@ meeting or task alternatives.<a href="#section-abstract-1" class="pilcrow">¶</a
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
-            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-new-participant-properties" class="internal xref">New Participant Properties</a></p>
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-new-participant-properties-" class="internal xref">New Participant Properties for iTip</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
                 <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-kind" class="internal xref">Kind</a></p>
@@ -1452,6 +1452,9 @@ meeting or task alternatives.<a href="#section-abstract-1" class="pilcrow">¶</a
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.7">
                 <p id="section-toc.1-1.6.2.7.1"><a href="#section-6.7" class="auto internal xref">6.7</a>.  <a href="#name-lang" class="internal xref">Lang</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.8">
+                <p id="section-toc.1-1.6.2.8.1"><a href="#section-6.8" class="auto internal xref">6.8</a>.  <a href="#name-expect-reply" class="internal xref">Expect reply</a></p>
 </li>
             </ul>
 </li>
@@ -1735,7 +1738,7 @@ to maintain the state of the voting.  For our simple example the
 following VPOLL properties and sub-components are either required or
 appropriate:<a href="#section-3.1-1" class="pilcrow">¶</a></p>
 </div>
-<span class="break"></span><div id="_eb68e756-d164-a994-c11e-48d48654731c">
+<span class="break"></span><div id="_fc6b467d-2837-75d6-ab04-5a6b8232a785">
 <dl class="dlParallel" id="section-3.1-2">
           <dt id="section-3.1-2.1">DTSTAMP</dt>
           <dd style="margin-left: 1.5em" id="section-3.1-2.2">
@@ -1759,109 +1762,100 @@ behavior.<a href="#section-3.1-2.4.1" class="pilcrow">¶</a></p>
 </div>
 </dd>
           <dd class="break"></dd>
-<dt id="section-3.1-2.7">ORGANIZER</dt>
+<dt id="section-3.1-2.7">SUMMARY</dt>
           <dd style="margin-left: 1.5em" id="section-3.1-2.8">
-            <div id="_4345dfc2-10bb-2c86-da77-d0b21551cc90">
-<p id="section-3.1-2.8.1">The usual <span>[<a href="#RFC5545" class="cite xref">RFC5545</a>]</span> property.  In general this need not
-be an organizer of any of the alternatives.  In this simple
-outline we assume it is the same.<a href="#section-3.1-2.8.1" class="pilcrow">¶</a></p>
+            <div id="_b62f2dad-8a3a-057c-36b0-496e4fe7d879">
+<p id="section-3.1-2.8.1">The usual <span>[<a href="#RFC5545" class="cite xref">RFC5545</a>]</span> property.  This optional but
+recommended property provides the a short title to the poll.<a href="#section-3.1-2.8.1" class="pilcrow">¶</a></p>
 </div>
 </dd>
           <dd class="break"></dd>
-<dt id="section-3.1-2.9">SUMMARY</dt>
+<dt id="section-3.1-2.9">DESCRIPTION</dt>
           <dd style="margin-left: 1.5em" id="section-3.1-2.10">
-            <div id="_1d4cf6c1-a779-5c00-fea0-4d723df2fb9a">
-<p id="section-3.1-2.10.1">The usual <span>[<a href="#RFC5545" class="cite xref">RFC5545</a>]</span> property.  This optional but
-recommended property provides the a short title to the poll.<a href="#section-3.1-2.10.1" class="pilcrow">¶</a></p>
+            <div id="_19deafb2-bba6-b515-45b4-2bf260760fa8">
+<p id="section-3.1-2.10.1">The usual <span>[<a href="#RFC5545" class="cite xref">RFC5545</a>]</span> property.  This optional property
+provides more details.<a href="#section-3.1-2.10.1" class="pilcrow">¶</a></p>
 </div>
 </dd>
           <dd class="break"></dd>
-<dt id="section-3.1-2.11">DESCRIPTION</dt>
+<dt id="section-3.1-2.11">DTEND</dt>
           <dd style="margin-left: 1.5em" id="section-3.1-2.12">
-            <div id="_adf929c7-c0b6-3107-1275-b0a135403d19">
+            <div id="_b09c2991-c04f-fe65-60ae-f9afcd140329">
 <p id="section-3.1-2.12.1">The usual <span>[<a href="#RFC5545" class="cite xref">RFC5545</a>]</span> property.  This optional property
-provides more details.<a href="#section-3.1-2.12.1" class="pilcrow">¶</a></p>
-</div>
-</dd>
-          <dd class="break"></dd>
-<dt id="section-3.1-2.13">DTEND</dt>
-          <dd style="margin-left: 1.5em" id="section-3.1-2.14">
-            <div id="_24177250-8c32-6f4c-f772-67e7c0a7f862">
-<p id="section-3.1-2.14.1">The usual <span>[<a href="#RFC5545" class="cite xref">RFC5545</a>]</span> property.  This optional property
 provides a poll closing time and date after which the VPOLL is no
-longer active.<a href="#section-3.1-2.14.1" class="pilcrow">¶</a></p>
+longer active.<a href="#section-3.1-2.12.1" class="pilcrow">¶</a></p>
 </div>
 </dd>
           <dd class="break"></dd>
-<dt id="section-3.1-2.15">POLL-MODE</dt>
-          <dd style="margin-left: 1.5em" id="section-3.1-2.16">
-            <div id="_f2c9e594-337b-6b2a-18af-5194c30bd885">
-<p id="section-3.1-2.16.1">A new property which defines how the votes are used to
+<dt id="section-3.1-2.13">POLL-MODE</dt>
+          <dd style="margin-left: 1.5em" id="section-3.1-2.14">
+            <div id="_3b88f85e-7686-ba5a-c700-7ae06b399c68">
+<p id="section-3.1-2.14.1">A new property which defines how the votes are used to
 obtain a result.  For our use case it will take the value "BASIC"
-meaning one event will be chosen from the alternatives.<a href="#section-3.1-2.16.1" class="pilcrow">¶</a></p>
+meaning one event will be chosen from the alternatives.<a href="#section-3.1-2.14.1" class="pilcrow">¶</a></p>
 </div>
 </dd>
           <dd class="break"></dd>
-<dt id="section-3.1-2.17">POLL-COMPLETION</dt>
-          <dd style="margin-left: 1.5em" id="section-3.1-2.18">
-            <div id="_1dcc1a9d-400d-2445-b242-22ff5e111444">
-<p id="section-3.1-2.18.1">A new property which defines who (server or client)
+<dt id="section-3.1-2.15">POLL-COMPLETION</dt>
+          <dd style="margin-left: 1.5em" id="section-3.1-2.16">
+            <div id="_ecb92ed2-b1d8-d520-03da-d7d07d3461db">
+<p id="section-3.1-2.16.1">A new property which defines who (server or client)
 chooses and/or submits the winning choice.  In our example the
 value is "SERVER-SUBMIT" which means the client chooses the winner
-but the server will submit the winning choice.<a href="#section-3.1-2.18.1" class="pilcrow">¶</a></p>
+but the server will submit the winning choice.<a href="#section-3.1-2.16.1" class="pilcrow">¶</a></p>
 </div>
 </dd>
           <dd class="break"></dd>
-<dt id="section-3.1-2.19">POLL-PROPERTIES</dt>
-          <dd style="margin-left: 1.5em" id="section-3.1-2.20">
-            <div id="_1396a354-6ee0-1045-7633-6b9c070c854d">
-<p id="section-3.1-2.20.1">A new property which defines which icalendar
+<dt id="section-3.1-2.17">POLL-PROPERTIES</dt>
+          <dd style="margin-left: 1.5em" id="section-3.1-2.18">
+            <div id="_7fe36e44-a1ab-3152-f9d5-be068864699e">
+<p id="section-3.1-2.18.1">A new property which defines which icalendar
 properties are being voted on.  For our use case it will take the
 value "DTSTART, LOCATION" meaning only those properties are
 significant for voting.  Other properties in the events may differ
-but are not considered significant for the voting process.<a href="#section-3.1-2.20.1" class="pilcrow">¶</a></p>
+but are not considered significant for the voting process.<a href="#section-3.1-2.18.1" class="pilcrow">¶</a></p>
 </div>
 </dd>
           <dd class="break"></dd>
-<dt id="section-3.1-2.21">PARTICIPANT</dt>
-          <dd style="margin-left: 1.5em" id="section-3.1-2.22">
-            <div id="_6a276a10-71d2-a553-cc23-95ba65cd7084">
-<p id="section-3.1-2.22.1">There is one of these components for each voter with
+<dt id="section-3.1-2.19">PARTICIPANT</dt>
+          <dd style="margin-left: 1.5em" id="section-3.1-2.20">
+            <div id="_b79994d7-af77-05ed-6853-b041ab39c907">
+<p id="section-3.1-2.20.1">There is one of these components for each voter with
 the PARTICIPANT-TYPE set to "VOTER". The
 CALENDAR-ADDRESS property identifies the voter and this component
-will contain one VOTE component for each item being voted on.<a href="#section-3.1-2.22.1" class="pilcrow">¶</a></p>
+will contain one VOTE component for each item being voted on.<a href="#section-3.1-2.20.1" class="pilcrow">¶</a></p>
 </div>
 </dd>
           <dd class="break"></dd>
-<dt id="section-3.1-2.23">VOTE</dt>
-          <dd style="margin-left: 1.5em" id="section-3.1-2.24">
-            <div id="_06ff3e2c-da63-315d-310b-4ac289a95dc9">
-<p id="section-3.1-2.24.1">A new component.  There is one of these for each voter and
+<dt id="section-3.1-2.21">VOTE</dt>
+          <dd style="margin-left: 1.5em" id="section-3.1-2.22">
+            <div id="_2505e699-40f3-9320-f130-0c2b75e5e785">
+<p id="section-3.1-2.22.1">A new component.  There is one of these for each voter and
 choice.  It usually contains at least a POLL-ITEM-ID property to
 identify the choice and a RESPONSE property to provide a vote.
 For more complex poll modes it may contain other information such
-as cost or estimated duration.<a href="#section-3.1-2.24.1" class="pilcrow">¶</a></p>
+as cost or estimated duration.<a href="#section-3.1-2.22.1" class="pilcrow">¶</a></p>
 </div>
 </dd>
           <dd class="break"></dd>
-<dt id="section-3.1-2.25">VEVENT</dt>
-          <dd style="margin-left: 1.5em" id="section-3.1-2.26">
-            <div id="_2186b257-1017-c709-ba0e-5073e1e7bc40">
-<p id="section-3.1-2.26.1">In our simple use case there will be multiple VEVENT sub-
+<dt id="section-3.1-2.23">VEVENT</dt>
+          <dd style="margin-left: 1.5em" id="section-3.1-2.24">
+            <div id="_d49d9984-a7cd-34e6-a42d-2604b0022db1">
+<p id="section-3.1-2.24.1">In our simple use case there will be multiple VEVENT sub-
 components defining the alternatives.  Each will have a different
-date and or time for the meeting.<a href="#section-3.1-2.26.1" class="pilcrow">¶</a></p>
+date and or time for the meeting.<a href="#section-3.1-2.24.1" class="pilcrow">¶</a></p>
 </div>
 </dd>
         <dd class="break"></dd>
 </dl>
 </div>
-<div id="_deb2a431-888b-b983-3348-a54f132652fa">
+<div id="_990f55e9-63bb-a0db-e12d-124fd55920f6">
 <p id="section-3.1-3" class="keepWithNext">EXAMPLE<a href="#section-3.1-3" class="pilcrow">¶</a></p>
 </div>
 <div id="_15d95852-c59d-c60e-a11e-d511470988bc">
 <p id="section-3.1-4">VPOLL with 3 voters and 3 alternative meetings:<a href="#section-3.1-4" class="pilcrow">¶</a></p>
 </div>
-<div id="_e3cd59f5-c281-4311-7790-83b965ba5798">
+<div id="_7a413db4-e384-37aa-d60e-1688e6957816">
 <div class="sourcecode" id="section-3.1-5">
 <pre>BEGIN:VCALENDAR
 VERSION:2.0
@@ -1871,7 +1865,6 @@ BEGIN:VPOLL
 POLL-MODE:BASIC
 POLL-COMPLETION:SERVER-SUBMIT
 POLL-PROPERTIES:DTSTART,LOCATION
-ORGANIZER:mailto:mike@example.com
 UID:sched01-1234567890
 DTSTAMP:20120101T000000Z
 SUMMARY:What to do this week
@@ -1885,7 +1878,7 @@ PARTICIPANT-TYPE: VOTER
 CALENDAR-ADDRESS:mailto:eric@example.com
 END:PARTICIPANT
 BEGIN:PARTICIPANT
-PARTICIPANT-TYPE: VOTER
+PARTICIPANT-TYPE: VOTER,OWNER
 CALENDAR-ADDRESS:mailto:mike@example.com
 END:PARTICIPANT
 BEGIN:VEVENT.......(with a poll-item-id=1)
@@ -1942,7 +1935,7 @@ within the VPOLL.  It's value SHOULD be a small integer.<a href="#section-3.2-2.
 component containing their vote.  In our simple case it will have the
 following properties and components:<a href="#section-3.3-1" class="pilcrow">¶</a></p>
 </div>
-<span class="break"></span><div id="_fd2916f9-b6d7-fb71-70dd-045e71644457">
+<span class="break"></span><div id="_94150495-3e1d-b40f-3079-b416ddadffe4">
 <dl class="dlParallel" id="section-3.3-2">
           <dt id="section-3.3-2.1">DTSTAMP</dt>
           <dd style="margin-left: 1.5em" id="section-3.3-2.2">
@@ -1966,45 +1959,38 @@ behavior.<a href="#section-3.3-2.4.1" class="pilcrow">¶</a></p>
 </div>
 </dd>
           <dd class="break"></dd>
-<dt id="section-3.3-2.7">ORGANIZER</dt>
+<dt id="section-3.3-2.7">SUMMARY</dt>
           <dd style="margin-left: 1.5em" id="section-3.3-2.8">
             <div id="_52a51dae-8160-2280-5a20-107391062688">
 <p id="section-3.3-2.8.1">Same as the request.<a href="#section-3.3-2.8.1" class="pilcrow">¶</a></p>
 </div>
 </dd>
           <dd class="break"></dd>
-<dt id="section-3.3-2.9">SUMMARY</dt>
+<dt id="section-3.3-2.9">PARTICIPANT</dt>
           <dd style="margin-left: 1.5em" id="section-3.3-2.10">
-            <div id="_137eab2a-3a4a-6a5b-412f-64dce1ad5cab">
-<p id="section-3.3-2.10.1">Same as the request.<a href="#section-3.3-2.10.1" class="pilcrow">¶</a></p>
+            <div id="_498501da-a8f8-849c-9b71-10b155bd82b0">
+<p id="section-3.3-2.10.1">One only with a CALENDAR-ADDRESS identifying the voter replying.<a href="#section-3.3-2.10.1" class="pilcrow">¶</a></p>
 </div>
 </dd>
           <dd class="break"></dd>
-<dt id="section-3.3-2.11">PARTICIPANT</dt>
+<dt id="section-3.3-2.11">VOTE</dt>
           <dd style="margin-left: 1.5em" id="section-3.3-2.12">
-            <div id="_28a8366a-ac1b-8e3f-6d4d-2bc498cc8d4b">
-<p id="section-3.3-2.12.1">One only with a CALENDAR-ADDRESS identifying the voter replying.<a href="#section-3.3-2.12.1" class="pilcrow">¶</a></p>
+            <div id="_bd4b10e4-ffb2-1d4b-897e-d3a678b82d60">
+<p id="section-3.3-2.12.1">One per item being voted on.<a href="#section-3.3-2.12.1" class="pilcrow">¶</a></p>
 </div>
 </dd>
           <dd class="break"></dd>
-<dt id="section-3.3-2.13">VOTE</dt>
+<dt id="section-3.3-2.13">POLL-ITEM-ID</dt>
           <dd style="margin-left: 1.5em" id="section-3.3-2.14">
-            <div id="_a0598674-75ec-8f3f-8095-5932ea150160">
-<p id="section-3.3-2.14.1">One per item being voted on.<a href="#section-3.3-2.14.1" class="pilcrow">¶</a></p>
+            <div id="_4692111d-f26d-36cb-6cdd-b88dfae098c5">
+<p id="section-3.3-2.14.1">One inside each VOTE component to identify the choice.<a href="#section-3.3-2.14.1" class="pilcrow">¶</a></p>
 </div>
 </dd>
           <dd class="break"></dd>
-<dt id="section-3.3-2.15">POLL-ITEM-ID</dt>
+<dt id="section-3.3-2.15">RESPONSE</dt>
           <dd style="margin-left: 1.5em" id="section-3.3-2.16">
-            <div id="_2ee1a532-752a-751a-e79f-803d36d9d72f">
-<p id="section-3.3-2.16.1">One inside each VOTE component to identify the choice.<a href="#section-3.3-2.16.1" class="pilcrow">¶</a></p>
-</div>
-</dd>
-          <dd class="break"></dd>
-<dt id="section-3.3-2.17">RESPONSE</dt>
-          <dd style="margin-left: 1.5em" id="section-3.3-2.18">
-            <div id="_367e0b7e-8cbc-9f2d-0804-ce50e87d550d">
-<p id="section-3.3-2.18.1">One inside each VOTE component to specify the vote.<a href="#section-3.3-2.18.1" class="pilcrow">¶</a></p>
+            <div id="_1f0dbcd6-62a4-fb2e-ad6d-20539879a78e">
+<p id="section-3.3-2.16.1">One inside each VOTE component to specify the vote.<a href="#section-3.3-2.16.1" class="pilcrow">¶</a></p>
 </div>
 </dd>
         <dd class="break"></dd>
@@ -2028,20 +2014,19 @@ with a vote for only item 3, the final outcome is one vote on item 3.<a href="#s
         <dd class="break"></dd>
 </dl>
 </div>
-<div id="_b0733cb2-17a8-7096-1f21-6a8b90741650">
+<div id="_b337c246-7b39-59dc-5f25-9f69c2fb384a">
 <p id="section-3.3-5" class="keepWithNext">EXAMPLE<a href="#section-3.3-5" class="pilcrow">¶</a></p>
 </div>
 <div id="_afdfe7c5-1340-2a39-053d-f3685d980cd8">
 <p id="section-3.3-6">REPLY VPOLL from Cyrus:<a href="#section-3.3-6" class="pilcrow">¶</a></p>
 </div>
-<div id="_5faac097-d991-6aaf-2716-a2115cda74af">
+<div id="_55f2d534-66c5-617d-f29d-c947712435e3">
 <div class="sourcecode" id="section-3.3-7">
 <pre>BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Example//Example
 METHOD: REPLY
 BEGIN:VPOLL
-ORGANIZER:mailto:mike@example.com
 UID:sched01-1234567890
 DTSTAMP:20120101T010000Z
 SUMMARY:What to do this week
@@ -2074,24 +2059,23 @@ END:VCALENDAR</pre><a href="#section-3.3-7" class="pilcrow">¶</a>
         <h3 id="name-vpoll-updates">
 <a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-vpoll-updates" class="section-name selfRef">VPOLL updates</a>
         </h3>
-<div id="_24389528-329d-2489-116c-aa3bd37e869e">
-<p id="section-3.4-1">When the organizer receives a response from one or more voters the
+<div id="_7f6429c7-9db9-f81c-27f6-97e94767f387">
+<p id="section-3.4-1">When the owner receives a response from one or more voters the
 current state of the poll is sent to all voters.  The new iTip method
 POLLSTATUS is used.  The VPOLL can contain a reduced set of
-properties but MUST contain DTSTAMP, SEQUENCE (if not 0), UID,
-ORGANIZER and one or more PARTICIPANT components each populated with zero or more VOTE components.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
+properties but MUST contain DTSTAMP, SEQUENCE (if not 0), UID, and
+one or more PARTICIPANT components each populated with zero or more VOTE components.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
 </div>
-<div id="_321373f2-635b-1e96-3cf3-067ceb36e43c">
+<div id="_b5d3bb0c-294d-bac1-6cd1-dd4c5bdef69c">
 <p id="section-3.4-2" class="keepWithNext">EXAMPLE<a href="#section-3.4-2" class="pilcrow">¶</a></p>
 </div>
-<div id="_a1b0b4a5-23fc-5a20-81ae-377d1f7d6a8b">
-<div class="sourcecode" id="section-3.4-3">
+<div id="_a575d708-6201-229d-a7ed-bba87e1387af">
+<div class="breakable sourcecode" id="section-3.4-3">
 <pre>BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Example//Example
 METHOD: POLLSTATUS
 BEGIN:VPOLL
-ORGANIZER:mailto:mike@example.com
 UID:sched01-1234567890
 DTSTAMP:20120101T020000Z
 SEQUENCE:0
@@ -2130,6 +2114,24 @@ POLL-ITEM-ID:3
 RESPONSE:0
 END:VOTE
 END:PARTICIPANT
+BEGIN:PARTICIPANT
+PARTICIPANT-TYPE: VOTER,OWNER
+CALENDAR-ADDRESS:mailto:mike@example.com
+BEGIN: VOTE
+POLL-ITEM-ID:1
+RESPONSE:50
+COMMENT:Work on iTIP
+END:VOTE
+BEGIN:VOTE
+POLL-ITEM-ID:2
+RESPONSE:100
+COMMENT:Work on WebDAV
+END:VOTE
+BEGIN:VOTE
+POLL-ITEM-ID:3
+RESPONSE:0
+END:VOTE
+END:PARTICIPANT
 END:VPOLL
 END:VCALENDAR</pre><a href="#section-3.4-3" class="pilcrow">¶</a>
 </div>
@@ -2158,20 +2160,19 @@ COMPLETION property is set to SERVER-SUBMIT the server will submit
 the winning choice and when it has done so set the STATUS to
 "SUBMITTED".<a href="#section-3.5-2" class="pilcrow">¶</a></p>
 </div>
-<div id="_0510bd9e-d20a-b3b2-2ccd-941c2f247d61">
+<div id="_27c0bfdc-84ca-38b4-769f-262350de5fe6">
 <p id="section-3.5-3" class="keepWithNext">EXAMPLE<a href="#section-3.5-3" class="pilcrow">¶</a></p>
 </div>
 <div id="_41c9ab16-00a6-e6f8-cdd6-f63015d098a0">
 <p id="section-3.5-4">VPOLL confirmation:<a href="#section-3.5-4" class="pilcrow">¶</a></p>
 </div>
-<div id="_288196f7-a09c-bd7d-987b-7db4f35a7063">
+<div id="_fed3c5d0-307f-8969-a711-625fc1e4e960">
 <div class="sourcecode" id="section-3.5-5">
 <pre>BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Example//Example
 METHOD: REQUEST
 BEGIN:VPOLL
-ORGANIZER:mailto:douglm@example.com
 UID:sched01-1234567890
 DTSTAMP:20120101T030000Z
 COMPLETED:20120101T030000Z
@@ -2180,6 +2181,10 @@ SEQUENCE:0
 SUMMARY:What to do this week
 STATUS:CONFIRMED
 POLL-WINNER:3
+BEGIN:PARTICIPANT
+PARTICIPANT-TYPE: OWNER
+CALENDAR-ADDRESS:mailto:mike@example.com
+END:PARTICIPANT
 BEGIN:VEVENT.......(with a poll-item-id=1)
 END:VEVENT
 BEGIN:VEVENT.......(with a poll-item-id=2)
@@ -3136,7 +3141,7 @@ vote on provided choices.<a href="#section-4.6.1-1.4.1" class="pilcrow">¶</a></
           <dd class="break"></dd>
 </dl>
 </div>
-<div id="_9ae2490b-104e-b87c-2416-e15bd5abd662">
+<div id="_65596214-e3bc-fae0-f2c9-a5d5472ef36b">
 <div class="lang-abnf sourcecode" id="section-4.6.1-2">
 <pre>pollc    = "BEGIN" ":" "VPOLL" CRLF
             pollprop
@@ -3149,7 +3154,7 @@ pollprop = *(
           ; The following are REQUIRED,
           ; but MUST NOT occur more than once.
           ;
-          dtstamp / uid / organizer /
+          dtstamp / uid /
           ;
           ; The following are OPTIONAL,
           ; but MUST NOT occur more than once.
@@ -3398,13 +3403,13 @@ some other protocol.<a href="#section-5.1.2-2" class="pilcrow">¶</a></p>
 </div>
 </section>
 </div>
-<div id="new-participant-properties">
+<div id="new-participant-properties-for-itip">
 <section id="section-6">
-      <h2 id="name-new-participant-properties">
-<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-new-participant-properties" class="section-name selfRef">New Participant Properties</a>
+      <h2 id="name-new-participant-properties-">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-new-participant-properties-" class="section-name selfRef">New Participant Properties for iTip</a>
       </h2>
-<div id="_c2a2f6b6-d7da-939d-15a3-35694fb0f9f2">
-<p id="section-6-1">The following properties are defined to be used within PARTICIPANT and take the place of ATTENDEE and ORGANIZER properties and parameters. These are not solely for VPOLL but may be used in any future component.<a href="#section-6-1" class="pilcrow">¶</a></p>
+<div id="_e5771856-e31c-dcb4-94d1-bf73012dcba8">
+<p id="section-6-1">The following properties are defined to be used within PARTICIPANT during scheduling and take the place of ATTENDEE and ORGANIZER properties and parameters. These are not solely for VPOLL but may be used in any future component.<a href="#section-6-1" class="pilcrow">¶</a></p>
 </div>
 <div id="new-prop-kind">
 <section id="section-6.1">
@@ -3484,7 +3489,7 @@ kindparams = *(";" other-param)</pre><a href="#section-6.1-2" class="pilcrow">¶
 <div id="_759305e7-d256-4f3e-ddee-bec3ea2d1ed8">
 <p id="section-6.2-1">This specification redefines the PARTICIPATION-TYPE property allowing it to take multiple values and extending those values to align with <span>[<a href="#RFC8984" class="cite xref">RFC8984</a>]</span> roles and add a new "VOTER" role. There are also changes to the description to clarify it's use defining the roles that participant takes.<a href="#section-6.2-1" class="pilcrow">¶</a></p>
 </div>
-<span class="break"></span><div id="_a5183c08-f5e3-f96e-76eb-b90e223556c1">
+<span class="break"></span><div id="_e5c9e10d-cef6-5c52-a174-5229a94a48b8">
 <dl class="dlParallel" id="section-6.2-2">
           <dt id="section-6.2-2.1">Property name</dt>
           <dd style="margin-left: 1.5em" id="section-6.2-2.2">
@@ -3534,8 +3539,10 @@ roles the participant takes.<br><a href="#section-6.2-2.12.1" class="pilcrow">¶
 <div id="_71897d3b-6f70-e4e1-527b-9dc02c713236">
 <p id="section-6.2-2.12.3">Note that the kind of participant, for example individual or group, is defined in the KIND property specified here.<a href="#section-6.2-2.12.3" class="pilcrow">¶</a></p>
 </div>
-<div id="_5c5f2130-0d0d-6eee-5bf0-368a712d6b16">
-<p id="section-6.2-2.12.4">Do we need a separate registry or should we extend that one?<a href="#section-6.2-2.12.4" class="pilcrow">¶</a></p>
+<div id="_1a964a33-746d-0b92-35cd-fcf3b65b2d5a">
+<p id="section-6.2-2.12.4">Some of the roles are required for the participant to be a schedulable object. These are the roles that are shown below.
+*
+Do we need a separate registry or should we extend that one?<a href="#section-6.2-2.12.4" class="pilcrow">¶</a></p>
 </div>
 </dd>
           <dd class="break"></dd>
@@ -3670,8 +3677,8 @@ partvalueparam   = *(";" other-param)</pre><a href="#section-6.2-3" class="pilcr
           </tbody>
         </table>
 </div>
-<div id="_43e6d6ed-320b-5822-5737-16d678ffc4f7">
-<p id="section-6.2-9">To map PARTICIPANT-TYPE or jscalendar roles to <span>[<a href="#RFC5545" class="cite xref">RFC5545</a>]</span> ROLE values use the following.<a href="#section-6.2-9" class="pilcrow">¶</a></p>
+<div id="_63be19e4-a0a9-eaba-941b-fe9757e77bdf">
+<p id="section-6.2-9">The following table shows those roles that MUST appear in the PARTICIPANT-TYPE for group-scheduling. Additionally, the mapping  PARTICIPANT-TYPE or jscalendar roles to <span>[<a href="#RFC5545" class="cite xref">RFC5545</a>]</span> ATTENDEE and ORGANIZER values are shown.<a href="#section-6.2-9" class="pilcrow">¶</a></p>
 </div>
 <div id="_cdba8a49-5c4f-9267-509b-f707ab621832">
 <table class="center" id="table-2">
@@ -4234,6 +4241,62 @@ langparams = *(";" other-param)</pre><a href="#section-6.7-2" class="pilcrow">¶
 </div>
 </section>
 </div>
+<div id="new-prop-expect-reply">
+<section id="section-6.8">
+        <h3 id="name-expect-reply">
+<a href="#section-6.8" class="section-number selfRef">6.8. </a><a href="#name-expect-reply" class="section-name selfRef">Expect reply</a>
+        </h3>
+<span class="break"></span><div id="_f018f172-bf49-d2b4-77c3-cd734141d426">
+<dl class="dlParallel" id="section-6.8-1">
+          <dt id="section-6.8-1.1">Property name</dt>
+          <dd style="margin-left: 1.5em" id="section-6.8-1.2">
+            <div id="_15566ba4-1404-1021-023e-919952c7dd8e">
+<p id="section-6.8-1.2.1">EXPECT-REPLY<a href="#section-6.8-1.2.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-6.8-1.3">Purpose</dt>
+          <dd style="margin-left: 1.5em" id="section-6.8-1.4">
+            <div id="_bc734ff7-276e-14a3-6529-707475a3b146">
+<p id="section-6.8-1.4.1">If true, the organizer is expecting the participant to notify them of their participation status.<a href="#section-6.8-1.4.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-6.8-1.5">Property Parameters</dt>
+          <dd style="margin-left: 1.5em" id="section-6.8-1.6">
+            <div id="_f3d8d616-ac95-8cfe-71d2-753929abe1ee">
+<p id="section-6.8-1.6.1">Non-standard or iana parameters can be
+specified on this property.<a href="#section-6.8-1.6.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-6.8-1.7">Conformance</dt>
+          <dd style="margin-left: 1.5em" id="section-6.8-1.8">
+            <div id="_256ef440-9132-172c-c8eb-f3bef937d25c">
+<p id="section-6.8-1.8.1">This property MAY be specified once in the PARTICIPANT component.<a href="#section-6.8-1.8.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+          <dd class="break"></dd>
+<dt id="section-6.8-1.9">Format Definition</dt>
+          <dd style="margin-left: 1.5em" id="section-6.8-1.10">
+            <div id="_7848e46a-6562-6f53-dd4c-37f6b30d388e">
+<p id="section-6.8-1.10.1">This property is defined by the following notation:<a href="#section-6.8-1.10.1" class="pilcrow">¶</a></p>
+</div>
+</dd>
+        <dd class="break"></dd>
+</dl>
+</div>
+<div id="_01392db2-3d0e-a218-6047-1cb759b830f5">
+<div class="lang-abnf sourcecode" id="section-6.8-2">
+<pre>expect-reply = "EXPECT-REPLY"
+              expect-replyparams ":"
+              ( "TRUE" / "FALSE") CRLF
+
+expect-replyparams = *(";" other-param)</pre><a href="#section-6.8-2" class="pilcrow">¶</a>
+</div>
+</div>
+</section>
+</div>
 </section>
 </div>
 <div id="itip-with-participants">
@@ -4244,8 +4307,23 @@ langparams = *(";" other-param)</pre><a href="#section-6.7-2" class="pilcrow">¶
 <div id="_3c2dcc08-3e64-cdb6-7181-756d56694c76">
 <p id="section-7-1">The PARTICIPANT component introduced in <span>[<a href="#RFC9073" class="cite xref">RFC9073</a>]</span> with the addition of some properties defined in this specification mirrors the participant object in <span>[<a href="#RFC8984" class="cite xref">RFC8984</a>]</span>.<a href="#section-7-1" class="pilcrow">¶</a></p>
 </div>
-<div id="_f4172fe5-271c-d99b-a4ad-02eaf3d652d3">
-<p id="section-7-2">For all existing schedulable and publishable components, VEVENT, VTODO, VFREEBUSY, and VAVAILABILITY; the ORGANIZER and ATTENDEE properties MUST be supplied as appropriate. For new components such as VPOLL defined here, only PARTICIPANT components MUST be used.<a href="#section-7-2" class="pilcrow">¶</a></p>
+<div id="_d9f932c3-aa33-d975-9742-b19a34a63409">
+<p id="section-7-2">For all existing schedulable and publishable components, VEVENT, VTODO, VFREEBUSY, and VAVAILABILITY; the ORGANIZER and ATTENDEE properties MUST be supplied as appropriate. For new components such as VPOLL, defined here, only PARTICIPANT components MUST be used.<a href="#section-7-2" class="pilcrow">¶</a></p>
+</div>
+<div id="_393c5cb4-a7f3-4122-b01c-7b8e118d8fb7">
+<p id="section-7-3">Note that extensions to the <span>[<a href="#RFC5546" class="cite xref">RFC5546</a>]</span> specification for VPOLL will be dealt with in later sections.<a href="#section-7-3" class="pilcrow">¶</a></p>
+</div>
+<div id="_501a5ae7-fd37-9c5a-f3b0-790d19bbde2c">
+<p id="section-7-4">A participant object that takes part in group scheduling MUST have the following characteristics:<a href="#section-7-4" class="pilcrow">¶</a></p>
+</div>
+<ul class="normal">
+<li class="normal" id="section-7-5.1">It MUST have a calendar address (<span>[<a href="#RFC5545" class="cite xref">RFC5545</a>]</span> CALENDAR-ADDRESS, <span>[<a href="#RFC8984" class="cite xref">RFC8984</a>]</span> calendarAddress).<a href="#section-7-5.1" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-7-5.2">It must have one or more scheduling role defined. (PARTICIPANT-TYPE or <span>[<a href="#RFC8984" class="cite xref">RFC8984</a>]</span> role)<a href="#section-7-5.2" class="pilcrow">¶</a>
+</li>
+      </ul>
+<div id="_23df4e66-e431-dc2f-6cdc-cdca65d0a96d">
+<p id="section-7-6">Scheduling with PARTICIPANT components behaves exactly as with ATTENDEE and ORGANIZER properties. When iTip specifies the setting of ATTENDEE or ORGANIZER parameters then the appropriate PARTICIPANT property will be set.<a href="#section-7-6" class="pilcrow">¶</a></p>
 </div>
 <div id="attendee-params">
 <section id="section-7.1">
@@ -4454,10 +4532,10 @@ langparams = *(";" other-param)</pre><a href="#section-6.7-2" class="pilcrow">¶
       <h2 id="name-itip-extensions">
 <a href="#section-8" class="section-number selfRef">8. </a><a href="#name-itip-extensions" class="section-name selfRef">iTIP Extensions</a>
       </h2>
-<div id="_542d896b-3841-0b40-740c-2b7d4b9ccf1f">
+<div id="_0f3e07f1-12cd-9469-bc2b-917e930bbfab">
 <p id="section-8-1">This specification introduces a number of extensions to <span>[<a href="#RFC5546" class="cite xref">RFC5546</a>]</span>.
 In group scheduling the parties involved are organizer and attendees.
-In VPOLL the parties are organizer and voters.<a href="#section-8-1" class="pilcrow">¶</a></p>
+In VPOLL the parties are owner and voter participants.<a href="#section-8-1" class="pilcrow">¶</a></p>
 </div>
 <div id="_a7d724e8-ddd6-2dba-92c7-f51376e4f8ae">
 <p id="section-8-2">For many of the iTip processing rules the voters take the place of
@@ -4472,7 +4550,7 @@ attendees.<a href="#section-8-2" class="pilcrow">¶</a></p>
 <p id="section-8.1-1">There are some extensions to the behavior of iTip methods for a VPOLL
 object and two new methods are defined.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
 </div>
-<div id="_2eb409ce-7960-66c1-e760-9eaa07d0a351">
+<div id="_7016578a-bd01-8f76-6903-6a65c235ce8f">
 <table class="center" id="table-4">
           <caption><a href="#table-4" class="selfRef">Table 4</a></caption>
 <thead>
@@ -4558,8 +4636,8 @@ matching that of the poll being cancelled.<a href="#section-8.1-2.2.5.2.1" class
 </div>
 </td>
               <td class="text-left" rowspan="1" colspan="1">
-                <div id="_ddfc16ac-7ccd-296f-7b40-6567f620d418">
-<p id="section-8.1-2.2.6.2.1">The organizer returns a METHOD:REQUEST with the
+                <div id="_97c19c85-e5f4-96f5-414c-9071455eecdf">
+<p id="section-8.1-2.2.6.2.1">The owner returns a METHOD:REQUEST with the
 current full state, or a METHOD:CANCEL or an
 error if no matching poll is found.<a href="#section-8.1-2.2.6.2.1" class="pilcrow">¶</a></p>
 </div>
@@ -4596,11 +4674,11 @@ error if no matching poll is found.<a href="#section-8.1-2.2.6.2.1" class="pilcr
 </div>
 </td>
               <td class="text-left" rowspan="1" colspan="1">
-                <div id="_581ce8a4-5f49-c2c5-a812-41c1e4339790">
+                <div id="_3f6c7d71-2fd2-f9a5-cb45-aa6be26f4cb5">
 <p id="section-8.1-2.2.9.2.1">Used to send the current state of the poll to
 all voters. The VPOLL can contain a reduced set
 of properties but MUST contain DTSTAMP, SEQUENCE
-(if not 0), UID, ORGANIZER and PARTICIPANTS.<a href="#section-8.1-2.2.9.2.1" class="pilcrow">¶</a></p>
+(if not 0), UID and PARTICIPANTS. One PARTICIPANT MUST be the owner.<a href="#section-8.1-2.2.9.2.1" class="pilcrow">¶</a></p>
 </div>
 </td>
             </tr>
@@ -4611,7 +4689,7 @@ of properties but MUST contain DTSTAMP, SEQUENCE
 <p id="section-8.1-3">The following table shows the above methods broken down by who can
 send them with VPOLL components.<a href="#section-8.1-3" class="pilcrow">¶</a></p>
 </div>
-<div id="_806d9e24-9c75-e77a-eca1-f481315f5946">
+<div id="_4e523422-a8ea-8824-1b8e-014f5ad7ee49">
 <table class="center" id="table-5">
           <caption><a href="#table-5" class="selfRef">Table 5</a></caption>
 <thead>
@@ -4623,8 +4701,8 @@ send them with VPOLL components.<a href="#section-8.1-3" class="pilcrow">¶</a><
           <tbody>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">
-                <div id="_f3343640-22a3-1b37-2128-da212d2e4be9">
-<p id="section-8.1-4.2.1.1.1">Organizer<a href="#section-8.1-4.2.1.1.1" class="pilcrow">¶</a></p>
+                <div id="_5d040444-1ab1-2147-c6f0-fe34cfcd696d">
+<p id="section-8.1-4.2.1.1.1">Owner<a href="#section-8.1-4.2.1.1.1" class="pilcrow">¶</a></p>
 </div>
 </td>
               <td class="text-left" rowspan="1" colspan="1">
@@ -4655,9 +4733,9 @@ send them with VPOLL components.<a href="#section-8.1-3" class="pilcrow">¶</a><
         <h3 id="name-interoperability-models">
 <a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-interoperability-models" class="section-name selfRef">Interoperability Models</a>
         </h3>
-<div id="_2d3913af-3cd0-565c-d120-9ece5f730512">
+<div id="_c9c597ec-0dcd-4e0e-ea69-c4fd85504580">
 <p id="section-8.2-1">Most of the standard iTip specification applies with respect to
-organizer and voters.<a href="#section-8.2-1" class="pilcrow">¶</a></p>
+owner and voters.<a href="#section-8.2-1" class="pilcrow">¶</a></p>
 </div>
 <div id="_delegation">
 <section id="section-8.2.1">
@@ -4808,7 +4886,7 @@ appear in the iCalendar object.<a href="#section-8.3.1-2" class="pilcrow">¶</a>
 <p id="section-8.3.1-4">The following summarizes the methods that are defined for the "VPOLL"
 calendar component.<a href="#section-8.3.1-4" class="pilcrow">¶</a></p>
 </div>
-<div id="_cc41b643-75ca-cabc-4796-e13b424ac738">
+<div id="_dcd21a7b-9264-441c-d676-35c38514b725">
 <table class="center" id="table-7">
             <caption><a href="#table-7" class="selfRef">Table 7</a></caption>
 <thead>
@@ -4882,8 +4960,8 @@ range 0 to 100.<a href="#section-8.3.1-5.2.3.2.1" class="pilcrow">¶</a></p>
 </div>
 </td>
                 <td class="text-left" rowspan="1" colspan="1">
-                  <div id="_fab94e77-3497-6141-8872-12b9fa619aa0">
-<p id="section-8.3.1-5.2.5.2.1">A request is sent to an Organizer by a Voter asking
+                  <div id="_63ba09dc-aaf8-6d24-4fc7-7475a2ab78e6">
+<p id="section-8.3.1-5.2.5.2.1">A request is sent to a poll owner by a voter asking
 for the latest version of a poll to be resent to the
 requester.<a href="#section-8.3.1-5.2.5.2.1" class="pilcrow">¶</a></p>
 </div>
@@ -4896,11 +4974,11 @@ requester.<a href="#section-8.3.1-5.2.5.2.1" class="pilcrow">¶</a></p>
 </div>
 </td>
                 <td class="text-left" rowspan="1" colspan="1">
-                  <div id="_1fb34817-cd0a-fb2e-4803-43e3ce5de744">
+                  <div id="_a9c32e45-1011-fc0a-47db-c303ab031131">
 <p id="section-8.3.1-5.2.6.2.1">Used to send the current state of the poll to all
 voters. The VPOLL can contain a reduced set of
 properties but MUST contain DTSTAMP, SEQUENCE (if
-not 0), UID, ORGANIZER and PARTICIPANT.<a href="#section-8.3.1-5.2.6.2.1" class="pilcrow">¶</a></p>
+not 0), UID, and PARTICIPANT.<a href="#section-8.3.1-5.2.6.2.1" class="pilcrow">¶</a></p>
 </div>
 </td>
               </tr>
@@ -4914,13 +4992,13 @@ not 0), UID, ORGANIZER and PARTICIPANT.<a href="#section-8.3.1-5.2.6.2.1" class=
           <h4 id="name-method-publish">
 <a href="#section-8.3.2" class="section-number selfRef">8.3.2. </a><a href="#name-method-publish" class="section-name selfRef">Method: PUBLISH</a>
           </h4>
-<div id="_4783c09d-cb74-4c16-aaa5-601306f6c2e9">
+<div id="_18eff822-bd5a-9cb8-a061-50fbbd64fc05">
 <p id="section-8.3.2-1">The "PUBLISH" method in a "VPOLL" calendar component is an
 unsolicited posting of an iCalendar object.  Any CU may add published
-components to their calendar.  The "Organizer" MUST be present in a
+components to their calendar.  An owner participant MUST be present in a
 published iCalendar component.  "Voters" MUST NOT be present.  Its
 expected usage is for encapsulating an arbitrary poll as an iCalendar
-object.  The "Organizer" may subsequently update (with another
+object.  The "Owner" may subsequently update (with another
 "PUBLISH" method) or cancel (with a "CANCEL" method) a previously
 published "VPOLL" calendar component.<a href="#section-8.3.2-1" class="pilcrow">¶</a></p>
 </div>
@@ -4971,13 +5049,13 @@ scheduling functions:<a href="#section-8.3.3-1" class="pilcrow">¶</a></p>
 "Voter" to another CU.<a href="#section-8.3.3-2.8" class="pilcrow">¶</a>
 </li>
             <li class="normal" id="section-8.3.3-2.9">For an existing "VPOLL" calendar component, change the role of
-"Organizer" to another CU.<a href="#section-8.3.3-2.9" class="pilcrow">¶</a>
+"Owner" to another CU.<a href="#section-8.3.3-2.9" class="pilcrow">¶</a>
 </li>
           </ul>
-<div id="_3eacea5b-1aa7-43bc-8637-795da66902da">
-<p id="section-8.3.3-3">The "Organizer" originates the "REQUEST".  The recipients of the
+<div id="_f9e46795-087e-cc6c-9384-d87f6b60c7a8">
+<p id="section-8.3.3-3">The "Owner" originates the "REQUEST".  The recipients of the
 "REQUEST" method are the CUs voting in the poll, the "Voters".
-"Voters" use the "REPLY" method to convey votes to the "Organizer".<a href="#section-8.3.3-3" class="pilcrow">¶</a></p>
+"Voters" use the "REPLY" method to convey votes to the "Owner".<a href="#section-8.3.3-3" class="pilcrow">¶</a></p>
 </div>
 <div id="_050f69b9-41ac-c48c-a24f-a5a13ed245da">
 <p id="section-8.3.3-4">The "UID" and "SEQUENCE" properties are used to distinguish the
@@ -5029,12 +5107,12 @@ as the value for the existing poll, then the "REQUEST" method
 describes an update of the poll details, but not a rescheduling of
 the POLL.<a href="#section-8.3.3.2-1" class="pilcrow">¶</a></p>
 </div>
-<div id="_198d21a0-390d-15b6-eaed-7dd1e5cbe043">
+<div id="_091e1c2c-b949-ecce-bbf0-f7ff6b3699f6">
 <p id="section-8.3.3.2-2">The update "REQUEST" method is the appropriate response to a
-"REFRESH" method sent from a "Voter" to the "Organizer" of a poll.<a href="#section-8.3.3.2-2" class="pilcrow">¶</a></p>
+"REFRESH" method sent from a "Voter" to the "Owner" of a poll.<a href="#section-8.3.3.2-2" class="pilcrow">¶</a></p>
 </div>
-<div id="_bda1ca89-ff9d-e1b5-2d1f-176e2c88fedc">
-<p id="section-8.3.3.2-3">The "Organizer" of a poll may also send unsolicited "REQUEST"
+<div id="_6f38c8ff-96c3-eb1d-d9a5-eb0fd4828111">
+<p id="section-8.3.3.2-3">The "Owner" of a poll may also send unsolicited "REQUEST"
 methods.  The unsolicited "REQUEST" methods may be used to update the
 details of the poll without rescheduling it, to update the "RESPONSE"
 parameter of "Voters", or to reconfirm the poll.<a href="#section-8.3.3.2-3" class="pilcrow">¶</a></p>
@@ -5070,77 +5148,75 @@ voting is completed.  The STATUS MUST be set to COMPLETED.<a href="#section-8.3.
             <h5 id="name-delegating-a-poll-to-anothe">
 <a href="#section-8.3.3.5" class="section-number selfRef">8.3.3.5. </a><a href="#name-delegating-a-poll-to-anothe" class="section-name selfRef">Delegating a Poll to Another CU</a>
             </h5>
-<div id="_6b53db9c-16cf-878e-4cba-b74a50493550">
+<div id="_3179071d-c77a-3f18-1f83-6307f032450a">
 <p id="section-8.3.3.5-1">Some calendar and scheduling systems allow "Voters" to delegate the
 vote to another "Calendar User". iTIP supports this concept using the
 following workflow.  Any "Voter" may delegate their right to vote in
 a poll to another CU.  The implication is that the delegate
 participates in lieu of the original "Voter", NOT in addition to the
-"Voter".  The delegator MUST notify the "Organizer" of this action
+"Voter".  The delegator MUST notify the "Owner" of this action
 using the steps outlined below.  Implementations may support or
 restrict delegation as they see fit.  For instance, some
 implementations may restrict a delegate from delegating a "REQUEST"
 to another CU.<a href="#section-8.3.3.5-1" class="pilcrow">¶</a></p>
 </div>
-<div id="_4daf7ac4-1d31-ffac-4a60-09adc3b72c29">
+<div id="_4a2a23f1-0193-f106-7235-8e1141c9ae4e">
 <p id="section-8.3.3.5-2">The "Delegator" of a poll forwards the existing "REQUEST" to the
 "Delegate".  The "REQUEST" method MUST include a "Voter" property
 with the calendar address of the "Delegate".  The "Delegator" MUST
-also send a "REPLY" method to the "Organizer" with the "Delegator's"
+also send a "REPLY" method to the "Owner" with the "Delegator's"
 "Voter" property "DELEGATED-TO" parameter set to the calendar address
 of the "Delegate".  Also, a new "Voter" property for the "Delegate"
 MUST be included and must specify the calendar user address set in
 the "DELEGATED-TO" parameter, as above.<a href="#section-8.3.3.5-2" class="pilcrow">¶</a></p>
 </div>
-<div id="_ae9c8573-6b78-fb30-e91d-b4794425aa90">
+<div id="_e21a2715-9f93-f41c-0035-13d069b68440">
 <p id="section-8.3.3.5-3">In response to the request, the "Delegate" MUST send a "REPLY" method
-to the "Organizer", and optionally to the "Delegator".  The "REPLY"<a href="#section-8.3.3.5-3" class="pilcrow">¶</a></p>
+to the "Owner", and optionally to the "Delegator".  The "REPLY"<a href="#section-8.3.3.5-3" class="pilcrow">¶</a></p>
 </div>
-<div id="_b87abd6d-04f4-9ee8-81cc-45afa1b20cea">
-<p id="section-8.3.3.5-4">method SHOULD include the "Voter" property with the "DELEGATED-FROM"
-parameter value of the "Delegator's" calendar address.<a href="#section-8.3.3.5-4" class="pilcrow">¶</a></p>
+<div id="_97206661-8104-d4de-4ef9-50eb8a188475">
+<p id="section-8.3.3.5-4">method SHOULD include the "Voter" participant with the "PARTICIPANT-DELEGATED-FROM"
+property value of the "Delegator's" calendar address.<a href="#section-8.3.3.5-4" class="pilcrow">¶</a></p>
 </div>
-<div id="_78ef9538-c99f-176f-e75b-be5582b63442">
+<div id="_44f6945f-84fe-a8e8-e380-20947cc7c558">
 <p id="section-8.3.3.5-5">The "Delegator" may continue to receive updates to the poll even
 though they will not be attending.  This is accomplished by the
-"Delegator" setting their "role" attribute to "NON-PARTICIPANT" in
-the "REPLY" to the "Organizer".<a href="#section-8.3.3.5-5" class="pilcrow">¶</a></p>
+"Delegator" setting their "role" attribute to "INFORMATIONAL" in
+the "REPLY" to the "Owner".<a href="#section-8.3.3.5-5" class="pilcrow">¶</a></p>
 </div>
 </section>
 </div>
-<div id="_changing_the_organizer">
+<div id="_changing_the_owner">
 <section id="section-8.3.3.6">
-            <h5 id="name-changing-the-organizer">
-<a href="#section-8.3.3.6" class="section-number selfRef">8.3.3.6. </a><a href="#name-changing-the-organizer" class="section-name selfRef">Changing the Organizer</a>
+            <h5 id="name-changing-the-owner">
+<a href="#section-8.3.3.6" class="section-number selfRef">8.3.3.6. </a><a href="#name-changing-the-owner" class="section-name selfRef">Changing the Owner</a>
             </h5>
-<div id="_7c0471ae-5ced-1d0c-4298-6948d866cd6a">
-<p id="section-8.3.3.6-1">The situation may arise where the "Organizer" of a "VPOLL" is no
-longer able to perform the "Organizer" role and abdicates without
-passing on the "Organizer" role to someone else.  When this occurs,
+<div id="_ec3d4c66-92ad-1adb-fcf4-a7659e934d69">
+<p id="section-8.3.3.6-1">The situation may arise where the "Owner" of a "VPOLL" is no
+longer able to perform the "Owner" role and abdicates without
+passing on the "Owner" role to someone else.  When this occurs,
 the "Voters" of the "VPOLL" may use out-of-band mechanisms to
-communicate the situation and agree upon a new "Organizer".  The new
-"Organizer" should then send out a new "REQUEST" with a modified
+communicate the situation and agree upon a new "Owner".  The new
+"Owner" should then send out a new "REQUEST" with a modified
 version of the "VPOLL" in which the "SEQUENCE" number has been
-incremented and the "ORGANIZER" property has been changed to the new
-"Organizer".<a href="#section-8.3.3.6-1" class="pilcrow">¶</a></p>
+incremented and the owner role assigned to the appropriate "PARTICIPANT".<a href="#section-8.3.3.6-1" class="pilcrow">¶</a></p>
 </div>
 </section>
 </div>
-<div id="_sending_on_behalf_of_the_organizer">
+<div id="_sending_on_behalf_of_the_owner">
 <section id="section-8.3.3.7">
-            <h5 id="name-sending-on-behalf-of-the-or">
-<a href="#section-8.3.3.7" class="section-number selfRef">8.3.3.7. </a><a href="#name-sending-on-behalf-of-the-or" class="section-name selfRef">Sending on Behalf of the Organizer</a>
+            <h5 id="name-sending-on-behalf-of-the-ow">
+<a href="#section-8.3.3.7" class="section-number selfRef">8.3.3.7. </a><a href="#name-sending-on-behalf-of-the-ow" class="section-name selfRef">Sending on Behalf of the Owner</a>
             </h5>
-<div id="_3ea74b79-85f2-4988-cdc0-9dc2b9b910c1">
+<div id="_831fcbf8-d61a-48ac-7788-5ae21b438691">
 <p id="section-8.3.3.7-1">There are a number of scenarios that support the need for a "Calendar
-User" to act on behalf of the "Organizer" without explicit role
-changing.  This might be the case if the CU designated as "Organizer"
+User" to act on behalf of the "Owner" without explicit role
+changing.  This might be the case if the CU designated as "Owner"
 is sick or unable to perform duties associated with that function.
 In these cases, iTIP supports the notion of one CU acting on behalf
-of another.  Using the "SENT-BY" parameter, a "Calendar User" could
-send an updated "VPOLL" "REQUEST".  In the case where one CU sends on
+of another. In the case where one CU sends on
 behalf of another CU, the "Voter" responses are still directed back
-towards the CU designated as "Organizer".<a href="#section-8.3.3.7-1" class="pilcrow">¶</a></p>
+towards the CU designated as "Owner".<a href="#section-8.3.3.7-1" class="pilcrow">¶</a></p>
 </div>
 </section>
 </div>
@@ -5149,29 +5225,29 @@ towards the CU designated as "Organizer".<a href="#section-8.3.3.7-1" class="pil
             <h5 id="name-forwarding-to-an-uninvited-">
 <a href="#section-8.3.3.8" class="section-number selfRef">8.3.3.8. </a><a href="#name-forwarding-to-an-uninvited-" class="section-name selfRef">Forwarding to an Uninvited CU</a>
             </h5>
-<div id="_4c6841c3-5862-6fe6-c081-d64dfc2884d9">
+<div id="_b3de4b8d-d6c0-7218-49b3-fcf7b6a25d29">
 <p id="section-8.3.3.8-1">A "Voter" invited to a "VPOLL" calendar component may send the
 "VPOLL" calendar component to another new CU not previously
 associated with the "VPOLL" calendar component.  The current "Voter"
 participating in the "VPOLL" calendar component does this by
 forwarding the original "REQUEST" method to the new CU.  The new CU
-can send a "REPLY" to the "Organizer" of the "VPOLL" calendar
-component.  The reply contains a "Voter" property for the new CU.<a href="#section-8.3.3.8-1" class="pilcrow">¶</a></p>
+can send a "REPLY" to the "Owner" of the "VPOLL" calendar
+component.  The reply contains a "Voter" participant component for the new CU.<a href="#section-8.3.3.8-1" class="pilcrow">¶</a></p>
 </div>
-<div id="_ad3aacd4-ba9a-162b-e016-2cf67aa2286b">
-<p id="section-8.3.3.8-2">The "Organizer" ultimately decides whether or not the new CU becomes
+<div id="_f7b83d81-6264-b660-a0f8-7d19a2f23253">
+<p id="section-8.3.3.8-2">The "Owner" ultimately decides whether the new CU becomes
 part of the poll and is not obligated to do anything with a "REPLY"
-from a new (uninvited) CU.  If the "Organizer" does not want the new
-CU to be part of the poll, the new "Voter" property is not added to
-the "VPOLL" calendar component.  The "Organizer" MAY send the CU a
+from a new (uninvited) CU.  If the "Owner" does not want the new
+CU to be part of the poll, the new "Voter" is not added to
+the "VPOLL" calendar component.  The "Owner" MAY send the CU a
 "CANCEL" message to indicate that they will not be added to the poll.<a href="#section-8.3.3.8-2" class="pilcrow">¶</a></p>
 </div>
-<div id="_5dee1fe7-6e2b-0354-057f-b0e6a9b64553">
-<p id="section-8.3.3.8-3">If the "Organizer" decides to add the new CU, the new "Voter"
-property is added to the "VPOLL" calendar component.  Furthermore,
-the "Organizer" is free to change any "Voter" property parameter from
-the values supplied by the new CU to something the "Organizer"
-considers appropriate.  The "Organizer" SHOULD send the new CU a
+<div id="_aac20db0-87ca-df1a-0d39-40463bfee12c">
+<p id="section-8.3.3.8-3">If the "Owner" decides to add the new CU, a new participant for the "Voter"
+is added to the "VPOLL" calendar component.  Furthermore,
+the "Owner" is free to change any "Voter" participant property values from
+the values supplied by the new CU to something the "Owner"
+considers appropriate.  The "Owner" SHOULD send the new CU a
 "REQUEST" message to inform them that they have been added.<a href="#section-8.3.3.8-3" class="pilcrow">¶</a></p>
 </div>
 <div id="_b011ee30-2803-5a49-774f-310657548d34">
@@ -5185,13 +5261,13 @@ MUST NOT make changes to the original message.<a href="#section-8.3.3.8-4" class
             <h5 id="name-updating-voter-status">
 <a href="#section-8.3.3.9" class="section-number selfRef">8.3.3.9. </a><a href="#name-updating-voter-status" class="section-name selfRef">Updating Voter Status</a>
             </h5>
-<div id="_35665e24-84b8-ae12-aabe-323ab906c159">
-<p id="section-8.3.3.9-1">The "Organizer" of an poll may also request updated status from one
-or more "Voters".  The "Organizer" sends a "REQUEST" method to the
-"Voter" and sets the "RSVP=TRUE" property parameter on the PARTICIPANT CALENDAR-ADDRESS.  The
+<div id="_1ed9c760-c9c7-0e8d-eecb-ee9053353a23">
+<p id="section-8.3.3.9-1">The "Owner" of a poll may also request updated status from one
+or more "Voters".  The "Owner" sends a "REQUEST" method to the
+"Voter" and sets the "EXPECT-REPLY" property value to TRUE.  The
 "SEQUENCE" property for the poll is not changed from its previous
 value.  A recipient will determine that the only change in the
-"REQUEST" is that their "RSVP" property parameter indicates a request
+"REQUEST" is that their "EXPECT-REPLY" property indicates a request
 for updated status.  The recipient SHOULD respond with a "REPLY"
 method indicating their current vote with respect to the "REQUEST".<a href="#section-8.3.3.9-1" class="pilcrow">¶</a></p>
 </div>
@@ -5219,24 +5295,24 @@ property.  The "Delegate" SHOULD include the calendar address of the
 Depending on the value of the "REQUEST-STATUS" property, no action
 may have been performed.<a href="#section-8.3.4-2" class="pilcrow">¶</a></p>
 </div>
-<div id="_7321772f-0a8f-7e64-1429-04c36714bbed">
-<p id="section-8.3.4-3">The "Organizer" of a poll may receive the "REPLY" method from a CU
+<div id="_41dc6d30-f155-9b24-e766-f5ce5b79bab7">
+<p id="section-8.3.4-3">The "Owner" of a poll may receive the "REPLY" method from a CU
 not in the original "REQUEST".  For example, a "REPLY" may be
 received from a "Delegate" to a poll.  In addition, the "REPLY"
 method may be received from an unknown CU (a "Party Crasher").  This
-uninvited "Voter" may be accepted, or the "Organizer" may cancel the
+uninvited "Voter" may be accepted, or the "Owner" may cancel the
 poll for the uninvited "Voter" by sending a "CANCEL" method to the
 uninvited "Voter".<a href="#section-8.3.4-3" class="pilcrow">¶</a></p>
 </div>
-<div id="_2bb8d7bf-0a69-91cb-9cd0-f5e06d274d39">
-<p id="section-8.3.4-4">A "Voter" MAY include a message to the "Organizer" using the
-"COMMENT" property.  For example, if the user indicates a low
-interest and wants to let the "Organizer" know why, the reason can be
+<div id="_7459ead9-1692-22b9-8aff-dd1ca45af834">
+<p id="section-8.3.4-4">A "Voter" MAY include a message to the "Owner" using the
+"COMMENT" property in the PARTICIPANT component.  For example, if the user indicates a low
+interest and wants to let the "Owner" know why, the reason can be
 expressed in the "COMMENT" property value.<a href="#section-8.3.4-4" class="pilcrow">¶</a></p>
 </div>
-<div id="_a6cea38e-7ecb-299c-4efb-41ce6dc84bfe">
-<p id="section-8.3.4-5">The "Organizer" may also receive a "REPLY" from one CU on behalf of
-another.  Like the scenario enumerated above for the "Organizer",
+<div id="_8360d7ef-a800-ef09-3887-9b02fde8277f">
+<p id="section-8.3.4-5">The "Owner" may also receive a "REPLY" from one CU on behalf of
+another.  Like the scenario enumerated above for the "Owner",
 "Voters" may have another CU respond on their behalf.  This is done
 using the "SENT-BY" parameter.<a href="#section-8.3.4-5" class="pilcrow">¶</a></p>
 </div>
@@ -5251,7 +5327,7 @@ and a single VPOLL object. That object MUST contain the properties
 shown below. All other properties or components SHOULD NOT be present and MUST be
 ignored by the recipient if present.<a href="#section-8.3.4-7" class="pilcrow">¶</a></p>
 </div>
-<span id="name-constraints-for-a-methodrep"></span><div id="_ee31b04e-65e7-eef1-e425-77f99d7b781b">
+<span id="name-constraints-for-a-methodrep"></span><div id="_0360bb93-e5c3-f6c5-f810-5fb39044bf7d">
 <table class="center" id="table-8">
             <caption>
 <a href="#table-8" class="selfRef">Table 8</a>:
@@ -5340,8 +5416,8 @@ ignored by the recipient if present.<a href="#section-8.3.4-7" class="pilcrow">�
               </tr>
               <tr>
                 <td class="text-left" rowspan="1" colspan="1">
-                  <div id="_d0f0002d-243d-8b04-e5f3-b3ca14a6b27f">
-<p id="section-8.3.4-8.2.6.1.1">ORGANIZER<a href="#section-8.3.4-8.2.6.1.1" class="pilcrow">¶</a></p>
+                  <div id="_a10430dc-bfdd-bba8-347c-4415c3809689">
+<p id="section-8.3.4-8.2.6.1.1">UID<a href="#section-8.3.4-8.2.6.1.1" class="pilcrow">¶</a></p>
 </div>
 </td>
                 <td class="text-left" rowspan="1" colspan="1">
@@ -5349,22 +5425,9 @@ ignored by the recipient if present.<a href="#section-8.3.4-7" class="pilcrow">�
 <p id="section-8.3.4-8.2.6.2.1">1<a href="#section-8.3.4-8.2.6.2.1" class="pilcrow">¶</a></p>
 </div>
 </td>
-                <td class="text-left" rowspan="1" colspan="1"></td>
-              </tr>
-              <tr>
                 <td class="text-left" rowspan="1" colspan="1">
-                  <div id="_2862325c-d697-fbda-405a-b06e466865f8">
-<p id="section-8.3.4-8.2.7.1.1">UID<a href="#section-8.3.4-8.2.7.1.1" class="pilcrow">¶</a></p>
-</div>
-</td>
-                <td class="text-left" rowspan="1" colspan="1">
-                  <div id="_cde8647d-92d9-33be-7614-880c998959a9">
-<p id="section-8.3.4-8.2.7.2.1">1<a href="#section-8.3.4-8.2.7.2.1" class="pilcrow">¶</a></p>
-</div>
-</td>
-                <td class="text-left" rowspan="1" colspan="1">
-                  <div id="_887414ec-45a2-1bae-56d5-2682a56bb358">
-<p id="section-8.3.4-8.2.7.3.1">MUST be the UID of the original<a href="#section-8.3.4-8.2.7.3.1" class="pilcrow">¶</a></p>
+                  <div id="_f7e2ae04-e254-8657-da23-d07a8ce55445">
+<p id="section-8.3.4-8.2.6.3.1">MUST be the UID of the original<a href="#section-8.3.4-8.2.6.3.1" class="pilcrow">¶</a></p>
 </div>
 </td>
               </tr>
@@ -5372,15 +5435,32 @@ ignored by the recipient if present.<a href="#section-8.3.4-7" class="pilcrow">�
                 <td class="text-left" rowspan="1" colspan="1"></td>
                 <td class="text-left" rowspan="1" colspan="1"></td>
                 <td class="text-left" rowspan="1" colspan="1">
-                  <div id="_4c105b06-859d-e4f1-995b-aadd3f753679">
-<p id="section-8.3.4-8.2.8.3.1">REQUEST.<a href="#section-8.3.4-8.2.8.3.1" class="pilcrow">¶</a></p>
+                  <div id="_474409fd-b72b-6731-6d05-f24a5778d069">
+<p id="section-8.3.4-8.2.7.3.1">REQUEST.<a href="#section-8.3.4-8.2.7.3.1" class="pilcrow">¶</a></p>
 </div>
 </td>
               </tr>
               <tr>
                 <td class="text-left" rowspan="1" colspan="1">
-                  <div id="_fca521ff-39ba-688e-bbd2-14b7d4a6d81a">
-<p id="section-8.3.4-8.2.9.1.1">SEQUENCE<a href="#section-8.3.4-8.2.9.1.1" class="pilcrow">¶</a></p>
+                  <div id="_4b87d4e7-590b-4078-40d0-31ea42192081">
+<p id="section-8.3.4-8.2.8.1.1">SEQUENCE<a href="#section-8.3.4-8.2.8.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+                <td class="text-left" rowspan="1" colspan="1">
+                  <div id="_c4eab2bf-a923-49f8-95a3-5a6006a9d8d3">
+<p id="section-8.3.4-8.2.8.2.1">0 or 1<a href="#section-8.3.4-8.2.8.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+                <td class="text-left" rowspan="1" colspan="1">
+                  <div id="_72df4181-190f-43e5-cebf-3ee8dd193bdd">
+<p id="section-8.3.4-8.2.8.3.1">If non-zero, MUST be the sequence number of the original REQUEST. MAY be present if 0.<a href="#section-8.3.4-8.2.8.3.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">
+                  <div id="_b4100ada-4cc4-f206-a49e-543d7f5b1ca4">
+<p id="section-8.3.4-8.2.9.1.1">ACCEPT-RESPONSE<a href="#section-8.3.4-8.2.9.1.1" class="pilcrow">¶</a></p>
 </div>
 </td>
                 <td class="text-left" rowspan="1" colspan="1">
@@ -5388,73 +5468,56 @@ ignored by the recipient if present.<a href="#section-8.3.4-7" class="pilcrow">�
 <p id="section-8.3.4-8.2.9.2.1">0 or 1<a href="#section-8.3.4-8.2.9.2.1" class="pilcrow">¶</a></p>
 </div>
 </td>
-                <td class="text-left" rowspan="1" colspan="1">
-                  <div id="_f03d21f7-00a7-5767-0803-01895411cd14">
-<p id="section-8.3.4-8.2.9.3.1">If non-zero, MUST be the sequence number of the original REQUEST. MAY be present if 0.<a href="#section-8.3.4-8.2.9.3.1" class="pilcrow">¶</a></p>
-</div>
-</td>
-              </tr>
-              <tr>
-                <td class="text-left" rowspan="1" colspan="1">
-                  <div id="_43fa4b54-c13b-8a91-d0f8-cb1604ceeb80">
-<p id="section-8.3.4-8.2.10.1.1">ACCEPT-RESPONSE<a href="#section-8.3.4-8.2.10.1.1" class="pilcrow">¶</a></p>
-</div>
-</td>
-                <td class="text-left" rowspan="1" colspan="1">
-                  <div id="_4fd181b3-5394-17da-22b1-7348eac5fed0">
-<p id="section-8.3.4-8.2.10.2.1">0 or 1<a href="#section-8.3.4-8.2.10.2.1" class="pilcrow">¶</a></p>
-</div>
-</td>
                 <td class="text-left" rowspan="1" colspan="1"></td>
               </tr>
               <tr>
                 <td class="text-left" rowspan="1" colspan="1">
-                  <div id="_e28cb5b8-6ad3-526c-33af-4dd8e66107a0">
-<p id="section-8.3.4-8.2.11.1.1">POLL-ITEM-ID<a href="#section-8.3.4-8.2.11.1.1" class="pilcrow">¶</a></p>
+                  <div id="_c4f0bc92-2728-4024-0e80-81aaa6df7883">
+<p id="section-8.3.4-8.2.10.1.1">POLL-ITEM-ID<a href="#section-8.3.4-8.2.10.1.1" class="pilcrow">¶</a></p>
 </div>
 </td>
                 <td class="text-left" rowspan="1" colspan="1">
-                  <div id="_6a8c6b13-d564-4e59-dfb0-0e630823e8fe">
-<p id="section-8.3.4-8.2.11.2.1">1+<a href="#section-8.3.4-8.2.11.2.1" class="pilcrow">¶</a></p>
+                  <div id="_a8aa2e79-0082-67b8-bb22-ad1f3463685f">
+<p id="section-8.3.4-8.2.10.2.1">1+<a href="#section-8.3.4-8.2.10.2.1" class="pilcrow">¶</a></p>
 </div>
 </td>
                 <td class="text-left" rowspan="1" colspan="1">
-                  <div id="_00d9c9ce-eabd-bced-290c-2b9210df5203">
-<p id="section-8.3.4-8.2.11.3.1">One per item being voted on.<a href="#section-8.3.4-8.2.11.3.1" class="pilcrow">¶</a></p>
-</div>
-</td>
-              </tr>
-              <tr>
-                <td class="text-left" rowspan="1" colspan="1">
-                  <div id="_2eca20ae-ad54-2fc5-59cc-0f69b7a1d165">
-<p id="section-8.3.4-8.2.12.1.1">VFREEBUSY<a href="#section-8.3.4-8.2.12.1.1" class="pilcrow">¶</a></p>
-</div>
-</td>
-                <td class="text-left" rowspan="1" colspan="1">
-                  <div id="_e768f601-32bd-58b0-dab2-be605f134ee8">
-<p id="section-8.3.4-8.2.12.2.1">0 or 1<a href="#section-8.3.4-8.2.12.2.1" class="pilcrow">¶</a></p>
-</div>
-</td>
-                <td class="text-left" rowspan="1" colspan="1">
-                  <div id="_f9dd9376-5ba4-9f61-54b4-c94127a19155">
-<p id="section-8.3.4-8.2.12.3.1">A voter may respond with a VFREEBUSY component indicating that the ORGANIZER may select some other time which is not marked as busy.<a href="#section-8.3.4-8.2.12.3.1" class="pilcrow">¶</a></p>
+                  <div id="_fc435115-e096-1b9d-9f15-544cfa48e2f2">
+<p id="section-8.3.4-8.2.10.3.1">One per item being voted on.<a href="#section-8.3.4-8.2.10.3.1" class="pilcrow">¶</a></p>
 </div>
 </td>
               </tr>
               <tr>
                 <td class="text-left" rowspan="1" colspan="1">
-                  <div id="_8c1c94e4-5231-f490-a40f-e702c1c938db">
-<p id="section-8.3.4-8.2.13.1.1">VAVAILABILITY<a href="#section-8.3.4-8.2.13.1.1" class="pilcrow">¶</a></p>
+                  <div id="_b2c88486-a946-4683-5f31-7d6a80fa76ec">
+<p id="section-8.3.4-8.2.11.1.1">VFREEBUSY<a href="#section-8.3.4-8.2.11.1.1" class="pilcrow">¶</a></p>
 </div>
 </td>
                 <td class="text-left" rowspan="1" colspan="1">
-                  <div id="_a8ccfa00-503b-e0dc-7118-327b2a620c5e">
-<p id="section-8.3.4-8.2.13.2.1">0<a href="#section-8.3.4-8.2.13.2.1" class="pilcrow">¶</a></p>
+                  <div id="_8b055b3f-2bd7-087a-d976-d5987fb13ea2">
+<p id="section-8.3.4-8.2.11.2.1">0 or 1<a href="#section-8.3.4-8.2.11.2.1" class="pilcrow">¶</a></p>
 </div>
 </td>
                 <td class="text-left" rowspan="1" colspan="1">
-                  <div id="_d52719b6-ec38-2227-d850-9ba764f81812">
-<p id="section-8.3.4-8.2.13.3.1">A voter may respond with a VAVAILABILITY component indicating that the ORGANIZER may select some other time which is shown as available.<a href="#section-8.3.4-8.2.13.3.1" class="pilcrow">¶</a></p>
+                  <div id="_4408de21-678a-50b1-2bc3-c6558cc0111d">
+<p id="section-8.3.4-8.2.11.3.1">A voter may respond with a VFREEBUSY component indicating that the "Owner" may select some other time which is not marked as busy.<a href="#section-8.3.4-8.2.11.3.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+              </tr>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">
+                  <div id="_d3c2803d-1a02-c9a6-6da8-5d50de8a1861">
+<p id="section-8.3.4-8.2.12.1.1">VAVAILABILITY<a href="#section-8.3.4-8.2.12.1.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+                <td class="text-left" rowspan="1" colspan="1">
+                  <div id="_93d720c6-767a-1839-7717-5ba3520608db">
+<p id="section-8.3.4-8.2.12.2.1">0<a href="#section-8.3.4-8.2.12.2.1" class="pilcrow">¶</a></p>
+</div>
+</td>
+                <td class="text-left" rowspan="1" colspan="1">
+                  <div id="_2acf222b-12c3-3adf-7bce-fb8d636ed7de">
+<p id="section-8.3.4-8.2.12.3.1">A voter may respond with a VAVAILABILITY component indicating that the "Owner" may select some other time which is shown as available.<a href="#section-8.3.4-8.2.12.3.1" class="pilcrow">¶</a></p>
 </div>
 </td>
               </tr>
@@ -5468,13 +5531,13 @@ ignored by the recipient if present.<a href="#section-8.3.4-7" class="pilcrow">�
           <h4 id="name-method-cancel">
 <a href="#section-8.3.5" class="section-number selfRef">8.3.5. </a><a href="#name-method-cancel" class="section-name selfRef">Method: CANCEL</a>
           </h4>
-<div id="_2d0d6438-6897-67d8-b1f7-c0dc9f0ef948">
+<div id="_cf5b1661-f678-b760-5625-f1b09512a74b">
 <p id="section-8.3.5-1">The "CANCEL" method in a "VPOLL" calendar component is used to send a
 cancellation notice of an existing poll request to the affected
-"Voters".  The message is sent by the "Organizer" of the poll.<a href="#section-8.3.5-1" class="pilcrow">¶</a></p>
+"Voters".  The message is sent by the "Owner" of the poll.<a href="#section-8.3.5-1" class="pilcrow">¶</a></p>
 </div>
-<div id="_88241f41-f602-3483-ff50-420db80c7c5b">
-<p id="section-8.3.5-2">The "Organizer" MUST send a "CANCEL" message to each "Voter" affected
+<div id="_d78da7df-001c-275d-ed25-9be89d8a3e31">
+<p id="section-8.3.5-2">The "Owner" MUST send a "CANCEL" message to each "Voter" affected
 by the cancellation.  This can be done using a single "CANCEL"
 message for all "Voters" or by using multiple messages with different
 subsets of the affected "Voters" in each.<a href="#section-8.3.5-2" class="pilcrow">¶</a></p>
@@ -5493,7 +5556,7 @@ and one or more VPOLL objects. Those objects MUST contain the properties
 shown below. All other properties or components SHOULD NOT be present and MUST be
 ignored by the recipient if present.<a href="#section-8.3.5-5" class="pilcrow">¶</a></p>
 </div>
-<span id="name-constraints-for-a-methodcan"></span><div id="_26fe9edb-555b-9ec5-de6f-54643320746a">
+<span id="name-constraints-for-a-methodcan"></span><div id="_e64345c3-90be-7a1c-d993-c54f75ef1d38">
 <table class="center" id="table-9">
             <caption>
 <a href="#table-9" class="selfRef">Table 9</a>:
@@ -5590,26 +5653,13 @@ ignored by the recipient if present.<a href="#section-8.3.5-5" class="pilcrow">�
               </tr>
               <tr>
                 <td class="text-left" rowspan="1" colspan="1">
-                  <div id="_d34f523e-d05f-52fc-dad6-1ab3d75338c0">
-<p id="section-8.3.5-6.2.6.1.1">ORGANIZER<a href="#section-8.3.5-6.2.6.1.1" class="pilcrow">¶</a></p>
+                  <div id="_7d4a9aec-d292-fe6f-ab69-419ad93b0de9">
+<p id="section-8.3.5-6.2.6.1.1">SEQUENCE<a href="#section-8.3.5-6.2.6.1.1" class="pilcrow">¶</a></p>
 </div>
 </td>
                 <td class="text-left" rowspan="1" colspan="1">
                   <div id="_631d1170-4a61-1ea0-4894-5d8182f0de8c">
 <p id="section-8.3.5-6.2.6.2.1">1<a href="#section-8.3.5-6.2.6.2.1" class="pilcrow">¶</a></p>
-</div>
-</td>
-                <td class="text-left" rowspan="1" colspan="1"></td>
-              </tr>
-              <tr>
-                <td class="text-left" rowspan="1" colspan="1">
-                  <div id="_55b714fb-3643-f49c-3ac9-2750ba4bae70">
-<p id="section-8.3.5-6.2.7.1.1">SEQUENCE<a href="#section-8.3.5-6.2.7.1.1" class="pilcrow">¶</a></p>
-</div>
-</td>
-                <td class="text-left" rowspan="1" colspan="1">
-                  <div id="_0a4bb6d1-0c18-8dd5-b442-37ea2209958a">
-<p id="section-8.3.5-6.2.7.2.1">1<a href="#section-8.3.5-6.2.7.2.1" class="pilcrow">¶</a></p>
 </div>
 </td>
                 <td class="text-left" rowspan="1" colspan="1"></td>
@@ -5624,11 +5674,11 @@ ignored by the recipient if present.<a href="#section-8.3.5-5" class="pilcrow">�
           <h4 id="name-method-refresh">
 <a href="#section-8.3.6" class="section-number selfRef">8.3.6. </a><a href="#name-method-refresh" class="section-name selfRef">Method: REFRESH</a>
           </h4>
-<div id="_3f50ef94-f814-9339-d7c3-041afa33a5b6">
+<div id="_ab2e53ad-6c7d-6c1e-9412-e890eacd7566">
 <p id="section-8.3.6-1">The "REFRESH" method in a "VPOLL" calendar component is used by
 "Voters" of an existing event to request an updated vpoll status from
-the poll "Organizer". The "REFRESH" method MUST specify the "UID"
-property of the poll to update.  The "Organizer" responds with a
+the poll "Owner". The "REFRESH" method MUST specify the "UID"
+property of the poll to update.  The "Owner" responds with a
 METHOD=REQUEST giving the latest status and version of the poll.<a href="#section-8.3.6-1" class="pilcrow">¶</a></p>
 </div>
 <div id="_793fcc80-3407-3a72-9444-0928ed23ad9d">
@@ -5636,7 +5686,7 @@ METHOD=REQUEST giving the latest status and version of the poll.<a href="#sectio
 and a single VPOLL object. That object MUST contain the properties
 shown below and no others.<a href="#section-8.3.6-2" class="pilcrow">¶</a></p>
 </div>
-<span id="name-constraints-for-a-methodref"></span><div id="_47812736-445f-7018-e702-e1c4676412c1">
+<span id="name-constraints-for-a-methodref"></span><div id="_1370e6b9-bc7c-f947-458a-262d96510ba4">
 <table class="center" id="table-10">
             <caption>
 <a href="#table-10" class="selfRef">Table 10</a>:
@@ -5712,8 +5762,8 @@ shown below and no others.<a href="#section-8.3.6-2" class="pilcrow">¶</a></p>
               </tr>
               <tr>
                 <td class="text-left" rowspan="1" colspan="1">
-                  <div id="_bb21fad8-f6c4-34bb-c513-c246a5aa0f6d">
-<p id="section-8.3.6-3.2.5.1.1">ORGANIZER<a href="#section-8.3.6-3.2.5.1.1" class="pilcrow">¶</a></p>
+                  <div id="_a0ddcc4d-7eeb-d3b2-d2ba-972df28f0156">
+<p id="section-8.3.6-3.2.5.1.1">UID<a href="#section-8.3.6-3.2.5.1.1" class="pilcrow">¶</a></p>
 </div>
 </td>
                 <td class="text-left" rowspan="1" colspan="1">
@@ -5721,22 +5771,9 @@ shown below and no others.<a href="#section-8.3.6-2" class="pilcrow">¶</a></p>
 <p id="section-8.3.6-3.2.5.2.1">1<a href="#section-8.3.6-3.2.5.2.1" class="pilcrow">¶</a></p>
 </div>
 </td>
-                <td class="text-left" rowspan="1" colspan="1"></td>
-              </tr>
-              <tr>
                 <td class="text-left" rowspan="1" colspan="1">
-                  <div id="_3c2a2855-d39d-2ef3-311e-2c1d46c56192">
-<p id="section-8.3.6-3.2.6.1.1">UID<a href="#section-8.3.6-3.2.6.1.1" class="pilcrow">¶</a></p>
-</div>
-</td>
-                <td class="text-left" rowspan="1" colspan="1">
-                  <div id="_5b84bd53-5e45-ae98-ce87-6613f3519297">
-<p id="section-8.3.6-3.2.6.2.1">1<a href="#section-8.3.6-3.2.6.2.1" class="pilcrow">¶</a></p>
-</div>
-</td>
-                <td class="text-left" rowspan="1" colspan="1">
-                  <div id="_9f5d9a0f-98ee-cef3-0256-d84c846c26a6">
-<p id="section-8.3.6-3.2.6.3.1">MUST be the UID associated with original REQUEST.<a href="#section-8.3.6-3.2.6.3.1" class="pilcrow">¶</a></p>
+                  <div id="_2c6f1340-548f-5ee2-fd3f-e7b4a46fecae">
+<p id="section-8.3.6-3.2.5.3.1">MUST be the UID associated with original REQUEST.<a href="#section-8.3.6-3.2.5.3.1" class="pilcrow">¶</a></p>
 </div>
 </td>
               </tr>
@@ -5750,10 +5787,10 @@ shown below and no others.<a href="#section-8.3.6-2" class="pilcrow">¶</a></p>
           <h4 id="name-method-pollstatus">
 <a href="#section-8.3.7" class="section-number selfRef">8.3.7. </a><a href="#name-method-pollstatus" class="section-name selfRef">Method: POLLSTATUS</a>
           </h4>
-<div id="_1e274f2e-81c9-1132-a5bf-96865354aa6a">
+<div id="_f3fa6d7b-7c78-b33e-c205-f81a2befb884">
 <p id="section-8.3.7-1">The "POLLSTATUS" method in a "VPOLL" calendar component is used to
 inform recipients of the current status of the poll in a compact
-manner.  The "Organizer" MUST be present in the confirmed poll
+manner.  The "Owner" participant MUST be present in the confirmed poll
 component.  All "Voters" MUST be present.  The selected component(s)
 according to the poll mode SHOULD NOT be present in the poll
 component.  Clients receiving this message may store the confirmed
@@ -5768,7 +5805,7 @@ shown below and no others.<a href="#section-8.3.7-2" class="pilcrow">¶</a></p>
 <p id="section-8.3.7-3">This method type is an iCalendar object that conforms to the
 following property constraints:<a href="#section-8.3.7-3" class="pilcrow">¶</a></p>
 </div>
-<span id="name-constraints-for-a-methodpol"></span><div id="_e6bf42d5-99d8-a0ed-ff92-b40b01d50b99">
+<span id="name-constraints-for-a-methodpol"></span><div id="_1b096e17-cde0-e041-b3e6-2afe5f8cd6b9">
 <table class="center" id="table-11">
             <caption>
 <a href="#table-11" class="selfRef">Table 11</a>:
@@ -5874,8 +5911,8 @@ following property constraints:<a href="#section-8.3.7-3" class="pilcrow">¶</a>
               </tr>
               <tr>
                 <td class="text-left" rowspan="1" colspan="1">
-                  <div id="_e764d9ff-9f63-47be-1a09-c40bed4ca469">
-<p id="section-8.3.7-4.2.7.1.1">ORGANIZER<a href="#section-8.3.7-4.2.7.1.1" class="pilcrow">¶</a></p>
+                  <div id="_da5db965-bacc-5ca8-7f84-065a7de3a69b">
+<p id="section-8.3.7-4.2.7.1.1">SUMMARY<a href="#section-8.3.7-4.2.7.1.1" class="pilcrow">¶</a></p>
 </div>
 </td>
                 <td class="text-left" rowspan="1" colspan="1">
@@ -5883,12 +5920,16 @@ following property constraints:<a href="#section-8.3.7-3" class="pilcrow">¶</a>
 <p id="section-8.3.7-4.2.7.2.1">1<a href="#section-8.3.7-4.2.7.2.1" class="pilcrow">¶</a></p>
 </div>
 </td>
-                <td class="text-left" rowspan="1" colspan="1"></td>
+                <td class="text-left" rowspan="1" colspan="1">
+                  <div id="_6f5a17fe-810b-8bf8-0c6e-8cd595c5469c">
+<p id="section-8.3.7-4.2.7.3.1">Can be null.<a href="#section-8.3.7-4.2.7.3.1" class="pilcrow">¶</a></p>
+</div>
+</td>
               </tr>
               <tr>
                 <td class="text-left" rowspan="1" colspan="1">
-                  <div id="_ae5b8a0c-7374-5527-5a12-66de37e796d7">
-<p id="section-8.3.7-4.2.8.1.1">SUMMARY<a href="#section-8.3.7-4.2.8.1.1" class="pilcrow">¶</a></p>
+                  <div id="_c128349d-ea5f-83f3-fd87-4e2909dbb162">
+<p id="section-8.3.7-4.2.8.1.1">UID<a href="#section-8.3.7-4.2.8.1.1" class="pilcrow">¶</a></p>
 </div>
 </td>
                 <td class="text-left" rowspan="1" colspan="1">
@@ -5896,39 +5937,22 @@ following property constraints:<a href="#section-8.3.7-3" class="pilcrow">¶</a>
 <p id="section-8.3.7-4.2.8.2.1">1<a href="#section-8.3.7-4.2.8.2.1" class="pilcrow">¶</a></p>
 </div>
 </td>
-                <td class="text-left" rowspan="1" colspan="1">
-                  <div id="_6d837ac7-f519-6478-33f9-22180dc0a70a">
-<p id="section-8.3.7-4.2.8.3.1">Can be null.<a href="#section-8.3.7-4.2.8.3.1" class="pilcrow">¶</a></p>
-</div>
-</td>
-              </tr>
-              <tr>
-                <td class="text-left" rowspan="1" colspan="1">
-                  <div id="_200f47d0-75bd-6b98-0cce-11d53c7d597b">
-<p id="section-8.3.7-4.2.9.1.1">UID<a href="#section-8.3.7-4.2.9.1.1" class="pilcrow">¶</a></p>
-</div>
-</td>
-                <td class="text-left" rowspan="1" colspan="1">
-                  <div id="_f447c602-d6af-b9b7-c7ad-86ed98472856">
-<p id="section-8.3.7-4.2.9.2.1">1<a href="#section-8.3.7-4.2.9.2.1" class="pilcrow">¶</a></p>
-</div>
-</td>
                 <td class="text-left" rowspan="1" colspan="1"></td>
               </tr>
               <tr>
                 <td class="text-left" rowspan="1" colspan="1">
-                  <div id="_0e40eeb1-2ae4-1677-0b47-6efd3d9d2768">
-<p id="section-8.3.7-4.2.10.1.1">SEQUENCE<a href="#section-8.3.7-4.2.10.1.1" class="pilcrow">¶</a></p>
+                  <div id="_5a5ffada-a3fb-ef42-7c72-8ddc078cbb40">
+<p id="section-8.3.7-4.2.9.1.1">SEQUENCE<a href="#section-8.3.7-4.2.9.1.1" class="pilcrow">¶</a></p>
 </div>
 </td>
                 <td class="text-left" rowspan="1" colspan="1">
-                  <div id="_09831c9a-defa-6a44-3de7-73085e03c317">
-<p id="section-8.3.7-4.2.10.2.1">0 or 1<a href="#section-8.3.7-4.2.10.2.1" class="pilcrow">¶</a></p>
+                  <div id="_6ee2d6a5-4337-3a40-1f8c-778f1e05dfac">
+<p id="section-8.3.7-4.2.9.2.1">0 or 1<a href="#section-8.3.7-4.2.9.2.1" class="pilcrow">¶</a></p>
 </div>
 </td>
                 <td class="text-left" rowspan="1" colspan="1">
-                  <div id="_6c160946-c172-9cac-a9a0-e414e894ac1d">
-<p id="section-8.3.7-4.2.10.3.1">MUST be present if value is greater than 0; MAY be present if 0.<a href="#section-8.3.7-4.2.10.3.1" class="pilcrow">¶</a></p>
+                  <div id="_4f8db3ec-7e12-333d-5db0-c6deb262ce9c">
+<p id="section-8.3.7-4.2.9.3.1">MUST be present if value is greater than 0; MAY be present if 0.<a href="#section-8.3.7-4.2.9.3.1" class="pilcrow">¶</a></p>
 </div>
 </td>
               </tr>
