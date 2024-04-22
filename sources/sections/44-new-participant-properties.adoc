@@ -1,7 +1,7 @@
-[[new-participant-properties]]
-== New Participant Properties
+[[new-participant-properties-for-itip]]
+== New Participant Properties for iTip
 
-The following properties are defined to be used within PARTICIPANT and take the place of ATTENDEE and ORGANIZER properties and parameters. These are not solely for VPOLL but may be used in any future component.
+The following properties are defined to be used within PARTICIPANT during scheduling and take the place of ATTENDEE and ORGANIZER properties and parameters. These are not solely for VPOLL but may be used in any future component.
 
 [[new-prop-kind]]
 === Kind
@@ -57,6 +57,8 @@ It includes the values defined in <<RFC8984>>.
 +
 Note that the kind of participant, for example individual or group, is defined in the KIND property specified here.
 +
+Some of the roles are required for the participant to be a schedulable object. These are the roles that are shown below.
+*
 Do we need a separate registry or should we extend that one?
 
 Format Definition::
@@ -110,7 +112,7 @@ To map <<RFC5545>> ATTENDEE ROLE values to PARTICIPANT-TYPE or jsCalendar values
 
 |===
 
-To map PARTICIPANT-TYPE or jscalendar roles to <<RFC5545>> ROLE values use the following.
+The following table shows those roles that MUST appear in the PARTICIPANT-TYPE for group-scheduling. Additionally, the mapping  PARTICIPANT-TYPE or jscalendar roles to <<RFC5545>> ATTENDEE and ORGANIZER values are shown.
 
 [cols="a,a,a",options="header"]
 |===
