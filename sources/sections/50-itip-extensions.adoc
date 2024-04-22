@@ -4,7 +4,7 @@
 
 This specification introduces a number of extensions to <<RFC5546>>.
 In group scheduling the parties involved are organizer and attendees.
-In VPOLL the parties are organizer and voters.
+In VPOLL the parties are owner and voter participants.
 
 For many of the iTip processing rules the voters take the place of
 attendees.
@@ -36,7 +36,7 @@ time. The VPOLL MUST have one voter only.
 | ADD            | Not supported for VPOLL.
 | CANCEL         | There MUST be a single VPOLL component with UID
 matching that of the poll being cancelled.
-| REFRESH        | The organizer returns a METHOD:REQUEST with the
+| REFRESH        | The owner returns a METHOD:REQUEST with the
 current full state, or a METHOD:CANCEL or an
 error if no matching poll is found.
 
@@ -47,7 +47,7 @@ error if no matching poll is found.
 | POLLSTATUS     | Used to send the current state of the poll to
 all voters. The VPOLL can contain a reduced set
 of properties but MUST contain DTSTAMP, SEQUENCE
-(if not 0), UID, ORGANIZER and PARTICIPANTS.
+(if not 0), UID and PARTICIPANTS. One PARTICIPANT MUST be the owner.
 
 |===
 
@@ -59,7 +59,7 @@ send them with VPOLL components.
 | Originator
 | Methods
 
-| Organizer   | CANCEL, PUBLISH, REQUEST, POLLSTATUS
+| Owner   | CANCEL, PUBLISH, REQUEST, POLLSTATUS
 | Voter       | REPLY, REFRESH, REQUEST (only when delegating)
 
 |===
@@ -68,7 +68,7 @@ send them with VPOLL components.
 === Interoperability Models
 
 Most of the standard iTip specification applies with respect to
-organizer and voters.
+owner and voters.
 
 ==== Delegation
 
@@ -142,14 +142,14 @@ range 0 to 100.
 
 | CANCEL     | Cancel a poll.
 
-| REFRESH    | A request is sent to an Organizer by a Voter asking
+| REFRESH    | A request is sent to a poll owner by a voter asking
 for the latest version of a poll to be resent to the
 requester.
 
 | POLLSTATUS | Used to send the current state of the poll to all
 voters. The VPOLL can contain a reduced set of
 properties but MUST contain DTSTAMP, SEQUENCE (if
-not 0), UID, ORGANIZER and PARTICIPANT.
+not 0), UID, and PARTICIPANT.
 
 |===
 
@@ -157,10 +157,10 @@ not 0), UID, ORGANIZER and PARTICIPANT.
 
 The "PUBLISH" method in a "VPOLL" calendar component is an
 unsolicited posting of an iCalendar object.  Any CU may add published
-components to their calendar.  The "Organizer" MUST be present in a
+components to their calendar.  An owner participant MUST be present in a
 published iCalendar component.  "Voters" MUST NOT be present.  Its
 expected usage is for encapsulating an arbitrary poll as an iCalendar
-object.  The "Organizer" may subsequently update (with another
+object.  The "Owner" may subsequently update (with another
 "PUBLISH" method) or cancel (with a "CANCEL" method) a previously
 published "VPOLL" calendar component.
 
@@ -194,11 +194,11 @@ scheduling functions:
   "Voter" to another CU.
 
 * For an existing "VPOLL" calendar component, change the role of
-  "Organizer" to another CU.
+  "Owner" to another CU.
 
-The "Organizer" originates the "REQUEST".  The recipients of the
+The "Owner" originates the "REQUEST".  The recipients of the
 "REQUEST" method are the CUs voting in the poll, the "Voters".
-"Voters" use the "REPLY" method to convey votes to the "Organizer".
+"Voters" use the "REPLY" method to convey votes to the "Owner".
 
 The "UID" and "SEQUENCE" properties are used to distinguish the
 various uses of the "REQUEST" method.  If the "UID" property value in
@@ -238,9 +238,9 @@ describes an update of the poll details, but not a rescheduling of
 the POLL.
 
 The update "REQUEST" method is the appropriate response to a
-"REFRESH" method sent from a "Voter" to the "Organizer" of a poll.
+"REFRESH" method sent from a "Voter" to the "Owner" of a poll.
 
-The "Organizer" of a poll may also send unsolicited "REQUEST"
+The "Owner" of a poll may also send unsolicited "REQUEST"
 methods.  The unsolicited "REQUEST" methods may be used to update the
 details of the poll without rescheduling it, to update the "RESPONSE"
 parameter of "Voters", or to reconfirm the poll.
@@ -264,7 +264,7 @@ vote to another "Calendar User". iTIP supports this concept using the
 following workflow.  Any "Voter" may delegate their right to vote in
 a poll to another CU.  The implication is that the delegate
 participates in lieu of the original "Voter", NOT in addition to the
-"Voter".  The delegator MUST notify the "Organizer" of this action
+"Voter".  The delegator MUST notify the "Owner" of this action
 using the steps outlined below.  Implementations may support or
 restrict delegation as they see fit.  For instance, some
 implementations may restrict a delegate from delegating a "REQUEST"
@@ -273,46 +273,44 @@ to another CU.
 The "Delegator" of a poll forwards the existing "REQUEST" to the
 "Delegate".  The "REQUEST" method MUST include a "Voter" property
 with the calendar address of the "Delegate".  The "Delegator" MUST
-also send a "REPLY" method to the "Organizer" with the "Delegator's"
+also send a "REPLY" method to the "Owner" with the "Delegator's"
 "Voter" property "DELEGATED-TO" parameter set to the calendar address
 of the "Delegate".  Also, a new "Voter" property for the "Delegate"
 MUST be included and must specify the calendar user address set in
 the "DELEGATED-TO" parameter, as above.
 
 In response to the request, the "Delegate" MUST send a "REPLY" method
-to the "Organizer", and optionally to the "Delegator".  The "REPLY"
+to the "Owner", and optionally to the "Delegator".  The "REPLY"
 
-method SHOULD include the "Voter" property with the "DELEGATED-FROM"
-parameter value of the "Delegator's" calendar address.
+method SHOULD include the "Voter" participant with the "PARTICIPANT-DELEGATED-FROM"
+property value of the "Delegator's" calendar address.
 
 The "Delegator" may continue to receive updates to the poll even
 though they will not be attending.  This is accomplished by the
-"Delegator" setting their "role" attribute to "NON-PARTICIPANT" in
-the "REPLY" to the "Organizer".
+"Delegator" setting their "role" attribute to "INFORMATIONAL" in
+the "REPLY" to the "Owner".
 
-===== Changing the Organizer
+===== Changing the Owner
 
-The situation may arise where the "Organizer" of a "VPOLL" is no
-longer able to perform the "Organizer" role and abdicates without
-passing on the "Organizer" role to someone else.  When this occurs,
+The situation may arise where the "Owner" of a "VPOLL" is no
+longer able to perform the "Owner" role and abdicates without
+passing on the "Owner" role to someone else.  When this occurs,
 the "Voters" of the "VPOLL" may use out-of-band mechanisms to
-communicate the situation and agree upon a new "Organizer".  The new
-"Organizer" should then send out a new "REQUEST" with a modified
+communicate the situation and agree upon a new "Owner".  The new
+"Owner" should then send out a new "REQUEST" with a modified
 version of the "VPOLL" in which the "SEQUENCE" number has been
-incremented and the "ORGANIZER" property has been changed to the new
-"Organizer".
+incremented and the owner role assigned to the appropriate "PARTICIPANT".
 
-===== Sending on Behalf of the Organizer
+===== Sending on Behalf of the Owner
 
 There are a number of scenarios that support the need for a "Calendar
-User" to act on behalf of the "Organizer" without explicit role
-changing.  This might be the case if the CU designated as "Organizer"
+User" to act on behalf of the "Owner" without explicit role
+changing.  This might be the case if the CU designated as "Owner"
 is sick or unable to perform duties associated with that function.
 In these cases, iTIP supports the notion of one CU acting on behalf
-of another.  Using the "SENT-BY" parameter, a "Calendar User" could
-send an updated "VPOLL" "REQUEST".  In the case where one CU sends on
+of another. In the case where one CU sends on
 behalf of another CU, the "Voter" responses are still directed back
-towards the CU designated as "Organizer".
+towards the CU designated as "Owner".
 
 ===== Forwarding to an Uninvited CU
 
@@ -321,21 +319,21 @@ A "Voter" invited to a "VPOLL" calendar component may send the
 associated with the "VPOLL" calendar component.  The current "Voter"
 participating in the "VPOLL" calendar component does this by
 forwarding the original "REQUEST" method to the new CU.  The new CU
-can send a "REPLY" to the "Organizer" of the "VPOLL" calendar
-component.  The reply contains a "Voter" property for the new CU.
+can send a "REPLY" to the "Owner" of the "VPOLL" calendar
+component.  The reply contains a "Voter" participant component for the new CU.
 
-The "Organizer" ultimately decides whether or not the new CU becomes
+The "Owner" ultimately decides whether the new CU becomes
 part of the poll and is not obligated to do anything with a "REPLY"
-from a new (uninvited) CU.  If the "Organizer" does not want the new
-CU to be part of the poll, the new "Voter" property is not added to
-the "VPOLL" calendar component.  The "Organizer" MAY send the CU a
+from a new (uninvited) CU.  If the "Owner" does not want the new
+CU to be part of the poll, the new "Voter" is not added to
+the "VPOLL" calendar component.  The "Owner" MAY send the CU a
 "CANCEL" message to indicate that they will not be added to the poll.
 
-If the "Organizer" decides to add the new CU, the new "Voter"
-property is added to the "VPOLL" calendar component.  Furthermore,
-the "Organizer" is free to change any "Voter" property parameter from
-the values supplied by the new CU to something the "Organizer"
-considers appropriate.  The "Organizer" SHOULD send the new CU a
+If the "Owner" decides to add the new CU, a new participant for the "Voter"
+is added to the "VPOLL" calendar component.  Furthermore,
+the "Owner" is free to change any "Voter" participant property values from
+the values supplied by the new CU to something the "Owner"
+considers appropriate.  The "Owner" SHOULD send the new CU a
 "REQUEST" message to inform them that they have been added.
 
 When forwarding a "REQUEST" to another CU, the forwarding "Voter"
@@ -343,12 +341,12 @@ MUST NOT make changes to the original message.
 
 ===== Updating Voter Status
 
-The "Organizer" of an poll may also request updated status from one
-or more "Voters".  The "Organizer" sends a "REQUEST" method to the
-"Voter" and sets the "RSVP=TRUE" property parameter on the PARTICIPANT CALENDAR-ADDRESS.  The
+The "Owner" of a poll may also request updated status from one
+or more "Voters".  The "Owner" sends a "REQUEST" method to the
+"Voter" and sets the "EXPECT-REPLY" property value to TRUE.  The
 "SEQUENCE" property for the poll is not changed from its previous
 value.  A recipient will determine that the only change in the
-"REQUEST" is that their "RSVP" property parameter indicates a request
+"REQUEST" is that their "EXPECT-REPLY" property indicates a request
 for updated status.  The recipient SHOULD respond with a "REPLY"
 method indicating their current vote with respect to the "REQUEST".
 
@@ -367,21 +365,21 @@ The "REPLY" method is also used when processing of a "REQUEST" fails.
 Depending on the value of the "REQUEST-STATUS" property, no action
 may have been performed.
 
-The "Organizer" of a poll may receive the "REPLY" method from a CU
+The "Owner" of a poll may receive the "REPLY" method from a CU
 not in the original "REQUEST".  For example, a "REPLY" may be
 received from a "Delegate" to a poll.  In addition, the "REPLY"
 method may be received from an unknown CU (a "Party Crasher").  This
-uninvited "Voter" may be accepted, or the "Organizer" may cancel the
+uninvited "Voter" may be accepted, or the "Owner" may cancel the
 poll for the uninvited "Voter" by sending a "CANCEL" method to the
 uninvited "Voter".
 
-A "Voter" MAY include a message to the "Organizer" using the
-"COMMENT" property.  For example, if the user indicates a low
-interest and wants to let the "Organizer" know why, the reason can be
+A "Voter" MAY include a message to the "Owner" using the
+"COMMENT" property in the PARTICIPANT component.  For example, if the user indicates a low
+interest and wants to let the "Owner" know why, the reason can be
 expressed in the "COMMENT" property value.
 
-The "Organizer" may also receive a "REPLY" from one CU on behalf of
-another.  Like the scenario enumerated above for the "Organizer",
+The "Owner" may also receive a "REPLY" from one CU on behalf of
+another.  Like the scenario enumerated above for the "Owner",
 "Voters" may have another CU respond on their behalf.  This is done
 using the "SENT-BY" parameter.
 
@@ -405,14 +403,13 @@ ignored by the recipient if present.
 |                    |          | UID.
 | PARTICIPANT        | 1        | Identifies the Voter replying.
 | DTSTAMP            | 1        |
-| ORGANIZER          | 1        |
 | UID                | 1        | MUST be the UID of the original
 |                    |          | REQUEST.
 | SEQUENCE           | 0 or 1   | If non-zero, MUST be the sequence number of the original REQUEST. MAY be present if 0.
 | ACCEPT-RESPONSE    | 0 or 1   |
 | POLL-ITEM-ID       | 1+       | One per item being voted on.
-| VFREEBUSY          | 0 or 1   | A voter may respond with a VFREEBUSY component indicating that the ORGANIZER may select some other time which is not marked as busy.
-| VAVAILABILITY      | 0        | A voter may respond with a VAVAILABILITY component indicating that the ORGANIZER may select some other time which is shown as available.
+| VFREEBUSY          | 0 or 1   | A voter may respond with a VFREEBUSY component indicating that the "Owner" may select some other time which is not marked as busy.
+| VAVAILABILITY      | 0        | A voter may respond with a VAVAILABILITY component indicating that the "Owner" may select some other time which is shown as available.
 
 |===
 
@@ -420,9 +417,9 @@ ignored by the recipient if present.
 
 The "CANCEL" method in a "VPOLL" calendar component is used to send a
 cancellation notice of an existing poll request to the affected
-"Voters".  The message is sent by the "Organizer" of the poll.
+"Voters".  The message is sent by the "Owner" of the poll.
 
-The "Organizer" MUST send a "CANCEL" message to each "Voter" affected
+The "Owner" MUST send a "CANCEL" message to each "Voter" affected
 by the cancellation.  This can be done using a single "CANCEL"
 message for all "Voters" or by using multiple messages with different
 subsets of the affected "Voters" in each.
@@ -448,7 +445,6 @@ ignored by the recipient if present.
 | PARTICIPANT        | 0+       | Any included participents are being removed from the poll. Otherwise the entire poll is cancelled.
 | UID                | 1        | MUST be the UID of the original REQUEST.
 | DTSTAMP            | 1        |
-| ORGANIZER          | 1        |
 | SEQUENCE           | 1        |
 
 |===
@@ -457,8 +453,8 @@ ignored by the recipient if present.
 
 The "REFRESH" method in a "VPOLL" calendar component is used by
 "Voters" of an existing event to request an updated vpoll status from
-the poll "Organizer". The "REFRESH" method MUST specify the "UID"
-property of the poll to update.  The "Organizer" responds with a
+the poll "Owner". The "REFRESH" method MUST specify the "UID"
+property of the poll to update.  The "Owner" responds with a
 METHOD=REQUEST giving the latest status and version of the poll.
 
 This method type has a "METHOD" property with the value "REFRESH"
@@ -474,7 +470,6 @@ shown below and no others.
 | VPOLL              | 1        |
 | PARTICIPANT        | 1        | MUST identify the requester as a voter.
 | DTSTAMP            | 1        |
-| ORGANIZER          | 1        |
 | UID                | 1        | MUST be the UID associated with original REQUEST.
 
 |===
@@ -483,7 +478,7 @@ shown below and no others.
 
 The "POLLSTATUS" method in a "VPOLL" calendar component is used to
 inform recipients of the current status of the poll in a compact
-manner.  The "Organizer" MUST be present in the confirmed poll
+manner.  The "Owner" participant MUST be present in the confirmed poll
 component.  All "Voters" MUST be present.  The selected component(s)
 according to the poll mode SHOULD NOT be present in the poll
 component.  Clients receiving this message may store the confirmed
@@ -507,7 +502,6 @@ following property constraints:
 | COMPLETED          | 0 or 1   | Only present for a completed poll
 | DTSTAMP            | 1        |
 | DTSTART            | 0 or 1   |
-| ORGANIZER          | 1        |
 | SUMMARY            | 1        | Can be null.
 | UID                | 1        |
 | SEQUENCE           | 0 or 1   | MUST be present if value is greater than 0; MAY be present if 0.

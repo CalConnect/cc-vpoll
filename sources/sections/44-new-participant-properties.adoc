@@ -310,3 +310,26 @@ lang = "LANG" langparams ":" TEXT CRLF
 
 langparams = *(";" other-param)
 ----
+
+[[new-prop-expect-reply]]
+=== Expect reply
+
+Property name:: EXPECT-REPLY
+
+Purpose:: If true, the organizer is expecting the participant to notify them of their participation status.
+
+Property Parameters:: Non-standard or iana parameters can be
+specified on this property.
+
+Conformance:: This property MAY be specified once in the PARTICIPANT component.
+
+Format Definition::
+This property is defined by the following notation:
+[source,abnf]
+----
+expect-reply = "EXPECT-REPLY"
+              expect-replyparams ":"
+              ( "TRUE" / "FALSE") CRLF
+
+expect-replyparams = *(";" other-param)
+----

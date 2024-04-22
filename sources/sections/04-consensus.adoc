@@ -33,10 +33,6 @@ SEQUENCE:: The usual <<RFC5545>> property.  See below for SEQUENCE
 
 UID:: The usual <<RFC5545>> property.
 
-ORGANIZER:: The usual <<RFC5545>> property.  In general this need not
-  be an organizer of any of the alternatives.  In this simple
-  outline we assume it is the same.
-
 SUMMARY:: The usual <<RFC5545>> property.  This optional but
   recommended property provides the a short title to the poll.
 
@@ -91,7 +87,6 @@ BEGIN:VPOLL
 POLL-MODE:BASIC
 POLL-COMPLETION:SERVER-SUBMIT
 POLL-PROPERTIES:DTSTART,LOCATION
-ORGANIZER:mailto:mike@example.com
 UID:sched01-1234567890
 DTSTAMP:20120101T000000Z
 SUMMARY:What to do this week
@@ -105,7 +100,7 @@ PARTICIPANT-TYPE: VOTER
 CALENDAR-ADDRESS:mailto:eric@example.com
 END:PARTICIPANT
 BEGIN:PARTICIPANT
-PARTICIPANT-TYPE: VOTER
+PARTICIPANT-TYPE: VOTER,OWNER
 CALENDAR-ADDRESS:mailto:mike@example.com
 END:PARTICIPANT
 BEGIN:VEVENT.......(with a poll-item-id=1)
@@ -148,8 +143,6 @@ SEQUENCE:: The usual <<RFC5545>> property.  See below for SEQUENCE
 
 UID:: Same as the request.
 
-ORGANIZER:: Same as the request.
-
 SUMMARY:: Same as the request.
 
 PARTICIPANT:: One only with a CALENDAR-ADDRESS identifying the voter replying.
@@ -179,7 +172,6 @@ VERSION:2.0
 PRODID:-//Example//Example
 METHOD: REPLY
 BEGIN:VPOLL
-ORGANIZER:mailto:mike@example.com
 UID:sched01-1234567890
 DTSTAMP:20120101T010000Z
 SUMMARY:What to do this week
@@ -208,11 +200,11 @@ END:VCALENDAR
 
 === VPOLL updates
 
-When the organizer receives a response from one or more voters the
+When the owner receives a response from one or more voters the
 current state of the poll is sent to all voters.  The new iTip method
 POLLSTATUS is used.  The VPOLL can contain a reduced set of
-properties but MUST contain DTSTAMP, SEQUENCE (if not 0), UID,
-ORGANIZER and one or more PARTICIPANT components each populated with zero or more VOTE components.
+properties but MUST contain DTSTAMP, SEQUENCE (if not 0), UID, and
+one or more PARTICIPANT components each populated with zero or more VOTE components.
 
 [example]
 --
@@ -223,7 +215,6 @@ VERSION:2.0
 PRODID:-//Example//Example
 METHOD: POLLSTATUS
 BEGIN:VPOLL
-ORGANIZER:mailto:mike@example.com
 UID:sched01-1234567890
 DTSTAMP:20120101T020000Z
 SEQUENCE:0
@@ -256,6 +247,24 @@ END:VOTE
 BEGIN:VOTE
 POLL-ITEM-ID:2
 RESPONSE:100
+END:VOTE
+BEGIN:VOTE
+POLL-ITEM-ID:3
+RESPONSE:0
+END:VOTE
+END:PARTICIPANT
+BEGIN:PARTICIPANT
+PARTICIPANT-TYPE: VOTER,OWNER
+CALENDAR-ADDRESS:mailto:mike@example.com
+BEGIN: VOTE
+POLL-ITEM-ID:1
+RESPONSE:50
+COMMENT:Work on iTIP
+END:VOTE
+BEGIN:VOTE
+POLL-ITEM-ID:2
+RESPONSE:100
+COMMENT:Work on WebDAV
 END:VOTE
 BEGIN:VOTE
 POLL-ITEM-ID:3
@@ -295,7 +304,6 @@ VERSION:2.0
 PRODID:-//Example//Example
 METHOD: REQUEST
 BEGIN:VPOLL
-ORGANIZER:mailto:douglm@example.com
 UID:sched01-1234567890
 DTSTAMP:20120101T030000Z
 COMPLETED:20120101T030000Z
@@ -304,6 +312,10 @@ SEQUENCE:0
 SUMMARY:What to do this week
 STATUS:CONFIRMED
 POLL-WINNER:3
+BEGIN:PARTICIPANT
+PARTICIPANT-TYPE: OWNER
+CALENDAR-ADDRESS:mailto:mike@example.com
+END:PARTICIPANT
 BEGIN:VEVENT.......(with a poll-item-id=1)
 END:VEVENT
 BEGIN:VEVENT.......(with a poll-item-id=2)
