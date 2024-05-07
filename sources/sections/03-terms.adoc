@@ -10,7 +10,7 @@ the ABNF notation of <<RFC5234>> as used by <<RFC5545>>.  Any syntax
 elements shown below that are not explicitly defined in this
 specification come from iCalendar <<RFC5545>>.
 
-Additionally the following terms are used:
+Additionally, the following terms are used:
 
 === consensus scheduling
 

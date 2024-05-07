@@ -6,7 +6,7 @@ This specification extends <<RFC4791>> in that it defines a new
 component and new iCalendar properties to be supported and requires
 extra definitions related to time-ranges and reports.
 
-Additionally, it extends <<RFC6638>> as it a VPOLL component is a
+Additionally, it extends <<RFC6638>> as a VPOLL component is a
 schedulable entity.
 
 === Calendar Collection Properties
