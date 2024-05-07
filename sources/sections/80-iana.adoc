@@ -25,11 +25,12 @@ added to the registry defined in <<RFC5545,section=8.2.3>>:
 |===
 | Property        | Status  | Reference
 
-| ACCEPT-RESPONSE | Current | <<new-prop-reply-url>>
+| ACCEPT-RESPONSE | Current | <<new-prop-accept-response>>
 | POLL-ITEM-ID    | Current | <<new-prop-poll-item-id>>
 | POLL-MODE       | Current | <<new-prop-poll-mode>>
 | POLL-PROPERTIES | Current | <<new-prop-poll-properties>>
 | POLL-WINNER     | Current | <<new-prop-poll-winner>>
+| REPLY-URL        | Current | <<new-prop-reply-url>>
 | RESPONSE        | Current | <<new-prop-response>>
 
 |===

@@ -108,7 +108,7 @@ stayinformedparam = "STAY-INFORMED"  "=" ("TRUE" / "FALSE")
 Description:: This parameter MAY be specified on the CALENDAR-ADDRESS
   property in the PARTICIPANT component and, if the
   value is TRUE, indicates the voter wishes to be added to the final
-  choice as a non participant.
+  choice as a non-participant.
 
 === New Properties
 
