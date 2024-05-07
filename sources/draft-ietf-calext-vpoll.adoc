@@ -27,7 +27,7 @@
 :city_2: Troy
 :code_2: 12180
 :country_2: United States of America
-:ur_2i: http://bedework.com
+:uri_2: http://bedework.com
 :email_2: mdouglass@bedework.com
 :docfile: draft-ietf-calext-vpoll.adoc
 :mn-document-class: ietf
