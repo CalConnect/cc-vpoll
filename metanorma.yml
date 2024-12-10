@@ -1,8 +1,10 @@
 ---
 metanorma:
-  deploy:
-    email: "travis-ci@metanorma.org"
-relaton:
+  source:
+    files:
+      - sources/cc-51006.adoc
+      - sources/draft-ietf-calext-vpoll.adoc
+
   collection:
-    name: Calendaring and scheduling -- Consensus scheduling -- iCalendar VPOLL component
+    name: Consensus scheduling -- iCalendar VPOLL component
     organization: CalConnect

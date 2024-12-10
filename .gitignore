@@ -1,7 +1,9 @@
 .DS_Store
-.swp
-.tmp.xml
-
-# Deploy key
-deploy_key
-/.idea
+*.abort
+*.err
+relaton/
+.vscode/
+.ruby-lsp/
+Gemfile.lock
+iev/
+_site/

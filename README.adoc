@@ -1,25 +1,58 @@
-:repo-name: csd-vpoll
-
 = CalConnect Standard: Calendaring and scheduling -- Consensus scheduling -- iCalendar VPOLL component
 
 This work item belongs to TC FREEBUSY.
 
-image:https://travis-ci.com/CalConnect/csd-vpoll.svg?branch=master["Build Status", link="https://travis-ci.com/calconnect/csd-vpoll"]
+image:https://github.com/CalConnect/cc-vpoll/actions/workflows/generate.yml/badge.svg["Build Status", link="https://github.com/CalConnect/cc-vpoll/actions/workflows/generate.yml"]
 
 This document is available in its rendered forms here:
 
-* https://calconnect.github.io/csd-vpoll/[CalConnect+IETF: Calendaring and scheduling -- Consensus scheduling -- iCalendar VPOLL component (HTML)]
+* https://calconnect.github.io/cc-vpoll/[CalConnect+IETF: Calendaring and scheduling -- Consensus scheduling -- iCalendar VPOLL component]
+
+
+== General
+
+This document specifies an integrity checking mechanism and related
+properties for:
+
+* vObject (I-D.calconnect-vobject-vformat)
+* vCard version 4 (vCard v4) (RFC 6350); and
+* iCalendar (Internet Calendaring and Scheduling Core Object
+  Specification) (RFC 5545)
+
+This work is produced by the CalConnect TC-VCARD and TC-CALENDAR committees.
+
+The document is published as the following:
+
+* CalConnect CC 51006
+* IETF draft-ietf-calext-vpoll
+
+
+== Structure
+
+`script.rb`::
+
+
+`sources/`::
+source of documents and models
+
+`sources/cc-51006.adoc`::
+CalConnect CC 51006 standard.
+
+`sources/draft-ietf-calext-vpoll.adoc`::
+IETF draft-ietf-calext-vpoll, dual-published from CC 51006.
+
+`_site/`::
+(automatically generated using `metanorma site generate`) published document.
+
 
 == Fetching the document
 
-[source,sh]
-----
-git clone https://github.com/CalConnect/csd-vpoll/
-----
+Click on "Code > Local" to clone this repository.
 
-== Installing Build Tools
 
-See https://www.metanorma.com/author/topics/install/
+== Installing build tools
+
+See https://www.metanorma.org/install/
 
 
 == Running via Docker or locally
@@ -27,38 +60,45 @@ See https://www.metanorma.com/author/topics/install/
 If you have installed the build tools locally, and wish to run the
 locally-installed compilation tools, there is nothing further to set.
 
-If you don't want to deal with local dependencies, use the docker
-version by:
+If you don't want to deal with local dependencies, use the docker:
 
 [source,sh]
 ----
-export METANORMA_DOCKER=1
+docker run -v "$(pwd)":/metanorma -w /metanorma -it metanorma/mn metanorma site generate --agree-to-terms
 ----
 
-The `Makefile` will automatically choose the proper command to
-execute.
 
-
-== Building The Document
+== Building the document
 
 [source,sh]
 ----
-make clean all
+metanorma site generate --agree-to-terms
 ----
 
-The following outputs will be built:
-
-* CSD XML (https://github.com/calconnect/metanorma-model-csd) (`[filename].xml`)
-* HTML (`[filename].html`)
-* PDF (`[filename].pdf`)
-* Word DOC (`[filename].doc`)
+The generated documents are accessible under `_site/`.
 
 
 == Iterating the document
 
 [source,sh]
 ----
-make html
-open csd-*.html
+metanorma site generate --agree-to-terms
+open _site/index.html
 ----
+
+
+== IETF: Checking against idnits
+
+https://tools.ietf.org/tools/idnits/[idnits] is the RFC checking tool prior to
+submissions.
+
+[source,sh]
+----
+idnits draft-ietf-calext-subscription-upgrade.nits
+----
+
+
+== License
+
+Copyright its respective authors and CalConnect.
 
