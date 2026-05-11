@@ -1,0 +1,4 @@
+documents:
+  - source: sources/cc-51006.adoc
+  - source: sources/draft-ietf-calext-vpoll.adoc
+  - source: sources/draft-york-vpoll.adoc

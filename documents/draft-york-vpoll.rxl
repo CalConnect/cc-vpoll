@@ -1,0 +1,73 @@
+<bibdata type="standard">
+<title language="en" format="text/plain" type="main">VPOLL: Consensus Scheduling Component for iCalendar</title>
+<title language="en" format="text/plain" type="abbrev">VPOLL</title>
+<uri>https://www.apple.com</uri>
+<docidentifier>draft-york-vpoll-05</docidentifier>
+<docnumber>draft-york-vpoll-05</docnumber>
+<contributor>
+<role type="author"/>
+<person>
+<name>
+<completename>Eric York</completename>
+</name>
+<email>eyork@apple.com</email>
+</person>
+</contributor>
+<contributor>
+<role type="author"/>
+<person>
+<name>
+<completename>Cyrus Daboo</completename>
+</name>
+<email>cyrus@daboo.name</email>
+</person>
+</contributor>
+<contributor>
+<role type="author"/>
+<person>
+<name>
+<completename>Michael Douglass</completename>
+</name>
+<email>mikeadouglass@gmail.com</email>
+</person>
+</contributor>
+<contributor>
+<role type="publisher"/>
+<organization>
+<name>Internet Engineering Task Force</name>
+<abbreviation>IETF</abbreviation>
+</organization>
+</contributor>
+<version>
+<revision-date>2019-05-15</revision-date>
+</version>
+<language>en</language>
+<script>Latn</script>
+<status>
+<stage>standard</stage>
+</status>
+<copyright>
+<from>2020</from>
+<owner>
+<organization>
+<name>Internet Engineering Task Force</name>
+<abbreviation>IETF</abbreviation>
+</organization>
+</owner>
+</copyright>
+<series type="stream">
+<title>IETF</title>
+</series>
+<series type="intended">
+<title>standard</title>
+</series>
+<ext>
+<doctype>internet-draft</doctype>
+<area>Internet</area>
+<ipr>trust200902</ipr>
+<consensus>true</consensus>
+<pi>
+<toc>yes</toc>
+</pi>
+</ext>
+</bibdata>

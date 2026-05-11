@@ -1,0 +1,215 @@
+<relaton-collection xmlns="https://open.ribose.com/relaton-xml"><title>Calendaring and scheduling -- Consensus scheduling -- iCalendar VPOLL component</title><contributor><role type='author'/><organization><name>CalConnect</name></organization></contributor><relation type='partOf'><bibdata type="standard">
+  <title format="text/plain" language="en">Calendaring and scheduling — Consensus scheduling — iCalendar VPOLL component</title>
+  <uri type="xml">documents/cc-51006.xml</uri>
+  <uri type="pdf">documents/cc-51006.pdf</uri>
+  <uri type="doc">documents/cc-51006.doc</uri>
+  <uri type="html">documents/cc-51006.html</uri>
+  <uri type="rxl">documents/cc-51006.rxl</uri>
+  <docidentifier type="CalConnect">CC/CD 51006:2018</docidentifier>
+  <docnumber>51006</docnumber>
+  <date type="published">
+    <on>2018-11-19</on>
+  </date>
+  <contributor>
+    <role type="author"/>
+    <organization>
+      <name>CalConnect</name>
+    </organization>
+  </contributor>
+  <contributor>
+    <role type="author"/>
+    <person>
+      <name>
+        <completename>Eric York</completename>
+      </name>
+    </person>
+  </contributor>
+  <contributor>
+    <role type="author"/>
+    <person>
+      <name>
+        <completename>Cyrus Daboo</completename>
+      </name>
+    </person>
+  </contributor>
+  <contributor>
+    <role type="author"/>
+    <person>
+      <name>
+        <completename>Michael Douglass</completename>
+      </name>
+    </person>
+  </contributor>
+  <contributor>
+    <role type="publisher"/>
+    <organization>
+      <name>CalConnect</name>
+    </organization>
+  </contributor>
+  <edition>1</edition>
+  <version>
+    <revision-date>2018-11-19</revision-date>
+  </version>
+  <language>en</language>
+  <script>Latn</script>
+  <status>
+    <stage>committee-draft</stage>
+  </status>
+  <copyright>
+    <from>2018</from>
+    <owner>
+      <organization>
+        <name>CalConnect</name>
+      </organization>
+    </owner>
+  </copyright>
+  <ext>
+    <doctype>standard</doctype>
+    <editorialgroup>
+      <technical-committee>FREEBUSY</technical-committee>
+    </editorialgroup>
+  </ext>
+</bibdata></relation>
+<relation type='partOf'><bibdata type="standard">
+  <title type="main" format="text/plain" language="en">VPOLL: Consensus Scheduling Component for iCalendar</title>
+  <title type="abbrev" format="text/plain" language="en">VPOLL</title>
+  <uri>www.linkedin.com/in/eryork</uri>
+  <uri type="xml">documents/draft-ietf-calext-vpoll.xml</uri>
+  <uri type="html">documents/draft-ietf-calext-vpoll.html</uri>
+  <uri type="rxl">documents/draft-ietf-calext-vpoll.rxl</uri>
+  <uri type="txt">documents/draft-ietf-calext-vpoll.txt</uri>
+  <docidentifier>draft-ietf-calext-vpoll-00</docidentifier>
+  <docnumber>draft-ietf-calext-vpoll-00</docnumber>
+  <contributor>
+    <role type="author"/>
+    <person>
+      <name>
+        <completename>Eric York</completename>
+      </name>
+      <email>eric.york@gmail.com</email>
+    </person>
+  </contributor>
+  <contributor>
+    <role type="author"/>
+    <person>
+      <name>
+        <completename>Cyrus Daboo</completename>
+      </name>
+      <email>cyrus@daboo.name</email>
+    </person>
+  </contributor>
+  <contributor>
+    <role type="author"/>
+    <person>
+      <name>
+        <completename>Michael Douglass</completename>
+      </name>
+      <email>mikeadouglass@gmail.com</email>
+    </person>
+  </contributor>
+  <contributor>
+    <role type="publisher"/>
+    <organization>
+      <name>Internet Engineering Task Force</name>
+      <abbreviation>IETF</abbreviation>
+    </organization>
+  </contributor>
+  <version>
+    <revision-date>2019-11-05</revision-date>
+  </version>
+  <language>en</language>
+  <script>Latn</script>
+  <status>
+    <stage>standard</stage>
+  </status>
+  <copyright>
+    <from>2020</from>
+    <owner>
+      <organization>
+        <name>Internet Engineering Task Force</name>
+        <abbreviation>IETF</abbreviation>
+      </organization>
+    </owner>
+  </copyright>
+  <series type="stream">
+    <title>IETF</title>
+  </series>
+  <series type="intended">
+    <title>standard</title>
+  </series>
+  <ext>
+    <doctype>internet-draft</doctype>
+  </ext>
+</bibdata></relation>
+<relation type='partOf'><bibdata type="standard">
+  <title type="main" format="text/plain" language="en">VPOLL: Consensus Scheduling Component for iCalendar</title>
+  <title type="abbrev" format="text/plain" language="en">VPOLL</title>
+  <uri>https://www.apple.com</uri>
+  <uri type="xml">documents/draft-york-vpoll.xml</uri>
+  <uri type="html">documents/draft-york-vpoll.html</uri>
+  <uri type="rxl">documents/draft-york-vpoll.rxl</uri>
+  <uri type="txt">documents/draft-york-vpoll.txt</uri>
+  <docidentifier>draft-york-vpoll-05</docidentifier>
+  <docnumber>draft-york-vpoll-05</docnumber>
+  <contributor>
+    <role type="author"/>
+    <person>
+      <name>
+        <completename>Eric York</completename>
+      </name>
+      <email>eyork@apple.com</email>
+    </person>
+  </contributor>
+  <contributor>
+    <role type="author"/>
+    <person>
+      <name>
+        <completename>Cyrus Daboo</completename>
+      </name>
+      <email>cyrus@daboo.name</email>
+    </person>
+  </contributor>
+  <contributor>
+    <role type="author"/>
+    <person>
+      <name>
+        <completename>Michael Douglass</completename>
+      </name>
+      <email>mikeadouglass@gmail.com</email>
+    </person>
+  </contributor>
+  <contributor>
+    <role type="publisher"/>
+    <organization>
+      <name>Internet Engineering Task Force</name>
+      <abbreviation>IETF</abbreviation>
+    </organization>
+  </contributor>
+  <version>
+    <revision-date>2019-05-15</revision-date>
+  </version>
+  <language>en</language>
+  <script>Latn</script>
+  <status>
+    <stage>standard</stage>
+  </status>
+  <copyright>
+    <from>2020</from>
+    <owner>
+      <organization>
+        <name>Internet Engineering Task Force</name>
+        <abbreviation>IETF</abbreviation>
+      </organization>
+    </owner>
+  </copyright>
+  <series type="stream">
+    <title>IETF</title>
+  </series>
+  <series type="intended">
+    <title>standard</title>
+  </series>
+  <ext>
+    <doctype>internet-draft</doctype>
+  </ext>
+</bibdata></relation>
+</relaton-collection>

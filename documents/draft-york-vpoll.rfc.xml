@@ -1,0 +1,3140 @@
+<?xml version="1.0"?>
+<?rfc strict="yes"?>
+<?rfc compact="yes"?>
+<?rfc subcompact="no"?>
+<?rfc tocdepth="4"?>
+<?rfc symrefs="yes"?>
+<?rfc sortrefs="yes"?>
+<rfc xmlns:xi="http://www.w3.org/2001/XInclude" docName="draft-york-vpoll-05" category="std" ipr="trust200902" submissionType="IETF" xml:lang="en" version="3" >
+  <front>
+    <title abbrev="VPOLL">VPOLL: Consensus Scheduling Component for iCalendar</title>
+    <seriesInfo value="draft-york-vpoll-05" status="Standard" stream="IETF" name="Internet-Draft" asciiName="Internet-Draft"></seriesInfo>
+    <seriesInfo name="" value="" status="standard"></seriesInfo>
+    <author fullname="Eric York">
+      <address>
+        <postal></postal>
+        <email>eyork@apple.com</email>
+        <uri></uri>
+      </address>
+    </author>
+    <author fullname="Cyrus Daboo">
+      <address>
+        <postal></postal>
+        <email>cyrus@daboo.name</email>
+        <uri></uri>
+      </address>
+    </author>
+    <author fullname="Michael Douglass">
+      <address>
+        <postal></postal>
+        <email>mikeadouglass@gmail.com</email>
+        <uri></uri>
+      </address>
+    </author>
+    <area>Internet</area>
+    <abstract anchor="_182f40ab-c2df-476f-bf87-67e6e1fa0d3b">
+
+<t anchor="_adb5ee7f-250f-4ed2-91a4-f212a11567f7">This specification introduces a new iCalendar component which allows
+for consensus scheduling, that is, voting on a number of alternative
+meeting or task alternatives.</t>
+</abstract>
+  </front>
+  <middle>
+    <section anchor="acknowledgements">
+      <name>Acknowledgements</name>
+      <t anchor="_f026cf5a-0576-42bf-9c48-e449178ebf1f">The authors would like to thank the members of the Calendaring and Scheduling Consortium (CalConnect) for contributing their ideas and support.</t>
+    </section>
+    <section anchor="_introduction">
+      <name>Introduction</name>
+      <t anchor="_61d05ef7-6477-4906-8c12-402a21fc3ce6">The currently existing approach to agreeing on meeting times using
+iTip <relref target="RFC5546" section="" relative=""></relref> and/or iMip <relref target="RFC6047" section="" relative=""></relref> has some significant failings.
+There is no useful bargaining or suggestion mechanism in iTip, only
+the ability for a potential attendee to accept or refuse or to
+counter with a time of their own choosing.</t>
+      <t anchor="_1baf6480-f678-4415-b5a6-429c4c7136bb">Part of the problem is that for many potential attendees, their
+freebusy is not an accurate representation of their availability.  In
+fact, when trying to schedule conference calls across different
+organizations, attendees may not be allowed to provide freebusy
+information or availability as this may reveal something of the
+organizations internal activities.</t>
+      <t anchor="_aefbfdc2-c1a9-428a-861a-8fae33979f7f">A number of studies have shown that large amounts of time are spent
+trying to come to an agreement - up to and beyond 20 working hours
+per meeting.  Many organizers fall back on other approaches such as
+phone calls and email to determine a suitable time.</t>
+      <t anchor="_b2b6a2d8-4673-4b78-bef6-f993b38e675a">Online services have appeared as a result and these allow
+participants to vote on a number of alternatives without revealing or
+using freebusy or availability.  When agreement is reached a
+conventional scheduling message may be sent to the attendees.  This
+approach appears to reach consensus fairly rapidly.  Peer pressure
+may have some bearing on this as all voters are usually able to see
+the current state of the voting and may adjust their own meeting
+schedules to make themselves available for a popular choice.</t>
+      <t anchor="_2887db5b-1e11-43e5-87d8-d75897a28978">The component and properties defined in this specification provide a
+standardized structure for this process and allow calendar clients
+and servers and web based services to interact.</t>
+      <t anchor="_25887926-ed11-4ca1-956b-9ee5cf677848">These structures also have uses beyond the relatively simple needs of
+most meeting organizers.  The process of coming to consensus can also
+be viewed as a bidding process.</t>
+    </section>
+    <section anchor="terms">
+      <name>Terms and definitions</name>
+      <t anchor="_01d7e282-8015-4954-8bd5-acc0a75956f4">For the purposes of this document,
+    the following terms and definitions apply.</t>
+      <section anchor="_consensus_scheduling">
+<name>consensus scheduling</name>
+<t anchor="_1d8fd289-31a8-4a28-bd70-8a8aae63bd5d">The process whereby users come to some agreement on meeting
+or task alternatives and then book that meeting or task.</t>
+</section>
+      <section anchor="_active_vpoll">
+<name>active Vpoll</name>
+<t anchor="_b42526fa-66e9-4cec-b83a-83cf5dde7ad6">A VPoll may have a DTSTART, DTEND and DURATION which
+may define the start and end of the active voting period</t>
+</section>
+      <section anchor="_voter">
+<name>voter</name>
+<t anchor="_ad30a436-6bf0-4546-9015-584701a2f7d4">A participant who votes on the alternatives. A voter need not be an attendee of any of the alternatives presented.</t>
+</section>
+    </section>
+    <section anchor="simple-consensus-scheduling">
+      <name>Simple Consensus Scheduling</name>
+      <t anchor="_04b56f4a-0907-41a2-ba4b-364b22a6da3f">This specification defines components and properties which can be
+used for simple consensus scheduling but also have the generality to
+handle more complex cases.  To provide an easy (and for many -
+sufficient) introduction to consensus scheduling and VPOLL we will
+outline the flow of information for the simple case of voting on a
+number of meeting alternatives which differ only in time.  In
+addition the voters will all be potential attendees.</t>
+      <t anchor="_8a0968c3-5e1b-4ce6-8940-002d6fda5858">This specification not only defines data structures but adds a new
+iTip method used when consensus has been reached.  This document will
+show how a VPOLL object is used to inform voters of the state of a
+simple vote on some alternatives.</t>
+      <section anchor="_the_vpoll_component_an_overview"><name>The VPOLL Component: An Overview</name><t anchor="_ce75f9bd-1c3f-4b47-b0d7-c871c353c362">The VPOLL component acts as a wrapper for a number of alternatives to
+be voted on, together with some properties and a new component used
+to maintain the state of the voting.  For our simple example the
+following VPOLL properties and sub-components are either required or
+appropriate:</t>
+<dl anchor="_789c8cfe-47df-4c71-91b3-b0db774ae6ca"><dt>DTSTAMP</dt><dd>
+<t anchor="_ac17fcff-665e-4a9d-8dbe-034965b0f896">The usual <relref target="RFC5545" section="" relative=""></relref> property.</t>
+</dd><dt>SEQUENCE</dt><dd>
+<t anchor="_de1c7575-b5bc-4b59-b329-9f43e893ef5f">The usual <relref target="RFC5545" section="" relative=""></relref> property.  See below for SEQUENCE
+behavior.</t>
+</dd><dt>UID</dt><dd>
+<t anchor="_85bd9501-6fa5-4e1b-af0c-17297843845b">The usual <relref target="RFC5545" section="" relative=""></relref> property.</t>
+</dd><dt>ORGANIZER</dt><dd>
+<t anchor="_8d586bec-82c9-4205-94a3-c83242780db9">The usual <relref target="RFC5545" section="" relative=""></relref> property.  In general this need not
+be an organizer of any of the alternatives.  In this simple
+outline we assume it is the same.</t>
+</dd><dt>SUMMARY</dt><dd>
+<t anchor="_3f651e6b-b1e2-46ee-a6f9-c288c1195d98">The usual <relref target="RFC5545" section="" relative=""></relref> property.  This optional but
+recommended property provides the a short title to the poll.</t>
+</dd><dt>DESCRIPTION</dt><dd>
+<t anchor="_17138717-392b-4a29-81e3-3a377bc3bcca">The usual <relref target="RFC5545" section="" relative=""></relref> property.  This optional property
+provides more details.</t>
+</dd><dt>DTEND</dt><dd>
+<t anchor="_97dd1a91-e142-4d19-913b-841c055abe5f">The usual <relref target="RFC5545" section="" relative=""></relref> property.  This optional property
+provides a poll closing time and date after which the VPOLL is no
+longer active.</t>
+</dd><dt>POLL-MODE</dt><dd>
+<t anchor="_ecf9121e-0cb2-49c8-8d0d-b627ed64cfdf">A new property which defines how the votes are used to
+obtain a result.  For our use case it will take the value "BASIC"
+meaning one event will be chosen from the alternatives.</t>
+</dd><dt>POLL-COMPLETION</dt><dd>
+<t anchor="_002a8e7f-6360-41c8-b6a4-9638633afa41">A new property which defines who (server or client)
+chooses and/or submits the winning choice.  In our example the
+value is "SERVER-SUBMIT" which means the client chooses the winner
+but the server will submit the winning choice.</t>
+</dd><dt>POLL-PROPERTIES</dt><dd>
+<t anchor="_b67b5ff0-1e2b-4550-ab7d-c165a712c912">A new property which defines which icalendar
+properties are being voted on.  For our use case it will take the
+value "DTSTART, LOCATION" meaning only those properties are
+significant for voting.  Other properties in the events may differ
+but are not considered significant for the voting process.</t>
+</dd><dt>PARTICIPANT</dt><dd>
+<t anchor="_f32ba658-437d-4b3b-a922-97aebefae1ba">There is one of these components for each voter with
+the PARTICIPANT-TYPE set to "VOTER". The
+CALENDAR-ADDRESS property identifies the voter and this component
+will contain one VOTE component for each item being voted on.</t>
+</dd><dt>VOTE</dt><dd>
+<t anchor="_f3245af5-1020-4357-b207-3b698e7b459e">A new component.  There is one of these for each voter and
+choice.  It usually contains at least a POLL-ITEM-ID property to
+identify the choice and a RESPONSE property to provide a vote.
+For more complex poll modes it may contain other information such
+as cost or estimated duration.</t>
+</dd><dt>VEVENT</dt><dd>
+<t anchor="_7ce5131d-d5e1-45f4-ad97-9f9e007b3f54">In our simple use case there will be multiple VEVENT sub-
+components defining the alternatives.  Each will have a different
+date and or time for the meeting.</t>
+</dd></dl>
+<t anchor="_854a275e-daab-415e-8c78-e850d578c756" keepWithNext="true">EXAMPLE</t><t anchor="_a241e2f7-4754-4c3c-91bf-a3bd34be01f1">VPOLL with 3 voters and 3 alternative meetings:</t><figure anchor="_d3f3eb5c-5c58-460f-8aee-639b30921478"><sourcecode><![CDATA[BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Example//Example
+METHOD:REQUEST
+BEGIN:VPOLL
+POLL-MODE:BASIC
+POLL-COMPLETION:SERVER-SUBMIT
+POLL-PROPERTIES:DTSTART,LOCATION
+ORGANIZER:mailto:mike@example.com
+UID:sched01-1234567890
+DTSTAMP:20120101T000000Z
+SUMMARY:What to do this week
+DTEND:20120101T000000Z
+BEGIN: PARTICIPANT
+PARTICIPANT-TYPE: VOTER
+CALENDAR-ADDRESS:mailto:cyrus@example.com
+END PARTICIPANT
+BEGIN: PARTICIPANT
+PARTICIPANT-TYPE: VOTER
+CALENDAR-ADDRESS:mailto:eric@example.com
+END PARTICIPANT
+BEGIN: PARTICIPANT
+PARTICIPANT-TYPE: VOTER
+CALENDAR-ADDRESS:mailto:mike@example.com
+END PARTICIPANT
+BEGIN:VEVENT.......(with a poll-item-id=1)
+END:VEVENT
+BEGIN:VEVENT.......(with a poll-item-id=2)
+END:VEVENT
+BEGIN:VEVENT.......(with a poll-item-id=3)
+END:VEVENT
+END:VPOLL
+END:VCALENDAR]]></sourcecode></figure>
+<t anchor="_a263bcbd-d7c2-4eb8-b882-9cada18b8a3e">As can be seen in the example above, there is an iTip METHOD property
+with the value REQUEST.  The VPOLL object will be distributed to all
+the voters, either through iMip or through some VPOLL enabled
+service.</t></section>
+      <section anchor="_the_vpoll_alternative_choices_an_overview"><name>The VPOLL Alternative Choices: An Overview</name><t anchor="_c1c456d5-45db-426f-8763-7adaae6c7b92">Within the VPOLL component we have the alternatives to vote on.  In
+many respects these are standard <relref target="RFC5545" section="" relative=""></relref> components.  For our
+simple use case they are all VEVENT components.  In addition to the
+usual <relref target="RFC5545" section="" relative=""></relref> properties some extra properties are used for a
+VPOLL.</t>
+<dl anchor="_119291dd-068c-476d-b53a-2c6721758036"><dt>POLL-ITEM-ID</dt><dd>
+<t anchor="_17da9692-03a7-4b9e-babb-e8e1faf4ca0c">This provides a unique reference to the sub-component
+within the VPOLL.  It's value SHOULD be a small integer.</t>
+</dd></dl></section>
+      <section anchor="_vpoll_responses"><name>VPOLL responses</name><t anchor="_03f6425f-37cf-4f9c-858f-103206cb1536">Upon receipt of a VPOLL REQUEST the voter will reply with a VPOLL
+component containing their vote.  In our simple case it will have the
+following properties and components:</t>
+<dl anchor="_64a4dfa6-0bb7-4a9b-be24-6a981a1fd625"><dt>DTSTAMP</dt><dd>
+<t anchor="_04ae7fa7-c7b9-4af2-995f-1d02351d8d85">The usual <relref target="RFC5545" section="" relative=""></relref> property.</t>
+</dd><dt>SEQUENCE</dt><dd>
+<t anchor="_c38df755-4b1c-4947-8795-a69a81ddd1a0">The usual <relref target="RFC5545" section="" relative=""></relref> property.  See below for SEQUENCE
+behavior.</t>
+</dd><dt>UID</dt><dd>
+<t anchor="_e2559c85-9ee4-4143-a118-b86789882bff">Same as the request.</t>
+</dd><dt>ORGANIZER</dt><dd>
+<t anchor="_e09048ad-e1d8-4aef-8b62-2ced50f07aeb">Same as the request.</t>
+</dd><dt>SUMMARY</dt><dd>
+<t anchor="_dd7057e3-5889-4a26-a317-d9b16c80a7d1">Same as the request.</t>
+</dd><dt>PARTICIPANT</dt><dd>
+<t anchor="_5ed7e891-a80d-4431-8d1e-19618924730b">One only with a CALENDAR-ADDRESS identifying the voter replying.</t>
+</dd><dt>VOTE</dt><dd>
+<t anchor="_0266df80-7027-47f7-b873-08aa960059ba">One per item being voted on.</t>
+</dd><dt>POLL-ITEM-ID</dt><dd>
+<t anchor="_83bbe3ff-c8c9-4588-9a88-2420a5f54da0">One inside each VOTE component to identify the choice.</t>
+</dd><dt>RESPONSE</dt><dd>
+<t anchor="_3f627fe3-c8bd-4a12-b666-a94f740b8b3d">One inside each VOTE component to specify the vote.</t>
+</dd></dl>
+<t anchor="_07a2bb89-bd15-4fe7-b0eb-b26439ad04ca">Note that a voter can send a number of REPLYs for each REQUEST sent
+by the organizer.  Each REPLY completely replaces the voting record
+for that voter for all components being voted on.  In our example, if
+Eric responds and votes for items 1 and 2 and then responds again
+with a vote for only item 3, the final outcome is one vote on item 3.</t>
+<dl anchor="_b0dff465-d2b6-4d39-85d2-635ff53f4a48"><dt>NOTE</dt><dd>
+<t anchor="_6bddea7b-f947-4deb-a6cf-b1b5411e2186">This is poll-mode specific behavior?</t>
+</dd></dl>
+<t anchor="_26e0596e-080c-4927-9f55-46d102597d35" keepWithNext="true">EXAMPLE</t><t anchor="_2a0cc8e4-a1e3-4c63-8669-f11ee396de9d">REPLY VPOLL from Cyrus:</t><figure anchor="_d4af4918-d715-4b29-b6d6-c7865ae56d24"><sourcecode><![CDATA[BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Example//Example
+METHOD: REPLY
+BEGIN:VPOLL
+ORGANIZER:mailto:mike@example.com
+UID:sched01-1234567890
+DTSTAMP:20120101T010000Z
+SUMMARY:What to do this week
+BEGIN:PARTICIPANT
+PARTICIPANT-TYPE: VOTER
+CALENDAR-ADDRESS:mailto:cyrus@example.com
+BEGIN:VOTE
+POLL-ITEM-ID:1
+RESPONSE:50
+COMMENT:Work on iTIP
+END:VOTE
+BEGIN:VOTE
+POLL-ITEM-ID:2
+RESPONSE:100
+COMMENT:Work on WebDAV
+END:VOTE
+BEGIN:VOTE
+POLL-ITEM-ID:3
+RESPONSE:0
+END:VOTE
+END:PARTICIPANT
+END:VPOLL
+END:VCALENDAR]]></sourcecode></figure></section>
+      <section anchor="_vpoll_updates"><name>VPOLL updates</name><t anchor="_2b0cf975-1008-4d68-bdd1-c9020fb45e36">When the organizer receives a response from one or more voters the
+current state of the poll is sent to all voters.  The new iTip method
+POLLSTATUS is used.  The VPOLL can contain a reduced set of
+properties but MUST contain DTSTAMP, SEQUENCE (if not 0), UID,
+ORGANIZER and one or more PARTICIPANT components each populated with zero or more VOTE components.</t>
+<t anchor="_2f4fee1f-7ef2-4982-8428-f36bba91713c" keepWithNext="true">EXAMPLE</t><figure anchor="_1b3bc7d2-8fe0-4827-b3a3-e9f42045abd3"><sourcecode><![CDATA[BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Example//Example
+METHOD: POLLSTATUS
+BEGIN:VPOLL
+ORGANIZER:mailto:mike@example.com
+UID:sched01-1234567890
+DTSTAMP:20120101T020000Z
+SEQUENCE:0
+SUMMARY:What to do this week
+BEGIN:PARTICIPANT
+PARTICIPANT-TYPE: VOTER
+CALENDAR-ADDRESS:mailto:cyrus@example.com
+BEGIN: VOTE
+POLL-ITEM-ID:1
+RESPONSE:50
+COMMENT:Work on iTIP
+END:VOTE
+BEGIN:VOTE
+POLL-ITEM-ID:2
+RESPONSE:100
+COMMENT:Work on WebDAV
+END:VOTE
+BEGIN:VOTE
+POLL-ITEM-ID:3
+RESPONSE:0
+END:VOTE
+END:PARTICIPANT
+BEGIN:PARTICIPANT
+PARTICIPANT-TYPE: VOTER
+CALENDAR-ADDRESS:mailto:eric@example.com
+BEGIN:VOTE
+POLL-ITEM-ID:1
+RESPONSE:100
+END:VOTE
+BEGIN:VOTE
+POLL-ITEM-ID:2
+RESPONSE:100
+END:VOTE
+BEGIN:VOTE
+POLL-ITEM-ID:3
+RESPONSE:0
+END:VOTE
+END:PARTICIPANT
+END:VPOLL
+END:VCALENDAR]]></sourcecode></figure></section>
+      <section anchor="_vpoll_completion"><name>VPOLL Completion</name><t anchor="_cea9a55d-ead6-4883-8e5e-f290fa661173">After a number of REPLY messages have been received the poll will be
+considered complete.  If there is a DTEND on the poll the system may
+automatically close the poll, or the organizer may, at any time,
+consider the poll complete.  A VPOLL can be completed (and
+effectively closed for voting) by sending an iTip REQUEST message
+with the VPOLL STATUS property set to COMPLETED.</t>
+<t anchor="_83ef3558-14f5-477e-a909-42e3daaf8d4b">The poll winner is confirmed by sending a final iTip REQUEST message
+with the VPOLL STATUS property set to CONFIRMED.  In this case the
+VPOLL component contains all the events being voted on along with a
+POLL-WINNER property to identify the winning event.  As the POLL-
+COMPLETION property is set to SERVER-SUBMIT the server will submit
+the winning choice and when it has done so set the STATUS to
+"SUBMITTED".</t>
+<t anchor="_5437fcea-93a0-4bc7-b32b-352b74305568" keepWithNext="true">EXAMPLE</t><t anchor="_897685d5-2f44-4af1-afd2-8a7aa415d2f6">VPOLL confirmation:</t><figure anchor="_2839e57c-12d7-4679-b8be-29460f50e429"><sourcecode><![CDATA[BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Example//Example
+METHOD: REQUEST
+BEGIN:VPOLL
+ORGANIZER:mailto:douglm@example.com
+UID:sched01-1234567890
+DTSTAMP:20120101T030000Z
+COMPLETED:20120101T030000Z
+POLL-COMPLETION:SERVER-SUBMIT
+SEQUENCE:0
+SUMMARY:What to do this week
+STATUS:CONFIRMED
+POLL-WINNER:3
+BEGIN:VEVENT.......(with a poll-item-id=1)
+END:VEVENT
+BEGIN:VEVENT.......(with a poll-item-id=2)
+END:VEVENT
+BEGIN:VEVENT.......(with a poll-item-id=3)
+END:VEVENT
+END:VPOLL
+END:VCALENDAR]]></sourcecode></figure></section>
+      <section anchor="_other_responses"><name>Other Responses</name><t anchor="_e9dc2fdc-769d-47ce-bb24-e965a4d551a2">A voter being asked to choose between a number of ORGANIZER supplied
+alternatives may find none of them acceptable or may simply not care.</t>
+<t anchor="_c0fd0cba-22a8-4d36-a965-504862a81a39">An alternative response, which may be disallowed by the ORGANIZER, is
+to send back the respondees availability or freebusy or even one or
+more new, alternative choices.</t>
+<t anchor="_85dd26d1-b530-4ed9-a5fd-310d00fbd3f6">This is accomplished by responding with a VOTE component which has no
+POLL-ITEM-ID property.  In this case it MUST contain some alternative
+information.  What form this takes depends on the poll mode in
+effect.</t></section>
+    </section>
+    <section anchor="icalendar-extensions">
+      <name>iCalendar Extensions</name>
+      <section anchor="_updated_participant_type_value"><name>Updated Participant Type Value</name><t anchor="_7f0416d2-f75b-4e43-93c3-154964fce7d1">Participant type property values are defined in section 11.2.1. of
+<relref target="I-D.ietf-calext-eventpub-extensions" section="" relative=""></relref>.  This specification updates that type to include the new
+participant type VOTER to provide information about the voter and to contain their votes.</t>
+<dl anchor="_f94debad-0fb3-4fa5-967c-f7e4c4587ec1"><dt>Format Definition</dt><dd>
+<t anchor="_d0bcc124-be41-4239-a952-b8a6a668ff10">This property parameter is redefined by the following notation:</t>
+</dd></dl>
+<figure anchor="_ffcfec3d-2de6-4bf6-b815-ecb41036c599"><sourcecode type="abnf"><![CDATA[partvalue       /= "VOTER"]]></sourcecode></figure>
+
+<dl anchor="_566bd469-d322-4de7-98b0-c65d8851225c"><dt>Description</dt><dd>
+<t anchor="_33a76a3e-b20b-4210-a725-2c1ebd3b71bc">The new property value indicates that the associated PARTICIPANT component identifies a voter in a VPOLL.</t>
+</dd></dl></section>
+      <section anchor="_updated_relation_type_value"><name>Updated Relation Type Value</name><t anchor="_0afcb04a-150b-4d3c-bd81-cde69c57dd78">Relationship parameter type values are defined in section 3.2.15. of
+<relref target="RFC5545" section="" relative=""></relref>.  This specification updates that type to include the new
+relationship value POLL to provide a link to the VPOLL component in
+which the current component appears.</t>
+<dl anchor="_7a0d1d2f-a6c3-4cba-bb95-3a9c04afbe15"><dt>Format Definition</dt><dd>
+<t anchor="_3930c78c-0f18-4a74-862d-219d6edf74c2">This property parameter is redefined by the following notation:</t>
+</dd></dl>
+<figure anchor="_9b2514a6-090d-4310-a79e-329c2c988e8e"><sourcecode type="abnf"><![CDATA[reltypeparam       /= "RELTYPE" "=" "POLL"
+; Property value is a VPOLL uid]]></sourcecode></figure>
+
+<dl anchor="_7d3550dc-8c87-41a7-a3c7-dca057643f94"><dt>Description</dt><dd>
+<t anchor="_f8b8e678-7106-4278-8417-93f70d87a215">This parameter can be specified on a property that
+references another related calendar component.  The new parameter
+value indicates that the associated property references a VPOLL
+component which contains the current component.</t>
+</dd></dl></section>
+      <section anchor="_updated_status_value"><name>Updated Status Value</name><t anchor="_d840813d-8fb6-49b1-8f74-318b427760c5">Status property values are defined in section 3.8.1.11. of <relref target="RFC5545" section="" relative=""></relref>.
+This specification updates that type to define valid VPOLL status
+values.</t>
+<dl anchor="_78021db4-d4d2-4bed-88c5-e3541c7dcd94"><dt>Format Definition</dt><dd>
+<t anchor="_618e7319-9109-49ce-a972-74aa59adc3d7">This property parameter is redefined by the following notation:</t>
+</dd></dl>
+<figure anchor="_611ab1c4-9223-4b0a-8522-851bfdd81fc9"><sourcecode type="abnf"><![CDATA[statvalue /= statvalue-poll
+   ; Status values for "VPOLL".
+statvalue-poll = "IN-PROCESS"
+          / "COMPLETED"  ; Poll has closed,
+                         ; nothing has been chosen yet
+          / "CONFIRMED"  ; Poll has closed and
+                         ; winning items confirmed
+          / "SUBMITTED"  ; The winning item has been
+                         ; submitted
+          / "CANCELLED"]]></sourcecode></figure>
+
+<dl anchor="_b3284471-3adc-44a7-a983-912d90a4b4a5"><dt>Description</dt><dd>
+<t anchor="_9424d70a-d743-4a4e-b8b8-e2b57a935e70">These values allow clients and servers to handle the
+choosing and submission of winning choices.</t>
+<figure anchor="_1340b961-2373-4c0a-b8e8-b5b0958c172d">
+
+<artwork anchor="_b76e99a2-2ba1-4e14-b591-d7d30f58ec23" type="ascii-art"><![CDATA[If the client is choosing and the server submitting then the
+client should set the POLL-WINNER property, set the status to
+CONFIRMED and save the poll.  When the server submits the winning
+choice it will set the status to SUBMITTED.]]></artwork></figure>
+</dd></dl></section>
+      <section anchor="_new_property_parameters"><name>New Property Parameters</name><section anchor="new-prop-para-required"><name>Required</name><dl anchor="_27b6d94f-b2c4-4d15-af2b-3a45b24e5de5"><dt>Parameter name</dt><dd>
+<t anchor="_680f37f8-384c-47b4-bd7c-42afe2fc1ffc">REQUIRED</t>
+</dd><dt>Purpose</dt><dd>
+<t anchor="_6d5a8d5f-7782-4d56-ae8f-411b385eaf03">To specify whether the associated property is required in
+the current context.</t>
+</dd><dt>Format Definition</dt><dd>
+<t anchor="_46d1228f-64ad-47e0-9f05-b7c0bf5c7cde">This parameter is defined by the following notation:</t>
+</dd></dl>
+<figure anchor="_e461142c-c760-437a-9f58-dfd76d0e1ded"><sourcecode type="abnf"><![CDATA[requirededparam = "REQUIRED"  "=" ("TRUE" / "FALSE")
+  ; Default is FALSE]]></sourcecode></figure>
+
+<dl anchor="_3e2bd7ea-e607-47b4-860b-dcb69f53dad7"><dt>Description</dt><dd>
+<t anchor="_29453aea-6762-4d70-8a95-7772b1fe9381">This parameter MAY be specified on REPLY-URL and, if
+the value is TRUE, indicates the organizer requires all replies to
+be made via the specified service rather than iTip replies.</t>
+</dd></dl></section>
+<section anchor="new-prop-para-stay-informed"><name>Stay-Informed</name><dl anchor="_5a2670ef-e4bc-4baa-b4d9-aec48180c2d0"><dt>Parameter name</dt><dd>
+<t anchor="_e71b2067-8631-42a4-8a3a-7f4200d912c7">STAY-INFORMED</t>
+</dd><dt>Purpose</dt><dd>
+<t anchor="_e3c41633-eb40-45e8-b612-a83523111fe6">To specify the voter also wants to be added as an ATTENDEE
+when the poll is confirmed.</t>
+</dd><dt>Format Definition</dt><dd>
+<t anchor="_7f220ac5-eeb2-4c0e-8811-2978a32708e2">This parameter is defined by the following notation:</t>
+</dd></dl>
+<figure anchor="_a130f172-4267-4e7e-99dd-d628c54bf7e2"><sourcecode type="abnf"><![CDATA[stayinformedparam = "STAY-INFORMED"  "=" ("TRUE" / "FALSE")
+                  ; Default is FALSE]]></sourcecode></figure>
+
+<dl anchor="_b647c516-98e4-4d2c-86e1-737b973599ad"><dt>Description</dt><dd>
+<t anchor="_aa7958df-0896-4c7f-b244-03fa3c13f2ee">This parameter MAY be specified on the CALENDAR-ADDRESS
+property in the PARTICIPANT component and, if the
+value is TRUE, indicates the voter wishes to be added to the final
+choice as a non participant.</t>
+</dd></dl></section></section>
+      <section anchor="_new_properties"><name>New Properties</name><section anchor="new-prop-accept-response"><name>Accept-Response</name><dl anchor="_ed4cb400-0f87-4b93-a134-0feb95d4b14b"><dt>Property name</dt><dd>
+<t anchor="_27aeda98-b334-4cdc-bc92-c756d99b65a9">ACCEPT-RESPONSE</t>
+</dd><dt>Purpose</dt><dd>
+<t anchor="_26340d41-1da4-4f33-8cef-8514a8492a24">This property is used in VPOLL to indicate the types of
+component that may be supplied in a response.</t>
+</dd><dt>Property Parameters</dt><dd>
+<t anchor="_1959b5ff-b22c-4490-8dc3-6f2eba709189">Non-standard or iana parameters can be
+specified on this property.</t>
+</dd><dt>Conformance</dt><dd>
+<t anchor="_6b45d0f5-e0d9-4469-8f12-f8c44b86fce9">This property MAY be specified in a VPOLL component.</t>
+</dd><dt>Description</dt><dd>
+<t anchor="_eb7f6746-22a2-4a8e-b429-b93dee198b71">When used in a VPOLL this property indicates what
+allowable component types may be returned in a reply.  Typically
+this would allow a voter to respond with their freebusy or
+availability rather than choosing one of the presented
+alternatives.</t>
+<t anchor="_0f59139c-a809-43a6-9738-3ab1fae3175c">If this property is not present voters are only allowed to respond
+to the choices in the request.</t>
+</dd><dt>Format Definition</dt><dd>
+<t anchor="_d883c0a4-283a-46c8-b65a-fd689f31eb9a">This property is defined by the following notation:</t>
+</dd></dl>
+<figure anchor="_b5dd80eb-7966-48a2-baff-ca07922f2992"><sourcecode type="abnf"><![CDATA[acceptresponse = "ACCEPT-RESPONSE" acceptresponseparams ":"
+                    iana-token ("," iana-token) CRLF
+
+acceptresponseparams = *(";" other-param)]]></sourcecode></figure>
+</section>
+<section anchor="new-prop-poll-completion"><name>Poll-Completion</name><dl anchor="_e30474f8-91b2-478c-b73d-51b575ad12b3"><dt>Property name</dt><dd>
+<t anchor="_94b36e02-a09c-4a77-93b1-80e0e4f545ad">POLL-COMPLETION</t>
+</dd><dt>Purpose</dt><dd>
+<t anchor="_815be775-ea6b-4496-9094-e69e537f8c52">This property is used in VPOLL to indicate whether the
+client or server is responsible for choosing and/or submitting the
+winner(s).</t>
+</dd><dt>Description</dt><dd><t anchor="_69e526f1-e073-408c-9ea9-8a0918aa919c">When a VPOLL is stored on a server which is capable of
+handling choosing and submission of winning choices a value of
+SERVER indicates that the server should close the poll, choose the
+winner and submit whenever it is appropriate to do so.</t><t anchor="_9c9c527b-a54f-4c72-9160-d7c1ea4afdb4">For example, in BASIC poll-mode, reaching the DTEND of the poll
+could trigger this server side action.</t>
+<t anchor="_b5f72d11-9627-416e-9af7-2aacf0a2dfa7">Server initiated submission requires that the submitted choice
+MUST be a valid calendaring component.</t>
+<t anchor="_204a797a-a454-45ac-a833-48e110f391bc">POLL-COMPLETION=SERVER-SUBMIT allows the client to set the poll-
+winner, set the status to CONFIRMED and then store the poll on the
+server.  The server will then submit the winning choice and set
+the status to SUBMITTED.</t></dd><dt>Format Definition</dt><dd>
+<t anchor="_30d6001d-37db-4e47-892c-7a541fc41912">This property is defined by the following notation:</t>
+</dd></dl>
+<figure anchor="_10cd4077-bc2f-4577-87e7-05628f3bfd54"><sourcecode type="abnf"><![CDATA[poll-completion = "POLL-COMPLETION" pcparam ":" pcvalue CRLF
+
+pcparam = *(";" other-param)
+
+pcvalue = "SERVER"  ; The server is responsible for both choosing and
+                   ; submitting the winner(s)
+        / "SERVER-SUBMIT" ; The server is responsible for
+                   ; submitting the winner(s). The client chooses.
+        / "SERVER-CHOICE"  ; The server is responsible for
+                   ; choosing the winner(s). The client will submit.
+        / "CLIENT" ; The client is responsible for both choosing and
+                   ; submitting the winner(s)
+        / iana-token
+        / x-name
+        ;Default is CLIENT]]></sourcecode></figure>
+
+<dl anchor="_af899f52-ba4c-4686-8abe-4fb2b457af11"><dt>Example</dt><dd>
+<t anchor="_bf1192b9-7840-4d64-b4c4-f17c854e7639">The following is an example of this property:</t>
+</dd></dl>
+<figure anchor="_a237b53e-86fc-4190-8a99-41ce97a5d4f3"><sourcecode><![CDATA[POLL-COMPLETION: SERVER-SUBMIT]]></sourcecode></figure>
+</section>
+<section anchor="new-prop-poll-item-id"><name>Poll-Item-Id</name><dl anchor="_e5dfa66f-a8db-48ad-ad12-7869638b18f4"><dt>Property name</dt><dd>
+<t anchor="_cee2657b-d2a2-4f63-8b96-27153ff727d3">POLL-ITEM-ID</t>
+</dd><dt>Purpose</dt><dd>
+<t anchor="_89ce3b84-a6c8-49e6-9f1a-f6613fe46762">This property is used in VPOLL child components as an
+identifier.</t>
+</dd><dt>Value type</dt><dd>
+<t anchor="_6d1b1041-5eb1-465f-b41b-a7ce6ef1c7f4">INTEGER</t>
+</dd><dt>Property Parameters</dt><dd>
+<t anchor="_1d79da87-544e-4b22-a0ce-e8ef3ef0d334">Non-standard parameters can be specified on
+this property.</t>
+</dd><dt>Conformance</dt><dd>
+<t anchor="_57bfb937-e237-4769-8739-d5cda95ef05f">This property MUST be specified in a VOTE component and
+in VPOLL choice items.</t>
+</dd><dt>Description</dt><dd>
+<t anchor="_678faad3-9cd5-4ee9-bf78-7c53c1775681">In a METHOD:REQUEST each choice component MUST have a
+POLL-ITEM-ID property.  Each set of components with the same POLL-
+ITEM-ID value represents one overall set of items to be voted on.</t>
+<t anchor="_07aadaaf-8b26-49c6-bbec-9914e08d8d0a">POLL-ITEM-ID SHOULD be a unique small integer for each component
+or set of components.  If it remains the same between REQUESTs
+then the previous response for that component MAY be re-used.  To
+force a re-vote on a component due to a significant change, the
+POLL-ITEM-ID MUST change.</t>
+</dd><dt>Format Definition</dt><dd>
+<t anchor="_de031cbe-7f4c-4d7f-8d1f-4b41ce548303">This property is defined by the following notation:</t>
+</dd></dl>
+<figure anchor="_e7a51fac-8458-4582-9973-f338af2d398d"><sourcecode type="abnf"><![CDATA[pollitemid = "POLL-ITEM-ID" pollitemdparams ":"
+                  integer CRLF
+
+pollitemidparams = *(
+                   (";" other-param)
+            )]]></sourcecode></figure>
+</section>
+<section anchor="new-prop-poll-mode"><name>Poll-Mode</name><dl anchor="_4418f1b4-c44d-4628-9c8f-1fce08ea70bb"><dt>Property name</dt><dd>
+<t anchor="_e591b696-a947-411d-9324-751aea64da83">POLL-MODE</t>
+</dd><dt>Purpose</dt><dd>
+<t anchor="_a35168ce-4cab-4f36-a8f6-7aff89c2c5db">This property is used in VPOLL to indicate what voting mode
+is to be applied.</t>
+</dd><dt>Property Parameters</dt><dd>
+<t anchor="_dd56b3fa-d00d-46ce-a2eb-195885466436">Non-standard or iana parameters can be
+specified on this property.</t>
+</dd><dt>Conformance</dt><dd>
+<t anchor="_d578e488-67f7-43ea-a9d0-dfde9e5fb6cd">This property MAY be specified in a VPOLL component or
+its sub-components.</t>
+</dd><dt>Description</dt><dd>
+<t anchor="_a14b7760-bba9-4e2a-8812-68b8d3d0137c">The poll mode defines how the votes are applied to
+obtain a result.  BASIC mode, the default, means that the voters
+are selecting one component (or group of components) with a given
+POLL=ITEM-ID.</t>
+<t anchor="_d199e705-cf11-4e06-9f7c-644c505db962">Other polling modes may be defined in updates to this
+specification.  These may allow for such modes as ranking or task
+assignment.</t>
+</dd><dt>Format Definition</dt><dd>
+<t anchor="_4611599f-2106-4d0a-901a-e230ef56b6fc">This property is defined by the following notation:</t>
+</dd></dl>
+<figure anchor="_eefe4a9d-5561-44c2-992e-9577c5a0f0d0"><sourcecode type="abnf"><![CDATA[pollmode = "POLL-MODE" pollmodeparams ":"
+             ("BASIC" / iana-token / other-token) CRLF
+
+pollmodeparams = *(";" other-param)]]></sourcecode></figure>
+</section>
+<section anchor="new-prop-poll-properties"><name>Poll-properties</name><dl anchor="_d1c419b9-0092-45d9-8402-cf55d8ee1774"><dt>Property name</dt><dd>
+<t anchor="_8e4c93c1-5ae0-4b40-aa58-fd31ca46dbcf">POLL-PROPERTIES</t>
+</dd><dt>Purpose</dt><dd>
+<t anchor="_3d6ca918-6230-400c-8309-d14160df7c03">This property is used in VPOLL to define which icalendar
+properties are being voted on.</t>
+</dd><dt>Property Parameters</dt><dd>
+<t anchor="_57543690-6c7f-479f-9c22-753a2684e5e6">Non-standard or iana parameters can be
+specified on this property.</t>
+</dd><dt>Conformance</dt><dd>
+<t anchor="_40bfbbc0-d2a4-49bd-bec4-f864b48ae181">This property MAY be specified in a VPOLL component.</t>
+</dd><dt>Description</dt><dd>
+<t anchor="_2f146ab2-fa3d-42eb-ad5a-1080945f75ca">This property defines which icalendar properties are
+significant in the voting process.  It may not be clear to voters
+which properties are varying in a significant manner.  Clients may
+use this property to highlight those listed properties.</t>
+</dd><dt>Format Definition</dt><dd>
+<t anchor="_0289c465-49ae-47d9-8026-fc5d98b49a85">This property is defined by the following notation:</t>
+</dd></dl>
+<figure anchor="_033bb5d4-f121-473f-97b8-d07393412ddc"><sourcecode type="abnf"><![CDATA[pollproperties = "POLL-PROPERTIES" pollpropparams ":"
+             text *("," text) CRLF
+
+pollpropparams = *(";" other-param)]]></sourcecode></figure>
+</section>
+<section anchor="new-prop-poll-winner"><name>Poll-Winner</name><dl anchor="_07bd4178-3478-4fc7-8de2-3a04457ccc32"><dt>Property name</dt><dd>
+<t anchor="_5181e45a-e308-4142-9c83-884625f5ed7d">POLL-WINNER</t>
+</dd><dt>Purpose</dt><dd>
+<t anchor="_63268d3a-8731-4a0e-a76d-1c939596bed3">This property is used in a basic mode VPOLL to indicate
+which of the VPOLL sub-components won.</t>
+</dd><dt>Value type</dt><dd>
+<t anchor="_63870f76-9ddb-445e-ad37-0aafed0a2680">INTEGER</t>
+</dd><dt>Property Parameters</dt><dd>
+<t anchor="_b78c75a9-8f82-4d77-96e8-9ac9830efb0c">Non-standard parameters can be specified on
+this property.</t>
+</dd><dt>Conformance</dt><dd>
+<t anchor="_895f19f5-29e1-4996-9a02-0e0e3de3e363">This property MAY be specified in a VPOLL component.</t>
+</dd><dt>Description</dt><dd>
+<t anchor="_83c856b6-a05f-4bc4-9cff-0412f5e91d2a">For poll confirmation each child component MUST have a
+POLL-ITEM-ID property.  For basic mode the VPOLL component SHOULD
+have a POLL-WINNER property which MUST correspond to one of the
+POLL-ITEM-ID properties and indicates which sub-component was the
+winner.</t>
+</dd><dt>Format Definition</dt><dd>
+<t anchor="_0279770e-d408-4126-a751-194bd2c3fc20">This property is defined by the following notation:</t>
+</dd></dl>
+<figure anchor="_dde0912f-522b-40b0-8aa0-d54b076ad6b2"><sourcecode type="abnf"><![CDATA[pollwinner = "POLL-WINNER" pollwinnerparams ":"
+                 integer CRLF
+
+pollwinnerparams = *(";" other-param)
+
+       ; Used with a STATUS:CONFIRMED VPOLL to indicate which
+       ; components have been confirmed]]></sourcecode></figure>
+</section>
+<section anchor="new-prop-reply-url"><name>Reply-URL</name><dl anchor="_9ed3abc6-bb39-4e5b-b30a-fbc6317bbe29"><dt>Property name</dt><dd>
+<t anchor="_65605774-5deb-44e1-bcf8-2f79855355b1">REPLY-URL</t>
+</dd><dt>Purpose</dt><dd>
+<t anchor="_f8de26d9-df7e-43bb-baa6-725544a9112f">This property may be used in scheduling messages to
+indicate additional reply methods, for example a web-service.</t>
+</dd><dt>Property Parameters</dt><dd>
+<t anchor="_7786fc08-976f-4466-8334-0080673e0ec8">Non-standard, required or iana parameters can
+be specified on this property.</t>
+</dd><dt>Conformance</dt><dd>
+<t anchor="_cbd56c14-00b6-4731-8983-866f6a0c79da">This property MAY be specified in a VPOLL component.</t>
+</dd><dt>Description</dt><dd>
+<t anchor="_911c5f11-969a-4869-82b5-d744d6d05cdf">When used in a scheduling message this property
+indicates additional or required services that can be used to
+reply.  Typically this would be a web service of some form.</t>
+</dd><dt>Format Definition</dt><dd>
+<t anchor="_9649a6cf-40ed-4757-bac4-f5152f58a4d2">This property is defined by the following notation:</t>
+</dd></dl>
+<figure anchor="_78b8c094-d425-48ef-9193-4f6ccdb636d8"><sourcecode type="abnf"><![CDATA[reply-url = "REPLY-URL" reply-urlparams ":" uri CRLF
+
+reply-urlparams = *(
+                  (";" requiredparam) /
+                  (";" other-param)
+                  )]]></sourcecode></figure>
+</section>
+<section anchor="new-prop-response"><name>Response</name><dl anchor="_32d1fc88-0f89-4ae1-98d5-4dc130d6d2ac"><dt>Property name</dt><dd>
+<t anchor="_d077f11d-7202-4f35-b5a4-1f71baf4d024">RESPONSE</t>
+</dd><dt>Purpose</dt><dd>
+<t anchor="_cd6ff2ee-9166-4f33-9168-00c42a88319f">To specify a response vote.</t>
+</dd><dt>Value type</dt><dd>
+<t anchor="_c86b54bf-8565-47e4-aa81-703d89404a54">INTEGER</t>
+</dd><dt>Format Definition</dt><dd>
+<t anchor="_a377abcd-85ea-45fa-9158-51e76cab95f5">This property is defined by the following notation:</t>
+</dd></dl>
+<figure anchor="_2b8ed683-880c-45b4-a166-e61db34aafd0"><sourcecode type="abnf"><![CDATA[response = "RESPONSE" response-params ":" integer CRLF
+                 ; integer value 0..100
+
+responseparams = *(";" other-param)]]></sourcecode></figure>
+
+<dl anchor="_4a73ec7d-b757-4cbe-9798-64ead00bfb45"><dt>Description</dt><dd>
+<t anchor="_23eef632-8115-4c9c-a2ea-69dd86bc7361">This parameter can be specified on the POLL-ITEM-ID
+property to provide the value of the voters response.  This
+parameter allows for fine grained responses which are appropriate
+to some applications.  For the case of individuals voting for a
+choice of events, client applications SHOULD conform to the
+following convention:</t>
+<ul anchor="_c6182171-7dbd-4252-9c55-8ca222f82062">
+<li>
+<t anchor="_eaa5b13c-afb8-433b-8873-2b72884f7791">0 - 39 A "NO vote"</t>
+</li>
+<li>
+<t anchor="_a92a9721-2379-4aca-93e6-570d80747118">40 - 79 A "MAYBE" vote</t>
+</li>
+<li>
+<t anchor="_1bbeaf15-7f45-4ed6-a607-6820ec4acc09">80 - 89 A "YES - but not preferred vote"</t>
+</li>
+<li>
+<t anchor="_6b587a1a-9954-49a6-8dae-b1aa6482b05b">90-100 A "YES" vote.</t>
+<t anchor="_e9cbcd84-3aff-4afe-8cb4-514afc7fb2f3">Clients MUST preserve the response value when there is no change
+from the user even if they have a UI with fixed states (e.g.
+yes/no/maybe).</t>
+</li>
+</ul>
+</dd></dl></section></section>
+      <section anchor="_new_components"><name>New Components</name><section anchor="_vpoll_component"><name>VPOLL Component</name><dl anchor="_f97e96d8-c178-4ac8-a6e6-c952353e3348"><dt>Component name</dt><dd>
+<t anchor="_904aedb0-8efd-4d7b-baf2-68489c81ee9f">VPOLL</t>
+</dd><dt>Purpose</dt><dd>
+<t anchor="_cc6617bf-53e7-4352-80ab-07a5d3dae568">This component provides a mechanism by which voters can
+vote on provided choices.</t>
+</dd><dt>Format Definition</dt><dd>
+<t anchor="_343e0ee7-c188-4b6e-a28d-fd83cf6864e2">This property is defined by the following notation:</t>
+</dd></dl>
+<figure anchor="_0b2b55fd-bbec-4046-aa2c-4c8977a40a2b"><sourcecode type="abnf"><![CDATA[pollc    = "BEGIN" ":" "VPOLL" CRLF
+            pollprop
+            *participantc *eventc *todoc *journalc *freebusyc
+            *availabilityc *alarmc *iana-comp *x-comp
+            "END" ":" "VPOLL" CRLF
+
+pollprop = *(
+          ;
+          ; The following are REQUIRED,
+          ; but MUST NOT occur more than once.
+          ;
+          dtstamp / uid / organizer /
+          ;
+          ; The following are OPTIONAL,
+          ; but MUST NOT occur more than once.
+          ;
+          acceptresponse / class / created / completed /
+          description / dtstart / last-mod / pollmode /
+          pollproperties / priority / seq / status /
+          summary / url /
+          ;
+          ; Either 'dtend' or 'duration' MAY appear in
+          ; a 'pollprop', but 'dtend' and 'duration'
+          ; MUST NOT occur in the same 'pollprop'.
+          ; 'duration' MUST only occur when 'dtstart'
+          ; is present
+          ;
+          dtend / duration /
+          ;
+          ; The following are OPTIONAL,
+          ; and MAY occur more than once.
+          ;
+          attach / categories / comment /
+          contact / rstatus / related /
+          resources / x-prop / iana-prop
+          ;
+          ; The following is OPTIONAL, it SHOULD appear
+          ; once for the confirmation of a BASIC mode
+          ; VPOLL. Other modes may define differing
+          ; requirements.
+          ;
+          pollwinner /
+          ;
+          )]]></sourcecode></figure>
+
+<dl anchor="_c52523dc-b7fd-487a-90ff-db188ed17135"><dt>Description</dt><dd><t anchor="_24795ae7-6f0c-40eb-9d4f-2fdf6a00d50b">This component provides a mechanism by which voters can
+vote on provided choices.  The outcome depends upon the POLL-MODE
+in effect.</t><t anchor="_5d205700-288c-4844-90ae-16a2cf170b4c">The PARTICIPANT components in VPOLL requests provide information on
+each recipient who will be voting - both their identity through
+the CALENDAR-ADDRESS property and their votes through the VOTE components.</t>
+<t anchor="_8f791945-40fd-449e-926c-d6ce74012106">If specified, the "DTSTART" property defines the start or opening
+of the poll active period.  If absent the poll is presumed to have
+started when created.</t>
+<t anchor="_8fb062e3-3da8-4d83-8e06-24c2bcc5344c">If "DTSTART" is present "DURATION" MAY be specified and indicates
+the duration, and hence the ending, of the poll.  The value of the
+property MUST be a positive duration.</t>
+<t anchor="_0dc15e94-e51c-4c9a-a9fb-3057c8ddfdd0">"DTEND" MAY be specified with or without "DTSTART" and indicates
+the ending of the poll.  If DTEND is specified it MUST be later
+than the DTSTART or CREATED property.</t>
+<t anchor="_84b77ca4-bd97-46ff-8269-d7f33fc2c0a1">If one or more VALARM components are included in the VPOLL they
+are not components to be voted on and MUST NOT contain a POLL-
+ITEM-ID property.  VALARM sub-components may be used to provide
+warnings to the user when polls are due to start or end.</t></dd></dl></section>
+<section anchor="_vote_component"><name>VOTE Component</name><dl anchor="_c30093ad-b8f5-49c3-9ad6-72b467e36b19"><dt>Component name</dt><dd>
+<t anchor="_9f0759a4-f54f-4e3f-be48-db4e5b5eec20">VOTE</t>
+</dd><dt>Purpose</dt><dd>
+<t anchor="_158b1f41-63ea-4f22-aace-c434216694a6">This component provides a mechanism by which voters can
+vote on provided choices.</t>
+</dd><dt>Conformance</dt><dd>
+<t anchor="_5b762090-06fb-4ec1-8cad-ea44b077d58b">This component may be specified zero or more times in a PARTICIPANT component which identifies the voter.</t>
+</dd><dt>Format Definition</dt><dd>
+<t anchor="_1fd34361-d62f-41d2-a49b-0d37365bf7ae">This property is defined by the following notation:</t>
+</dd></dl>
+<figure anchor="_7660e2b9-1514-47c0-90a2-78bf82bcfc1d"><sourcecode type="abnf"><![CDATA[votec     = "BEGIN" ":" "VOTE" CRLF
+            voteprop
+            *eventc *todoc *journalc *freebusyc
+            *availabilityc *alarmc *iana-comp *x-comp
+            "END" ":" "VOTE" CRLF
+
+voteprop = *(
+           ;
+           ; The following are REQUIRED,
+           ; but MUST NOT occur more than once.
+           ;
+           pollitemid / response /
+           ;
+           ; The following are OPTIONAL,
+           ; and MAY occur more than once.
+           ;
+           comment / x-prop / iana-prop
+           ;
+           )]]></sourcecode></figure>
+
+<dl anchor="_0684cfdc-01d5-4299-bb39-b87eff974067"><dt>Description</dt><dd><t anchor="_af1f77f8-e2d0-44c4-8110-2cdbf4da2eca">This component appears inside the PARTICIPANT component
+with a PARTICIPANT-TYPE of VOTER to identify the voter. This component
+contains that participants responses.</t><t anchor="_a57060c8-74f3-4292-9e03-46c84da6377a">The required and optional properties and their meanings will depend
+upon the POLL-MODE in effect.</t>
+<t anchor="_1a2072eb-da7b-462f-b0dc-cf4b6fa4768b">For any POLL-MODE, POLL-ITEM-ID is used to associate the
+information to a choice supplied by the organizer. This means that each VOTE component only provides information about that choice.</t>
+<t anchor="_a3ba766d-787c-47fd-83ce-3455d77cf451">If allowed by the POLL-MODE a VOTE component without a POLL-ITEM-
+ID may be provided in a REPLY to indicate a possible new choice or
+to provide information to the ORGANIZER - such as the respondees
+availability.</t></dd></dl></section></section>
+    </section>
+    <section anchor="poll-modes">
+      <name>Poll Modes</name>
+      <t anchor="_33146a25-e027-4185-8b9e-a5e846c75e15">The VPOLL component is intended to allow for various forms of
+polling.  The particular form in efffect is indicated by the POLL-
+MODE property.</t>
+      <t anchor="_d51a9914-5eaf-4d59-a078-f36b3a47cfd3">New poll modes can be registered by including a completed POLL-MODE
+Registration Template (see <xref target="poll-registration-template"></xref>) in a published RFC.</t>
+      <section anchor="_poll_modebasic"><name>POLL-MODE:BASIC</name><t anchor="_5e11d4b2-e688-4574-94ba-cba5879aaa26">BASIC poll mode is the form of voting in which one possible outcome
+is chosen from a set of possibilities.  Usually this will be
+represented as a number of possible event objects one of which will
+be selected.</t>
+<section anchor="_property_restrictions"><name>Property restrictions</name><t anchor="_f4bf5aaa-3444-4a06-90cd-19e5dfd4ac7d">This poll mode has the following property requirements:</t>
+<dl anchor="_26b6bdec-d58b-42a0-b780-aaa0c88b1bc7"><dt>POLL-ITEM-ID</dt><dd>
+<t anchor="_43151df4-2f88-4a06-83d3-b7eca12baae0">Each contained sub-component that is being voted upon
+MUST contain a POLL-ITEM_ID property which is unique within the
+context of the POLL.  The value MUST NOT be reused when events are
+removed and/or added to the poll.</t>
+</dd><dt>POLL-WINNER</dt><dd>
+<t anchor="_c2f339a6-4afe-4936-bb9b-510b14f1e47d">On confirmation of the poll this property MUST be
+present and identifies the winning component.</t>
+</dd></dl></section>
+<section anchor="_outcome_reporting"><name>Outcome reporting</name><t anchor="_64674f07-b9c5-4566-8403-59ad29a9318c">To confirm the winner the POLL-WINNER property MUST be present and
+the STATUS MUST be set to CONFIRMED.</t>
+<t anchor="_85b0de91-2b0d-4763-8931-8951e3728cbe">When the winning VEVENT or VTODO is not a scheduled entity, that is,
+it has no ORGANIZER or ATTENDEES it MUST be assigned an ORGANIZER
+property and a list of non-participating ATTENDEEs.  This allows the
+winning entity to be distributed to the participants through iTip or
+some other protocol.</t></section></section>
+    </section>
+    <section anchor="itip-extensions">
+      <name>iTIP Extensions</name>
+      <t anchor="_ba501fde-4833-47e6-a427-d375ccf51a4b">This specification introduces a number of extensions to <relref target="RFC5546" section="" relative=""></relref>.
+In group scheduling the parties involved are organizer and attendees.
+In VPOLL the parties are organizer and voters.</t>
+      <t anchor="_00a9844b-c965-491e-b0f8-d9503a744381">For many of the iTip processing rules the voters take the place of
+attendees.</t>
+      <section anchor="_methods"><name>Methods</name><t anchor="_cc48fc96-b821-490c-82bf-bf53b302a35b">There are some extensions to the behavior of iTip methods for a VPOLL
+object and two new methods are defined.</t>
+<table anchor="_ab5cd0bc-3052-45bd-897b-10285ee79f7a"><thead><tr><th align="left">Method</th><th align="left">Description</th></tr></thead><tbody><tr><td align="left">
+<t anchor="_9cd90c9f-84f3-4ad9-83eb-f685d09a2632">PUBLISH</t>
+</td><td align="left">
+<t anchor="_d0e865d4-a11a-4722-884d-74eb3fe89bd7">No changes (yet)</t>
+</td></tr><tr><td align="left">
+<t anchor="_c7225289-3306-4ed9-b402-6aebe92d4c07">REQUEST</t>
+</td><td align="left">
+<t anchor="_b6d7fe00-fd0c-4497-8eda-5b325d9d960e">Each child component MUST have a POLL-ITEM-ID
+property.  Each set of components with the same
+POLL-ITEM-ID value represents one overall set of
+items to be voted on.</t>
+</td></tr><tr><td align="left">
+<t anchor="_e863582b-63e7-4796-821c-e37a1ca51512">REPLY</t>
+</td><td align="left">
+<t anchor="_0f9b200c-6c6f-4399-a0ce-c376ca88821f">There MUST be a single VPOLL component which
+MUST have: either one or more POLL-ITEM-ID
+properties with a RESPONSE param matching that
+from a REQUEST or a VFREEBUSY or VAVAILABILITY
+child component showing overall busy/available
+time. The VPOLL MUST have one voter only.</t>
+</td></tr><tr><td align="left">
+<t anchor="_da173070-81cc-4ff5-8ca4-1098efa36afa">ADD</t>
+</td><td align="left">
+<t anchor="_6f3ef56a-5d08-49c9-bd6c-b9c41a58fc26">Not supported for VPOLL.</t>
+</td></tr><tr><td align="left">
+<t anchor="_4af911aa-5bc9-4330-bde9-93aaa8ea39d0">CANCEL</t>
+</td><td align="left">
+<t anchor="_4b8e28ee-c442-48c9-93d3-32da47ae7412">There MUST be a single VPOLL component with UID</t>
+</td></tr><tr><td align="left"></td><td align="left">
+<t anchor="_c7499515-765c-480a-8ec1-9138650bc87d">matching that of the poll being cancelled.</t>
+</td></tr><tr><td align="left">
+<t anchor="_bc735c97-01f6-4e16-b251-b3fa2abb782e">REFRESH</t>
+</td><td align="left">
+<t anchor="_dcc1abae-6c55-4e0f-a1b6-72c56d5db805">The organizer returns a METHOD:REQUEST with the
+current full state, or a METHOD:CANCEL or an
+error if no matching poll is found.</t>
+</td></tr><tr><td align="left">
+<t anchor="_6a0ad785-47e5-4b2f-8b5d-1597be2b12c6">COUNTER</t>
+</td><td align="left">
+<t anchor="_17de857b-1701-49e4-a827-3d81eb69e033">Not supported for VPOLL.</t>
+</td></tr><tr><td align="left">
+<t anchor="_7565ee19-2663-4540-9127-c63e3177ad74">DECLINECOUNTER</t>
+</td><td align="left">
+<t anchor="_311c2e4e-8844-4e91-8363-3f8386948361">Not supported for VPOLL.</t>
+</td></tr><tr><td align="left">
+<t anchor="_8e11cee3-b6a2-4ae7-b563-c9dd0e658403">POLLSTATUS</t>
+</td><td align="left">
+<t anchor="_f6f96ecf-31df-4fa1-b7d5-6abed28e77b3">Used to send the current state of the poll to
+all voters. The VPOLL can contain a reduced set
+of properties but MUST contain DTSTAMP, SEQUENCE
+(if not 0), UID, ORGANIZER and PARTICIPANTS.</t>
+</td></tr></tbody></table>
+<t anchor="_8da84230-cfd1-433a-9183-08ed1f95b0d9">The following table shows the above methods broken down by who can
+send them with VPOLL components.</t>
+<table anchor="_2ec89737-9515-4afb-ac6d-9c075e366f7b"><thead><tr><th align="left">Originator</th><th align="left">Methods</th></tr></thead><tbody><tr><td align="left">
+<t anchor="_0b8e8799-eb85-4ba3-96f6-bbbd5f0c9f94">Organizer</t>
+</td><td align="left">
+<t anchor="_28e9269e-4b25-4caf-8ea5-d4faf496247b">CANCEL, PUBLISH, REQUEST, POLLSTATUS</t>
+</td></tr><tr><td align="left">
+<t anchor="_50d3077b-e7dc-4179-9f40-d46d789e9fa7">Voter</t>
+</td><td align="left">
+<t anchor="_7429c37c-b94f-4b48-a5f4-9fe2251dda1d">REPLY, REFRESH, REQUEST (only when delegating)</t>
+</td></tr></tbody></table></section>
+      <section anchor="_interoperability_models"><name>Interoperability Models</name><t anchor="_99528bbb-8dd9-4831-8058-bc87ea8b1d46">Most of the standard iTip specification applies with respect to
+organizer and voters.</t>
+<section anchor="_delegation"><name>Delegation</name>
+
+<t anchor="_32768832-8df0-487d-8244-10ba150f1dfa">TBD</t>
+</section>
+<section anchor="_acting_on_behalf_of_other_calendar_users"><name>Acting on Behalf of Other Calendar Users</name>
+
+<t anchor="_bb68443f-97f6-4939-b0a8-c6bf1f2efb73">TBD</t>
+</section>
+<section anchor="component-revisions"><name>Component Revisions</name>
+
+<ul anchor="_e0086bb0-ec65-4f78-83e8-732a40e2cd16">
+<li>
+<t anchor="_7f2f201e-f697-4a0a-94d5-0207dcc54c24">Need to talk about what a change in SEQUENCE means</t>
+</li>
+<li>
+<t anchor="_1a430d77-1e2c-45ad-b1d8-b4ae82f9ac8b">Sequence change forces a revote.</t>
+</li>
+<li>
+<t anchor="_12b1719d-59df-4322-8c9b-559ee0ce35f2">New voter - no sequence change</t>
+</li>
+<li>
+<t anchor="_7cda25b6-e363-477d-a2da-fb466e85d233">Add another poll set or change poll item ids or any change to a child</t>
+</li>
+<li>
+<t anchor="_1c12476d-9ee8-434d-8c7e-984813eb0612">component - bump sequence</t>
+</li>
+</ul>
+</section>
+<section anchor="_message_sequencing"><name>Message Sequencing</name>
+
+<t anchor="_c979e943-8aa2-41ce-ac43-68b5f44c00ed">TBD</t>
+</section></section>
+      <section anchor="_application_protocol_elements"><name>Application Protocol Elements</name><section anchor="_methods_for_vpoll_calendar_components"><name>Methods for VPOLL Calendar Components</name><t anchor="_f5e03508-90c8-4f62-911c-c2b2d46ca391">This section defines the property set restrictions for the method
+types that are applicable to the "VPOLL" calendar component.  Each
+method is defined using a table that clarifies the property
+constraints that define the particular method.</t>
+<t anchor="_e2e44911-f3b1-4cf5-a616-1b3a5435c97d">The presence column uses the following values to assert whether a
+property is required or optional, and the number of times it may
+appear in the iCalendar object.</t>
+<table anchor="_2a515637-6576-4847-8e0b-edad758ac2cd"><thead><tr><th align="left">Presence Value</th><th align="left">Description</th></tr></thead><tbody><tr><td align="left">
+<t anchor="_fe4e01c3-bd35-4ca1-a7b4-780cdd6cd238">1</t>
+</td><td align="left">
+<t anchor="_83bedff5-1314-4faf-913b-3fba9be7a232">One instance MUST be present.</t>
+</td></tr><tr><td align="left">
+<t anchor="_cf650786-0ef2-4858-8237-8b9b3a6122d5">1+</t>
+</td><td align="left">
+<t anchor="_3c760d09-6a88-49c7-b39b-0cd089a8aa62">At least one instance MUST be present.</t>
+</td></tr><tr><td align="left">
+<t anchor="_9c7d5c7a-d8d4-4ce9-a194-d9fc60b42685">0</t>
+</td><td align="left">
+<t anchor="_79b83e29-349d-4a4d-b0b5-fee7bfa4f699">Instances of this property MUST NOT be present.</t>
+</td></tr><tr><td align="left">
+<t anchor="_39d3936b-0692-4f23-bebd-c7012d56d7a4">0+</t>
+</td><td align="left">
+<t anchor="_ac2896e4-02b6-4f8f-a45c-2f885fe40f3a">Multiple instances MAY be present.</t>
+</td></tr><tr><td align="left">
+<t anchor="_b6f272dc-3d76-4e7e-95e7-6fa27d0d4ce0">0 or 1</t>
+</td><td align="left">
+<t anchor="_8805544b-1e93-481b-b390-4bf8e23fecc5">Up to 1 instance of this property MAY be present.</t>
+</td></tr></tbody></table>
+<t anchor="_df07aac2-d0fb-4e4d-805c-643636d3f598">The following summarizes the methods that are defined for the "VPOLL"
+calendar component.</t>
+<table anchor="_3db283fd-a14b-4308-90b1-085390cb1e9b"><thead><tr><th align="left">Method</th><th align="left">Description</th></tr></thead><tbody><tr><td align="left">
+<t anchor="_d2fa2dd6-1fa8-4b43-9edb-81ab4178ba0d">PUBLISH</t>
+</td><td align="left">
+<t anchor="_a78fc9e0-3690-422f-a094-8df1c7dc9680">Post notification of an poll. Used primarily as a
+method of advertising the existence of a poll.</t>
+</td></tr><tr><td align="left">
+<t anchor="_60ccc6a2-bd9e-4aba-a8fe-ce8958704c7a">REQUEST</t>
+</td><td align="left">
+<t anchor="_226e4512-6759-46fb-b7e5-baf2e47eab37">To make a request for a poll. This is an explicit
+invitation to one or more voters. Poll requests are
+also used to update, change or confirm an existing
+poll. Clients that cannot handle REQUEST MAY degrade
+the poll to view it as a PUBLISH. REQUEST SHOULD NOT
+be used just to set the status of the poll -
+POLLSTATUS provides a more compact approach.</t>
+</td></tr><tr><td align="left">
+<t anchor="_895e652d-f700-4793-9aeb-5166e9f34821">REPLY</t>
+</td><td align="left">
+<t anchor="_bbe20b2e-086b-4f2e-aea9-fe6a09188fb2">Reply to a poll request. Voters may set their
+RESPONSE parameter to supply the current vote in the
+range 0 to 100.</t>
+</td></tr><tr><td align="left">
+<t anchor="_07dc05c3-5773-410d-9737-60c1d331f769">CANCEL</t>
+</td><td align="left">
+<t anchor="_ebc4ee3b-6bea-4db2-9971-0edf79ce634c">Cancel a poll.</t>
+</td></tr><tr><td align="left">
+<t anchor="_b3b422c3-6e0a-40ac-bdec-d2ab9523a25c">REFRESH</t>
+</td><td align="left">
+<t anchor="_774abd98-ce66-461e-b745-bd2acfbc19d4">A request is sent to an Organizer by a Voter asking
+for the latest version of a poll to be resent to the
+requester.</t>
+</td></tr><tr><td align="left">
+<t anchor="_75a20b44-14f9-4061-8708-3f8b067c44b2">POLLSTATUS</t>
+</td><td align="left">
+<t anchor="_4ddb8efb-0106-46f2-80ce-6d125dec17cf">Used to send the current state of the poll to all
+voters. The VPOLL can contain a reduced set of
+properties but MUST contain DTSTAMP, SEQUENCE (if
+not 0), UID, ORGANIZER and PARTICIPANT.</t>
+</td></tr></tbody></table></section>
+<section anchor="_method_publish"><name>Method: PUBLISH</name><t anchor="_280ffe58-097d-4de8-889e-bd02adcf1eba">The "PUBLISH" method in a "VPOLL" calendar component is an
+unsolicited posting of an iCalendar object.  Any CU may add published
+components to their calendar.  The "Organizer" MUST be present in a
+published iCalendar component.  "Voters" MUST NOT be present.  Its
+expected usage is for encapsulating an arbitrary poll as an iCalendar
+object.  The "Organizer" may subsequently update (with another
+"PUBLISH" method) or cancel (with a "CANCEL" method) a previously
+published "VPOLL" calendar component.</t>
+<dl anchor="_7c0db357-709c-4787-b67d-71ff5cba664c"><dt>Note</dt><dd>
+<t anchor="_e9f13be0-e1f5-4fd9-a38e-168f22dc6f4d">Not clear how useful this is but needs some work on transmitting the
+current vote without any voter identification.</t>
+</dd></dl>
+<t anchor="_77c4aaaa-76db-47ac-9687-a666af797566">This method type is an iCalendar object that conforms to the
+following property constraints:</t>
+<table anchor="_e1fb22ec-6008-4ffb-9a4e-83b76782e2c8"><name>Constraints for a METHOD:PUBLISH of a VPOLL</name><thead><tr><th align="left">Component/Property</th><th align="left">Presence</th><th align="left">Comment</th></tr></thead><tbody><tr><td align="left">
+<t anchor="_1b6bf3d0-22b3-4e5e-9a1d-c1844a0bb2e6">METHOD</t>
+</td><td align="left">
+<t anchor="_5166f508-4131-4e3d-af4e-8f4eef25469d">1</t>
+</td><td align="left">
+<t anchor="_2cf9ca06-fd11-43f7-bb20-1632430ea5b0">MUST equal PUBLISH.</t>
+</td></tr><tr><td align="left">
+<t anchor="_5024f91a-3ff3-4929-a9ac-ac2d86d3910a">VPOLL</t>
+</td><td align="left">
+<t anchor="_7604a3d2-59c9-45af-957d-4f19c1632c11">1+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_0460a798-726d-49e8-8390-d292ac9447ca">DTSTAMP</t>
+</td><td align="left">
+<t anchor="_8c84d64b-bf2d-428d-a0b4-9d2606fd6fd1">1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_8e2e1773-07d7-4648-8b28-be93c96d293c">DTSTART</t>
+</td><td align="left">
+<t anchor="_31f8634e-9d23-4cb9-ad57-dd5e4d4f518f">0 or 1</t>
+</td><td align="left">
+<t anchor="_99098835-fa10-42d6-a7ba-9b860a731bc2">If present defines the start of the poll. Otherwise the poll starts when it is created and distributed.</t>
+</td></tr><tr><td align="left">
+<t anchor="_06176df1-22da-4b91-97dd-79db456a8721">ORGANIZER</t>
+</td><td align="left">
+<t anchor="_7cd92ba5-9438-43d2-a0a0-0b39d7088075">1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_70a7f81f-87aa-455b-a637-14b791ab1f32">SUMMARY</t>
+</td><td align="left">
+<t anchor="_14d252b9-a905-456b-9c8d-fea261ff5c1c">1</t>
+</td><td align="left">
+<t anchor="_ae9404f5-9088-42a9-9771-8a2b414621c5">Can be null.</t>
+</td></tr><tr><td align="left">
+<t anchor="_6ffdd393-3da8-4aab-905b-63351b86ee21">UID</t>
+</td><td align="left">
+<t anchor="_6f60377d-78c5-494d-8e4a-134f2623e0d2">1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_3fdbdb62-0a46-418c-a76f-d773526ffe8c">SEQUENCE</t>
+</td><td align="left">
+<t anchor="_0cf7346e-a670-45ab-b31b-ef2cf31b272f">0 or 1</t>
+</td><td align="left">
+<t anchor="_3c9f647b-1011-4043-8a5d-f00665a0e95e">MUST be present if value is greater than 0; MAY be present if 0.</t>
+</td></tr><tr><td align="left">
+<t anchor="_e6803234-fb54-4e31-8d95-4ee4ae217ca0">ACCEPT-RESPONSE</t>
+</td><td align="left">
+<t anchor="_d8811540-a15b-41e4-bcbe-0d35c8807c4b">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_6a6e9b4e-7ba7-4328-a0d6-a2b350e04865">ATTACH</t>
+</td><td align="left">
+<t anchor="_feb8cc84-fd03-4e71-95ef-ffc59f9c1e69">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_ebd93cec-64d4-4b7c-afc4-1911066f7edb">CATEGORIES</t>
+</td><td align="left">
+<t anchor="_5968ef1a-a7d2-4c39-8129-46d218a85d81">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_c933c6fe-0548-42c8-a74d-57fc0e60a8f1">CLASS</t>
+</td><td align="left">
+<t anchor="_5929b215-2cd6-4384-9cc1-580e01ef36d5">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_ecf69bf4-16df-45b2-8613-eecd5711b3fe">COMMENT</t>
+</td><td align="left">
+<t anchor="_33b4cc9f-df2f-486c-ae5f-0b307b74a714">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_8ab7c388-80e3-41dd-a7cf-8814f2211db6">COMPLETED</t>
+</td><td align="left">
+<t anchor="_581be052-76df-4bd9-87b0-0f7cde9dc166">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_4e5590a2-4daf-4ed2-8a1a-1cc9c1de3d25">CONTACT</t>
+</td><td align="left">
+<t anchor="_bc758090-9498-4d6a-9507-3ea23dd625cd">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_31dc8f97-6ddf-4aa3-a70f-443b2f023b92">CREATED</t>
+</td><td align="left">
+<t anchor="_823b3d3d-3935-4a14-adc5-d081f78f7f77">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_33b9a1c1-bc31-4a4b-b4ef-fbb74cedae3a">DESCRIPTION</t>
+</td><td align="left">
+<t anchor="_ea944cd0-565b-46d7-88ae-2514adcc5596">0 or 1</t>
+</td><td align="left">
+<t anchor="_a0957bc2-688d-4534-be5d-64ac7206a960">Can be null.</t>
+</td></tr><tr><td align="left">
+<t anchor="_c8351367-7805-4c54-a26f-f781ad9f413b">DTEND</t>
+</td><td align="left">
+<t anchor="_f3c19bf4-4e39-4688-b0f6-2b2af664d24c">0 or 1</t>
+</td><td align="left">
+<t anchor="_d196d953-3452-4938-8f73-342b88c4343c">If present, DURATION MUST NOT be present.</t>
+</td></tr><tr><td align="left">
+<t anchor="_e09b5308-fa96-4da2-9d0d-1728e3400a8e">DURATION</t>
+</td><td align="left">
+<t anchor="_58b4c75b-4e92-4ca8-834e-13f38d2ea24c">0 or 1</t>
+</td><td align="left">
+<t anchor="_f2742c1d-3533-4809-85f0-23a45c618726">If present, DTEND MUST NOT be present.</t>
+</td></tr><tr><td align="left">
+<t anchor="_9cd177e3-b711-49ed-bb82-1607115b0002">LAST-MODIFIED</t>
+</td><td align="left">
+<t anchor="_a9a6734c-f73b-482f-a72b-c91a3cfe9f12">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_97939740-9082-4c93-aece-9c56b6885f02">POLL-ITEM-ID</t>
+</td><td align="left">
+<t anchor="_43cd3965-952f-4b66-93be-6e4a1d9fa517">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_bb4881cc-aeae-4ca3-bc5b-9c101ad7a223">POLL-MODE</t>
+</td><td align="left">
+<t anchor="_27efb8d3-9422-433c-83ac-010518a6fd4a">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_b03e3c80-1b8b-46c6-a369-276687b2fd9b">POLL-PROPERTIES</t>
+</td><td align="left">
+<t anchor="_f1ba9a05-c573-429d-8ac2-2be449fe0ce7">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_a043f752-18a1-40ea-adcd-a91b8250311c">PRIORITY</t>
+</td><td align="left">
+<t anchor="_8c9710c6-65b8-4032-967e-3274cb4736a4">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_ed3f36c2-8d1a-4c7e-b592-7cad3f08a036">RELATED-TO</t>
+</td><td align="left">
+<t anchor="_0fa6197a-cbaf-4f0b-a7d3-a0480cae4a0d">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_a830b52e-c1fe-4cdf-963f-d7ab6d3722e7">RESOURCES</t>
+</td><td align="left">
+<t anchor="_1a511963-a7b2-4d11-b4b6-269d6e522b4c">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_d6050e4d-3342-435a-8ed7-b20763ba33c3">STATUS</t>
+</td><td align="left">
+<t anchor="_39d853a0-ce09-4ada-8066-603cfab5201e">0 or 1</t>
+</td><td align="left">
+<t anchor="_79b3843d-513f-4e59-8980-f298c50b5c2c">MAY be one of COMPLETED/CONFIRMED/CANCELLED.</t>
+</td></tr><tr><td align="left">
+<t anchor="_b0992f31-bd31-437d-998e-c5817fe0f78b">URL</t>
+</td><td align="left">
+<t anchor="_ac963920-f7e5-4f84-98e9-a09cd4458c98">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_58a99818-beb6-4a8b-a0c1-a608c9f9a32a">IANA-PROPERTY</t>
+</td><td align="left">
+<t anchor="_d7ab858f-4947-4e66-9962-55d6956440f5">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_2c5f2f29-f68b-4d2d-ba0a-f8ec8adcd902">X-PROPERTY</t>
+</td><td align="left">
+<t anchor="_d6c292b6-867b-40df-a749-ef8813f4bb96">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_df92ecaf-87c9-4f2b-9734-07e9126e8e99">PARTICIPANT</t>
+</td><td align="left">
+<t anchor="_a2a34027-ee9b-4d98-b6eb-b03def6673c2">0+</t>
+</td><td align="left">
+<t anchor="_db6bfd7a-83cf-4014-9ccf-99b975dd222f">Only PARTICIPANT components with PARTICIPANT-TYPE not equal to "VOTER" - that is, no voters</t>
+</td></tr><tr><td align="left">
+<t anchor="_ccc60366-3aac-4bff-8aad-9a04ac831eb1">REQUEST-STATUS</t>
+</td><td align="left">
+<t anchor="_f8cbbc55-2306-48f0-b47c-ce32fa76db40">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_ad4b7bf0-e312-41fa-8832-2819d4328c48">VALARM</t>
+</td><td align="left">
+<t anchor="_2d2e0a41-02e1-4bc8-b06c-37f10a7c97b6">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_e4dc01d2-30d2-4e78-a33c-2c63ec93c4d2">VEVENT</t>
+</td><td align="left">
+<t anchor="_bb86353c-abde-4242-8568-969a9151fc3f">0+</t>
+</td><td align="left">
+<t anchor="_376e8b68-a74a-4e6e-ae6e-fa48d6cfda8d">Depending upon the poll mode in effect there MAY be candidate components included in the poll component.</t>
+</td></tr><tr><td align="left">
+<t anchor="_03590cc3-de90-4862-97d1-461eea0c5256">VFREEBUSY</t>
+</td><td align="left">
+<t anchor="_58dd5371-a03f-415c-b3e0-26b711a7c690">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_0e37fa3b-8144-4993-a510-7ffbb6302d01">VJOURNAL</t>
+</td><td align="left">
+<t anchor="_315dee5b-aad2-4053-9160-2239014d7ca6">0+</t>
+</td><td align="left">
+<t anchor="_a5238e62-3512-4a04-9da6-60f57f1f7628">Depending upon the poll mode in effect there MAY be candidate components included in the poll component.</t>
+</td></tr><tr><td align="left">
+<t anchor="_b0ff7e37-2976-4d52-92f4-123707f0c632">VTODO</t>
+</td><td align="left">
+<t anchor="_bfafccf1-beb2-4695-a453-f48c39bb8846">0+</t>
+</td><td align="left">
+<t anchor="_8b1dd123-bfd0-49f7-802c-8a2eee49e93e">Depending upon the poll mode in effect there MAY be candidate components included in the poll component.</t>
+</td></tr><tr><td align="left">
+<t anchor="_18952d75-9d11-4ec7-b437-d5bbec821a6c">VTIMEZONE</t>
+</td><td align="left">
+<t anchor="_ec12d004-5c7a-4948-9e53-9b14b6f240a4">0+</t>
+</td><td align="left">
+<t anchor="_16a6c17c-55b1-445a-9343-7ffc1c8ed884">MUST be present if any date/time refers to a timezone.</t>
+</td></tr><tr><td align="left">
+<t anchor="_966cba38-58e3-44cf-8521-05e972f4c0cf">IANA-COMPONENT</t>
+</td><td align="left">
+<t anchor="_75a53d33-4dcd-460a-96d7-e3e1ec96b348">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_79d6e8bd-d622-4d7f-9853-778d87cf5942">X-COMPONENT</t>
+</td><td align="left">
+<t anchor="_a1ec535f-37cb-48c1-8592-76821ef11cd4">0+</t>
+</td><td align="left"></td></tr></tbody></table></section>
+<section anchor="_method_request"><name>Method: REQUEST</name><t anchor="_0fa4cf00-96d6-44ac-a7d3-a47b60eb8919">The "REQUEST" method in a "VPOLL" component provides the following
+scheduling functions:</t>
+<ul anchor="_a13b835a-28e6-41eb-9382-59745922651f">
+<li>
+<t anchor="_6efbabba-17cb-4998-aebc-fd132676df63">Invite "Voters" to respond to the poll.</t>
+</li>
+<li>
+<t anchor="_79eafeaf-cc00-4623-9621-7d4c945df982">Change the items being voted upon.</t>
+</li>
+<li>
+<t anchor="_640ba510-c082-451e-8f58-863f8d1ec4bd">Complete or confirm the poll.</t>
+</li>
+<li>
+<t anchor="_4421101b-d4b2-4a6f-8e08-34334e973233">Response to a "REFRESH" request.</t>
+</li>
+<li>
+<t anchor="_016859e7-86fb-4921-a866-572d5122014d">Update the details of an existing vpoll.</t>
+</li>
+<li>
+<t anchor="_a3591ebd-ea99-45cc-aa28-867ca9ad9533">Update the status of "Voters".</t>
+</li>
+<li>
+<t anchor="_318eb815-9531-4e35-941f-3f599b4b2be4">Forward a "VPOLL" to another uninvited CU.</t>
+</li>
+<li>
+<t anchor="_ca844397-8e3a-4ffa-aec1-278d9e031639">For an existing "VPOLL" calendar component, delegate the role of
+"Voter" to another CU.</t>
+</li>
+<li>
+<t anchor="_69b4cd76-83c1-4342-9c93-d1a41b335351">For an existing "VPOLL" calendar component, change the role of
+"Organizer" to another CU.</t>
+</li>
+</ul>
+<t anchor="_7cd6ac68-2e16-4aac-8737-b4f791b32dca">The "Organizer" originates the "REQUEST".  The recipients of the
+"REQUEST" method are the CUs voting in the poll, the "Voters".
+"Voters" use the "REPLY" method to convey votes to the "Organizer".</t>
+<t anchor="_c24e6fe4-6edf-43ff-9ab5-6e0d53ff706d">The "UID" and "SEQUENCE" properties are used to distinguish the
+various uses of the "REQUEST" method.  If the "UID" property value in
+the "REQUEST" is not found on the recipient's calendar, then the
+"REQUEST" is for a new "VPOLL" calendar component.  If the "UID"
+property value is found on the recipient's calendar, then the
+"REQUEST" is for an update, or a reconfirmation of the "VPOLL"
+calendar component.</t>
+<t anchor="_9e41aee0-f1b5-4976-a587-e5bd2ddc7afe">For the "REQUEST" method only a single iCalendar object is permitted.</t>
+<t anchor="_8b2f8e73-7e61-4daa-ac34-7b42c850603b">This method type is an iCalendar object that conforms to the
+following property constraints:</t>
+<table anchor="_8ad0648b-6501-4a8f-bf44-4aaf7e675545"><name>Constraints for a METHOD:REQUEST of a VPOLL</name><thead><tr><th align="left">Component/Property</th><th align="left">Presence</th><th align="left">Comment</th></tr></thead><tbody><tr><td align="left">
+<t anchor="_53c77da4-e35d-459a-8bf8-a4e059b8185d">METHOD</t>
+</td><td align="left">
+<t anchor="_6e4d4337-98b2-4bbc-8726-773083800854">1</t>
+</td><td align="left">
+<t anchor="_32d1a25c-a163-44b7-a16e-ca0fdf7bcc79">MUST be REQUEST.</t>
+</td></tr><tr><td align="left">
+<t anchor="_37a8e704-09a4-40a3-91d1-9ee0e984f402">VPOLL</t>
+</td><td align="left">
+<t anchor="_18fb2015-0967-4873-a284-213a53eaf45a">1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_f597641f-e848-49a0-ad25-4d1020dc39a2">PARTICIPANT</t>
+</td><td align="left">
+<t anchor="_64a20880-08d6-464a-bf4c-013cb5afc197">1+</t>
+</td><td align="left">
+<t anchor="_bf875642-ca08-4448-94b7-94071295f8a3">Identified as voters with the PARTICIPANT-TYPE=VOTER</t>
+</td></tr><tr><td align="left">
+<t anchor="_b7ad245b-b20f-4868-af1d-9b5a879bc45a">DTSTAMP</t>
+</td><td align="left">
+<t anchor="_5cd392d0-8936-49b9-932e-7fdba4e254a4">1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_4e81bf18-e901-4d38-b058-84349b94d5a2">DTSTART</t>
+</td><td align="left">
+<t anchor="_aea9c72f-63cb-45b5-8133-ed7c7a5d5ec8">0 or 1</t>
+</td><td align="left">
+<t anchor="_ea7fba30-8da0-4d86-a35f-e7a85aa7e55e">If present defines the start of the poll. Otherwise the poll starts when it is created and distributed.</t>
+</td></tr><tr><td align="left">
+<t anchor="_c2e0b1b3-0e9f-47cd-9ceb-7e21756c853c">ORGANIZER</t>
+</td><td align="left">
+<t anchor="_e1f480b1-901f-4d3b-b7ca-2348cca32cb0">1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_63a941b3-fc08-4af5-9967-9e93d49a3ef2">SEQUENCE</t>
+</td><td align="left">
+<t anchor="_6b5c71fd-9b1b-4bed-9e01-876da72e7ab0">0 or 1</t>
+</td><td align="left">
+<t anchor="_8a432288-ffb1-4c43-839a-01e6cf4aca62">MUST be present if value is greater than 0; MAY be present if 0.</t>
+</td></tr><tr><td align="left">
+<t anchor="_fba4ea0a-b82b-4e86-8b01-c5a20081c360">SUMMARY</t>
+</td><td align="left">
+<t anchor="_6b3cb7da-ab21-4bc7-8f36-198262da9edd">1</t>
+</td><td align="left">
+<t anchor="_f169af43-7948-4b44-a639-e6e51b8aed8c">Can be null.</t>
+</td></tr><tr><td align="left">
+<t anchor="_d9ed8a99-cbd5-4aff-8f24-c6a2db383a47">UID</t>
+</td><td align="left">
+<t anchor="_5525617e-6719-4e12-8da2-98cb9c26c4a7">1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_dfd66ecf-28ad-4a80-90ed-a82e7d57bfd4">ACCEPT-RESPONSE</t>
+</td><td align="left">
+<t anchor="_712b8874-3e99-4746-b083-b5b33eae2ca1">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_842112bc-06c7-4835-9ae4-4ad63228105d">ATTACH</t>
+</td><td align="left">
+<t anchor="_0c35177b-af3b-45a4-b660-79bc133ce820">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_6b338324-9d61-43ae-b210-7c6d6588f7b8">CATEGORIES</t>
+</td><td align="left">
+<t anchor="_2ecf41d4-8105-4386-9f6b-43f641f57a8a">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_ad29efe6-e161-4cd0-afa6-977845883881">CLASS</t>
+</td><td align="left">
+<t anchor="_cc9ee685-c1e2-4e0a-9758-132258e9ed77">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_f3f3aa5d-0785-4f65-82b9-29e020cd97ab">COMMENT</t>
+</td><td align="left">
+<t anchor="_70539919-ef83-4793-9c81-f0885fd04df2">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_e35d92d0-38e4-4b21-9fa5-198feebaa174">COMPLETED</t>
+</td><td align="left">
+<t anchor="_c8315845-5b34-4da0-8ece-c1d05df4c21e">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_c9c75ae6-6334-4c3f-a8cf-1ca6807af81e">CONTACT</t>
+</td><td align="left">
+<t anchor="_eeb7fea7-9ff0-47f0-8c48-cee765b408ab">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_4e91c90a-f981-456a-8dc5-07c21c66735d">CREATED</t>
+</td><td align="left">
+<t anchor="_6d8276e7-33e3-4de5-8d45-eb6c4ab70188">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_79ff6410-96b3-42a3-b247-66eb6f650007">DESCRIPTION</t>
+</td><td align="left">
+<t anchor="_538739e7-b333-4741-bfc3-ee6795aa8ace">0 or 1</t>
+</td><td align="left">
+<t anchor="_1b1100f7-aa49-4288-b794-f59d1437ac05">Can be null.</t>
+</td></tr><tr><td align="left">
+<t anchor="_b85cd1e1-8f81-462a-a0c8-102ba497c37c">DTEND</t>
+</td><td align="left">
+<t anchor="_702ed2c2-8001-42ff-a5bd-1e9b159bcb3c">0 or 1</t>
+</td><td align="left">
+<t anchor="_0b6b3ee8-0e00-4694-b42f-64117b4af0ad">If present, DURATION MUST NOT be present.</t>
+</td></tr><tr><td align="left">
+<t anchor="_2e215251-ad69-4e98-a11d-f0e995ac474f">DURATION</t>
+</td><td align="left">
+<t anchor="_6e5ff18b-0ee8-4762-885d-168996fe268b">0 or 1</t>
+</td><td align="left">
+<t anchor="_337af8ff-04d5-440a-b7c6-a5096689f1ae">If present, DTEND MUST NOT be present.</t>
+</td></tr><tr><td align="left">
+<t anchor="_86b54875-c9ca-4e2c-8df3-9e89e418c1f3">GEO</t>
+</td><td align="left">
+<t anchor="_48dbdebc-ff28-48a5-8d79-b24deabb4b5b">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_207e49f7-f1cc-4f09-8f34-73b2b1379104">LAST-MODIFIED</t>
+</td><td align="left">
+<t anchor="_6e73aee2-66ce-4488-8d63-ba2eac80483a">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_a9697749-eabe-4a7c-b507-9b92f938874f">LOCATION</t>
+</td><td align="left">
+<t anchor="_690e5c6e-f451-4077-9c1b-06ed19cae157">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_28b8ba5c-2f1b-4678-b28d-2a03d5d970e1">POLL-ITEM-ID</t>
+</td><td align="left">
+<t anchor="_d6a173bc-b7fa-4a2c-a193-715979cdaf11">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_3ea91d0f-b2e5-4623-934b-863671ade676">POLL-MODE</t>
+</td><td align="left">
+<t anchor="_de4d4592-f463-4150-be7a-5c6db37a4d5c">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_52a11ea7-12e7-404c-b0a4-e2d498b149b2">POLL-PROPERTIES</t>
+</td><td align="left">
+<t anchor="_ac30035f-e6f2-4e8c-82cd-2d78c508dcd4">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_7d4061f8-96d2-4132-ba6e-ec57c42b05f1">PRIORITY</t>
+</td><td align="left">
+<t anchor="_e15e1f33-c477-4042-b318-1aae09a7720a">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_aa88c3fb-bbc9-48b0-a60d-f0304575bc03">RELATED-TO</t>
+</td><td align="left">
+<t anchor="_7d8fd17f-6005-4e2d-97a2-e3f93027a5b1">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_81b3729d-1b0e-429c-877b-0bd4467c5371">REQUEST-STATUS</t>
+</td><td align="left">
+<t anchor="_ca00cc56-85b1-43ca-a268-7ad9c7ff6330">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_0411b229-d828-4029-a416-de42a4b8ef4b">RESOURCES</t>
+</td><td align="left">
+<t anchor="_616eb2a0-a703-481c-b24d-711ab7f168ef">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_9cf3061e-c491-4b6a-8ced-f777e97c2359">STATUS</t>
+</td><td align="left">
+<t anchor="_08dce679-2742-4d44-9c9c-0c579bcba7f8">0 or 1</t>
+</td><td align="left">
+<t anchor="_f91990de-83bd-4ffd-accf-556a4aa502cf">MAY be one of COMPLETED/CONFIRMED/CANCELLED.</t>
+</td></tr><tr><td align="left">
+<t anchor="_26467845-852b-4600-be01-d8e599c3456c">TRANSP</t>
+</td><td align="left">
+<t anchor="_390edc00-0c14-4311-96ee-d0ee348e5c84">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_54059cbb-a2f5-4ab9-bebe-b6001b0366cc">URL</t>
+</td><td align="left">
+<t anchor="_5af2bf97-97f7-4520-b075-46b4b4cb4266">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_d26099c4-29f6-4a2f-bc22-31490eb2cd86">IANA-PROPERTY</t>
+</td><td align="left">
+<t anchor="_d3d4934e-0e07-4a3a-aab3-77b5f8d0876c">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_81925f6e-6aaf-4c6a-9fb1-05b76c41bfe0">X-PROPERTY</t>
+</td><td align="left">
+<t anchor="_dda7c201-bb16-4296-9e7c-0c502a0401f3">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_9f9c0f8f-e819-4c87-8167-ed7605a00360">VALARM</t>
+</td><td align="left">
+<t anchor="_d3a7c403-e88a-453c-8639-ce808fb7d62e">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_89c2b5d4-6af4-483c-a1e8-cbc95c15a2a6">VTIMEZONE</t>
+</td><td align="left">
+<t anchor="_e027d5f7-61e5-4aeb-83aa-86127152ad2c">0+</t>
+</td><td align="left">
+<t anchor="_e3d81253-52ea-4ec7-8d04-0d1d5240230a">MUST be present if any date/time refers to a timezone.</t>
+</td></tr><tr><td align="left">
+<t anchor="_46551d84-a470-472b-af4f-57b7be721a53">IANA-COMPONENT</t>
+</td><td align="left">
+<t anchor="_2c1296b2-f05b-4b4b-a6f2-7c0bd188f284">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_17038814-9cd5-4894-a94b-c023de3758ef">X-COMPONENT</t>
+</td><td align="left">
+<t anchor="_acbea49d-0fae-4514-af9d-8cf56aa022fe">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_bb6d05a5-d796-4f11-bbb9-4358ffbf7b27">VEVENT</t>
+</td><td align="left">
+<t anchor="_6bfb39f7-3b1e-497f-8574-a4aee7e127c0">0+</t>
+</td><td align="left">
+<t anchor="_76b0baa0-b5cc-49e5-8dc3-1a87fa7127df">Depending upon the poll mode in effect there MAY be candidate components included in the poll component.</t>
+</td></tr><tr><td align="left">
+<t anchor="_8e8e3e6d-adfd-409d-b330-90c557e67302">VFREEBUSY</t>
+</td><td align="left">
+<t anchor="_e8ed30e3-58a8-4e72-815f-9e4f8e65d66f">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_1a893a41-3333-4cd5-88c9-0991312150e5">VJOURNAL</t>
+</td><td align="left">
+<t anchor="_8452a05f-084f-4f7b-bcaf-44d6eac3d1c3">0+</t>
+</td><td align="left">
+<t anchor="_6ebc071a-ffac-41a3-9f65-18f11b178b9b">Depending upon the poll mode in effect there MAY be candidate components included in the poll component.</t>
+</td></tr><tr><td align="left">
+<t anchor="_ed17ae60-65be-4ff2-b985-476a56595697">VTODO</t>
+</td><td align="left">
+<t anchor="_1a2c49e5-63ca-4dd2-8a39-b272029d38cd">0+</t>
+</td><td align="left">
+<t anchor="_6fde1a2a-b50c-4db1-a671-a47b1308c41c">Depending upon the poll mode in effect there MAY be candidate components included in the poll component.</t>
+</td></tr></tbody></table>
+<section anchor="_rescheduling_a_poll"><name>Rescheduling a poll</name>
+
+<t anchor="_13b908f8-d7df-4204-aae1-0312ff5ba379">The "REQUEST" method may be used to reschedule a poll, that is force
+a revote.  A rescheduled poll involves a change to the existing poll
+in terms of its time the components being voted on may have changed.
+If the recipient CUA of a "REQUEST" method finds that the "UID"
+property value already exists on the calendar but that the "SEQUENCE"
+(or "DTSTAMP") property value in the "REQUEST" method is greater than
+the value for the existing poll, then the "REQUEST" method describes
+a rescheduling of the poll.</t>
+</section>
+<section anchor="_updating_or_reconfirmation_of_a_poll"><name>Updating or Reconfirmation of a Poll</name><t anchor="_c7069aa1-0823-4e39-8013-a0516c7923e1">The "REQUEST" method may be used to update or reconfirm a poll.  An
+update to an existing poll does not involve changes to the time or
+candidates, and might not involve a change to the location or
+description for the poll.  If the recipient CUA of a "REQUEST" method
+finds that the "UID" property value already exists on the calendar
+and that the "SEQUENCE" property value in the "REQUEST" is the same
+as the value for the existing poll, then the "REQUEST" method</t>
+<t anchor="_17349960-20e9-47c9-aed2-d1da99a837fc">describes an update of the poll details, but not a rescheduling of
+the POLL.</t>
+<t anchor="_964674bc-760f-401b-b017-610b77b341f9">The update "REQUEST" method is the appropriate response to a
+"REFRESH" method sent from a "Voter" to the "Organizer" of a poll.</t>
+<t anchor="_e453b9b6-2c9f-47ca-af98-238186761b1a">The "Organizer" of a poll may also send unsolicited "REQUEST"
+methods.  The unsolicited "REQUEST" methods may be used to update the
+details of the poll without rescheduling it, to update the "RESPONSE"
+parameter of "Voters", or to reconfirm the poll.</t></section>
+<section anchor="_confirmation_of_a_poll"><name>Confirmation of a Poll</name>
+
+<t anchor="_1edda39d-6f42-4834-9055-477275c4c91c">The "REQUEST" method may be used to confirm a poll, that is announce
+the winner in BASIC mode.  The STATUS MUST be set to CONFIRMED and
+for BASIC mode a VPOLL POLL-WINNER property must be provided with the
+poll-id of the winning component.</t>
+</section>
+<section anchor="_closing_a_poll"><name>Closing a Poll</name>
+
+<t anchor="_ac1622c6-b6d1-4935-aa49-e081609aa5b6">The "REQUEST" method may be used to close a poll, that is indicate
+voting is completed.  The STATUS MUST be set to COMPLETED.</t>
+</section>
+<section anchor="_delegating_a_poll_to_another_cu"><name>Delegating a Poll to Another CU</name><t anchor="_c572b5e2-493f-429d-9480-8543f90652aa">Some calendar and scheduling systems allow "Voters" to delegate the
+vote to another "Calendar User". iTIP supports this concept using the
+following workflow.  Any "Voter" may delegate their right to vote in
+a poll to another CU.  The implication is that the delegate
+participates in lieu of the original "Voter", NOT in addition to the
+"Voter".  The delegator MUST notify the "Organizer" of this action
+using the steps outlined below.  Implementations may support or
+restrict delegation as they see fit.  For instance, some
+implementations may restrict a delegate from delegating a "REQUEST"
+to another CU.</t>
+<t anchor="_aca3b7dd-a522-4d37-a8a7-e84dcb7f67cd">The "Delegator" of a poll forwards the existing "REQUEST" to the
+"Delegate".  The "REQUEST" method MUST include a "Voter" property
+with the calendar address of the "Delegate".  The "Delegator" MUST
+also send a "REPLY" method to the "Organizer" with the "Delegator's"
+"Voter" property "DELEGATED-TO" parameter set to the calendar address
+of the "Delegate".  Also, a new "Voter" property for the "Delegate"
+MUST be included and must specify the calendar user address set in
+the "DELEGATED-TO" parameter, as above.</t>
+<t anchor="_fcb13d0b-913d-4212-aafc-f39203b23d3c">In response to the request, the "Delegate" MUST send a "REPLY" method
+to the "Organizer", and optionally to the "Delegator".  The "REPLY"</t>
+<t anchor="_7b071a63-89b3-4075-8886-220fc9b60486">method SHOULD include the "Voter" property with the "DELEGATED-FROM"
+parameter value of the "Delegator's" calendar address.</t>
+<t anchor="_a201a64e-e611-4c00-bb65-a714dda62596">The "Delegator" may continue to receive updates to the poll even
+though they will not be attending.  This is accomplished by the
+"Delegator" setting their "role" attribute to "NON-PARTICIPANT" in
+the "REPLY" to the "Organizer".</t></section>
+<section anchor="_changing_the_organizer"><name>Changing the Organizer</name>
+
+<t anchor="_f5421dde-7956-4692-8df6-5e4fc3dded70">The situation may arise where the "Organizer" of a "VPOLL" is no
+longer able to perform the "Organizer" role and abdicates without
+passing on the "Organizer" role to someone else.  When this occurs,
+the "Voters" of the "VPOLL" may use out-of-band mechanisms to
+communicate the situation and agree upon a new "Organizer".  The new
+"Organizer" should then send out a new "REQUEST" with a modified
+version of the "VPOLL" in which the "SEQUENCE" number has been
+incremented and the "ORGANIZER" property has been changed to the new
+"Organizer".</t>
+</section>
+<section anchor="_sending_on_behalf_of_the_organizer"><name>Sending on Behalf of the Organizer</name>
+
+<t anchor="_14421117-a2d3-43bf-b2c4-04c930c4956f">There are a number of scenarios that support the need for a "Calendar
+User" to act on behalf of the "Organizer" without explicit role
+changing.  This might be the case if the CU designated as "Organizer"
+is sick or unable to perform duties associated with that function.
+In these cases, iTIP supports the notion of one CU acting on behalf
+of another.  Using the "SENT-BY" parameter, a "Calendar User" could
+send an updated "VPOLL" "REQUEST".  In the case where one CU sends on
+behalf of another CU, the "Voter" responses are still directed back
+towards the CU designated as "Organizer".</t>
+</section>
+<section anchor="_forwarding_to_an_uninvited_cu"><name>Forwarding to an Uninvited CU</name><t anchor="_b8c11801-b547-4fa9-8e50-c10da8593fa8">A "Voter" invited to a "VPOLL" calendar component may send the
+"VPOLL" calendar component to another new CU not previously
+associated with the "VPOLL" calendar component.  The current "Voter"
+participating in the "VPOLL" calendar component does this by
+forwarding the original "REQUEST" method to the new CU.  The new CU
+can send a "REPLY" to the "Organizer" of the "VPOLL" calendar
+component.  The reply contains a "Voter" property for the new CU.</t>
+<t anchor="_19d097dd-ca7d-4685-9b8e-4cc47c6ce037">The "Organizer" ultimately decides whether or not the new CU becomes
+part of the poll and is not obligated to do anything with a "REPLY"
+from a new (uninvited) CU.  If the "Organizer" does not want the new
+CU to be part of the poll, the new "Voter" property is not added to
+the "VPOLL" calendar component.  The "Organizer" MAY send the CU a
+"CANCEL" message to indicate that they will not be added to the poll.</t>
+<t anchor="_4a3825d4-e2a6-49c8-8fc1-c0c9913a6f91">If the "Organizer" decides to add the new CU, the new "Voter"
+property is added to the "VPOLL" calendar component.  Furthermore,
+the "Organizer" is free to change any "Voter" property parameter from
+the values supplied by the new CU to something the "Organizer"
+considers appropriate.  The "Organizer" SHOULD send the new CU a
+"REQUEST" message to inform them that they have been added.</t>
+<t anchor="_10c7d1ec-a748-4ac2-b6b2-4eb5936f6011">When forwarding a "REQUEST" to another CU, the forwarding "Voter"
+MUST NOT make changes to the original message.</t></section>
+<section anchor="_updating_voter_status"><name>Updating Voter Status</name>
+
+<t anchor="_0977f949-b4d5-4963-822e-f7302e59763a">The "Organizer" of an poll may also request updated status from one
+or more "Voters".  The "Organizer" sends a "REQUEST" method to the
+"Voter" and sets the "RSVP=TRUE" property parameter on the PARTICIPANT CALENDAR-ADDRESS.  The
+"SEQUENCE" property for the poll is not changed from its previous
+value.  A recipient will determine that the only change in the
+"REQUEST" is that their "RSVP" property parameter indicates a request
+for updated status.  The recipient SHOULD respond with a "REPLY"
+method indicating their current vote with respect to the "REQUEST".</t>
+</section></section>
+<section anchor="_method_reply"><name>Method: REPLY</name><t anchor="_3a4ab679-c7a7-476b-b2a4-8381cbd9b569">The "REPLY" method in a "VPOLL" calendar component is used to respond
+(e.g., accept or decline) to a "REQUEST" or to reply to a delegation
+"REQUEST".  When used to provide a delegation response, the
+"Delegator" SHOULD include the calendar address of the "Delegate" on
+the "DELEGATED-TO" property parameter of the "Delegator's" "CALENDAR-ADDRESS"
+property.  The "Delegate" SHOULD include the calendar address of the
+"Delegator" on the "DELEGATED-FROM" property parameter of the
+"Delegate's" "CALENDAR-ADDRESS" property.</t>
+<t anchor="_e09a1de2-0320-481f-9071-76f6cee3211e">The "REPLY" method is also used when processing of a "REQUEST" fails.
+Depending on the value of the "REQUEST-STATUS" property, no action
+may have been performed.</t>
+<t anchor="_c0b3ed41-f7b1-4947-8d71-75167ff32b2a">The "Organizer" of a poll may receive the "REPLY" method from a CU
+not in the original "REQUEST".  For example, a "REPLY" may be
+received from a "Delegate" to a poll.  In addition, the "REPLY"
+method may be received from an unknown CU (a "Party Crasher").  This
+uninvited "Voter" may be accepted, or the "Organizer" may cancel the
+poll for the uninvited "Voter" by sending a "CANCEL" method to the
+uninvited "Voter".</t>
+<t anchor="_43392860-fdcb-44ad-b169-791cd032a637">A "Voter" MAY include a message to the "Organizer" using the
+"COMMENT" property.  For example, if the user indicates a low
+interest and wants to let the "Organizer" know why, the reason can be
+expressed in the "COMMENT" property value.</t>
+<t anchor="_1d62449c-9f47-4175-98ea-b2af1e455105">The "Organizer" may also receive a "REPLY" from one CU on behalf of
+another.  Like the scenario enumerated above for the "Organizer",
+"Voters" may have another CU respond on their behalf.  This is done
+using the "SENT-BY" parameter.</t>
+<t anchor="_8fb545a3-bf1c-4c96-88a9-aa44b6826cca">The optional properties listed in the table below (those listed as
+"0+" or "0 or 1") MUST NOT be changed from those of the original
+request.  (But see comments on VFREEBUSY and VAVAILABILITY)</t>
+<t anchor="_bf1ac2e7-6caf-4484-8ba5-b94ab35f6d65">This method type is an iCalendar object that conforms to the
+following property constraints:</t>
+<table anchor="_a6deb029-337a-425d-abd3-caa7966a8449"><name>Constraints for a METHOD:REPLY of a VPOLL</name><thead><tr><th align="left">Component/Property</th><th align="left">Presence</th><th align="left">Comment</th></tr></thead><tbody><tr><td align="left">
+<t anchor="_266f66da-23a4-4373-a615-1640202aa9ee">METHOD</t>
+</td><td align="left">
+<t anchor="_6127fdbc-4da8-4eb5-9391-c7529f284f7d">1</t>
+</td><td align="left">
+<t anchor="_9f26732c-57b1-4920-befb-d3b740bd110a">MUST be REPLY.</t>
+</td></tr><tr><td align="left">
+<t anchor="_6ada0486-59ed-4ea7-869f-6e83e2ec1818">VPOLL</t>
+</td><td align="left">
+<t anchor="_eb5333fe-5774-41be-bb4c-8d268b518cab">1+</t>
+</td><td align="left">
+<t anchor="_e192ae3d-e5a6-4865-9fbc-e0625aadc990">All components MUST have the same</t>
+</td></tr><tr><td align="left"></td><td align="left"></td><td align="left">
+<t anchor="_47909c9e-5eee-41fb-85e4-44d3d271d89c">UID.</t>
+</td></tr><tr><td align="left">
+<t anchor="_5b0ae864-ba5e-4a56-9e40-1d6e9f485d0d">PARTICIPANT</t>
+</td><td align="left">
+<t anchor="_d0abca70-c62f-4f60-aa41-815fc503b15f">1</t>
+</td><td align="left">
+<t anchor="_6eeb5172-d268-4edc-b207-7a45c6a3af20">Identifies the Voter replying.</t>
+</td></tr><tr><td align="left">
+<t anchor="_1e7a9915-d34f-4e49-b03b-08733b9b3734">DTSTAMP</t>
+</td><td align="left">
+<t anchor="_acfa6b0b-271d-4a2c-88df-4bef4c480c2e">1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_e6c1492a-e964-4bd8-8b36-c261fcedc91b">ORGANIZER</t>
+</td><td align="left">
+<t anchor="_14610bd7-777b-41ac-8584-343540e9f726">1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_767a4528-4ce9-48c3-9734-7651378f7d66">UID</t>
+</td><td align="left">
+<t anchor="_46c6be18-bf4c-4753-82b6-e8fa7127c8f8">1</t>
+</td><td align="left">
+<t anchor="_ded06ca8-6192-4283-9c2f-5549ed7da1fc">MUST be the UID of the original</t>
+</td></tr><tr><td align="left"></td><td align="left"></td><td align="left">
+<t anchor="_a6980ee1-daa7-469f-b818-6461f624d622">REQUEST.</t>
+</td></tr><tr><td align="left">
+<t anchor="_27cc8990-95df-46ca-a3ba-44ea62be2983">SEQUENCE</t>
+</td><td align="left">
+<t anchor="_6a82bff0-c354-43da-9d33-45dcd409e6c8">0 or 1</t>
+</td><td align="left">
+<t anchor="_dd5a5c23-32a9-4238-834b-f8c90b44036c">If non-zero, MUST be the sequence number of the original REQUEST. MAY be present if 0.</t>
+</td></tr><tr><td align="left">
+<t anchor="_cbe5eed6-8e13-43f6-a346-55108f923570">ACCEPT-RESPONSE</t>
+</td><td align="left">
+<t anchor="_c3212da2-ea4f-4c6d-a2ee-25ffc1b47871">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_9b4e248b-9912-4cbf-9ff1-de2e44232d78">ATTACH</t>
+</td><td align="left">
+<t anchor="_23a90324-fc43-4a12-9eaf-8e6f40363d2e">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_0b715f79-fb3a-4f32-9bed-4bb97555254a">CATEGORIES</t>
+</td><td align="left">
+<t anchor="_24460ef8-1c5d-439b-8316-8716ea67b67d">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_3994e5b7-004b-40ea-b75e-d0d233c861b0">CLASS</t>
+</td><td align="left">
+<t anchor="_6ffc4da4-a1c8-437c-b2a3-127fd08920b9">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_67fc3a89-09ea-433b-8931-77f080483b7d">COMMENT</t>
+</td><td align="left">
+<t anchor="_4f6b458a-43b1-4d76-a58f-d7677bc21466">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_3168d4d9-68a5-413b-a36d-a4da032289f9">COMPLETED</t>
+</td><td align="left">
+<t anchor="_a0490aec-5a03-4c76-8e17-58ba3aece514">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_5fe4f5b1-a3ae-45cf-bcc2-de1e9fdde7be">CONTACT</t>
+</td><td align="left">
+<t anchor="_809a3149-8bcf-4d15-888f-a6c3db8337a7">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_f24fe876-30b7-4be6-9b70-bfcb7aa78b30">CREATED</t>
+</td><td align="left">
+<t anchor="_f73c3c49-ba82-498d-9993-b92c8fbac957">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_cc10a161-ba12-4061-a7ea-ce9a85d65402">DESCRIPTION</t>
+</td><td align="left">
+<t anchor="_9604f376-a2b8-4973-aa0f-970039bbb379">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_2c9df4ea-5e14-415d-9f5f-1d9b8cb6a3d7">DTEND</t>
+</td><td align="left">
+<t anchor="_33c192b0-549a-4854-94d5-ab8b3dcf5e64">0 or 1</t>
+</td><td align="left">
+<t anchor="_1898ca98-f227-41c7-8e62-5dd854728bdc">If present, DURATION MUST NOT be present.</t>
+</td></tr><tr><td align="left">
+<t anchor="_49c06d6d-5d26-4d2c-89f5-eb6e4c77b514">DTSTART</t>
+</td><td align="left">
+<t anchor="_b82f29fe-b1b2-41b0-95e2-ed55e730a2ab">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_c6b5a797-e05e-412c-af46-83c75ecc1b1d">DURATION</t>
+</td><td align="left">
+<t anchor="_2d1106d3-4a8a-44cd-a8ab-da09951ac80d">0 or 1</t>
+</td><td align="left">
+<t anchor="_06044a45-0505-4957-90c4-2de6dc033f7d">If present, DTEND MUST NOT be present.</t>
+</td></tr><tr><td align="left">
+<t anchor="_faa5f9d6-8115-44de-aa9f-49da675a1be2">GEO</t>
+</td><td align="left">
+<t anchor="_3ffbf1bd-7c5a-4d87-918c-0399c125b5f6">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_11e74077-5909-4e0f-98d5-c6010c4b0715">LAST-MODIFIED</t>
+</td><td align="left">
+<t anchor="_135046e2-a0ae-49f7-9a9e-547b1f81de80">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_4f1791b1-0013-4dea-914a-afe4308f2e0c">LOCATION</t>
+</td><td align="left">
+<t anchor="_20af6644-b4c9-4dc9-b881-0a329be3932b">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_d2458df8-333b-49a3-ad4b-f3c5189c5d7d">POLL-ITEM-ID</t>
+</td><td align="left">
+<t anchor="_b1b20da0-dccc-4a3b-8da4-1aa8abb90297">1+</t>
+</td><td align="left">
+<t anchor="_f073aecd-b99c-4346-a222-9bc3520fc767">One per item being voted on.</t>
+</td></tr><tr><td align="left">
+<t anchor="_dd9323d8-e37d-4290-b315-8a6b7db9859c">POLL-MODE</t>
+</td><td align="left">
+<t anchor="_bfd7d299-49e3-412a-b640-e2af09744151">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_02a84ab5-419d-4af7-979e-d5b8ddaf0176">POLL-PROPERTIES</t>
+</td><td align="left">
+<t anchor="_135e736b-fe8c-4fb8-8fa8-e95fcd56a1ff">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_56355150-0e24-4f00-8e55-334ae08ac529">PRIORITY</t>
+</td><td align="left">
+<t anchor="_8f94431c-90ef-4d41-bb60-7d6cbbefee78">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_3bc98cbf-e069-4ff5-9cfa-bd7e17defa89">RELATED-TO</t>
+</td><td align="left">
+<t anchor="_07a19e36-64fb-4e72-8c0e-6f3374acd5cb">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_754c9257-d7bb-47cc-b805-98a40b7f6181">RESOURCES</t>
+</td><td align="left">
+<t anchor="_f40d2ae5-5506-42d7-90ec-9f89c2f46401">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_7bbd88fc-8540-493b-a35b-e794e998c4ef">REQUEST-STATUS</t>
+</td><td align="left">
+<t anchor="_d7103e8f-a87e-49ac-b1fa-21201fb50e5a">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_c3269947-4393-4e51-a5cd-27a0cdbd09f5">STATUS</t>
+</td><td align="left">
+<t anchor="_b15e2dde-66fa-4512-9202-5c58b213c549">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_41196008-0ccf-496a-a305-974ca2baf549">SUMMARY</t>
+</td><td align="left">
+<t anchor="_360ee325-c1a1-4009-b9a9-d5817d198ad2">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_47c03892-d147-457c-93af-006a23987697">TRANSP</t>
+</td><td align="left">
+<t anchor="_9390d370-967b-4b61-abc6-450c71e91ca0">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_905cc4c3-a4b5-438e-b1b5-0a59866192ff">URL</t>
+</td><td align="left">
+<t anchor="_0577cb2f-742b-46ef-8797-7747e88ae287">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_6e714444-f645-4f4c-a034-e1c187603133">IANA-PROPERTY</t>
+</td><td align="left">
+<t anchor="_462e5991-4b91-480d-8af0-62c4693729df">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_3fd2965f-7d8d-433f-8614-73d095de4b4f">X-PROPERTY</t>
+</td><td align="left">
+<t anchor="_2a1c8c5f-e809-47b3-9724-556adda2b2ac">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_0245f086-7c1c-43f0-8dc5-ac2d99de7458">VALARM</t>
+</td><td align="left">
+<t anchor="_c8f44336-354c-43b9-a21b-7a0cfaad3db4">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_1d678e2e-0315-4190-adef-e2556cb1483f">VTIMEZONE</t>
+</td><td align="left">
+<t anchor="_2c501cc0-f23b-4a6f-9ad5-7a619766a086">0 or 1</t>
+</td><td align="left">
+<t anchor="_f1ad32e7-3647-4931-a805-90be4e7c79bf">MUST be present if any date/time refers to a timezone.</t>
+</td></tr><tr><td align="left">
+<t anchor="_fc8aef2e-5403-4765-9ad8-adc03e8801c0">IANA-COMPONENT</t>
+</td><td align="left">
+<t anchor="_3cf6bcc5-6b06-4834-ad8e-3549daa4a1be">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_cb94563c-9604-48d4-bcb0-d970c035477b">X-COMPONENT</t>
+</td><td align="left">
+<t anchor="_614ce3ec-d0ef-49ce-aa20-c8d2160a9ee0">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_3f61d9a3-9358-4679-87c2-0e0c1921f090">VEVENT</t>
+</td><td align="left">
+<t anchor="_07605dc1-f4ff-4cb7-b672-6e7850d202af">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_cd9045ce-94db-480d-a1d7-2ab3ba91b0ae">VFREEBUSY</t>
+</td><td align="left">
+<t anchor="_61946430-f5ce-460f-b8e5-194e686a59e2">0 or 1</t>
+</td><td align="left">
+<t anchor="_313230b1-918b-4eae-8030-41c2d62f0f48">A voter may respond with a VFREEBUSY component indicating that the ORGANIZER may select some other time which is not marked as busy.</t>
+</td></tr><tr><td align="left">
+<t anchor="_0e6f1604-e1e2-4897-b2d4-2315c07889d5">VAVAILABILITY</t>
+</td><td align="left">
+<t anchor="_1a5e8df1-5c59-4303-95a2-4d25ef93a9a6">0</t>
+</td><td align="left">
+<t anchor="_c7d3a977-2580-402b-8640-21e8d5274fdd">A voter may respond with a VAVAILABILITY component indicating that the ORGANIZER may select some other time which is shown as available.</t>
+</td></tr><tr><td align="left">
+<t anchor="_16fe0455-f70d-4a01-8a05-dedb10d2dccd">VJOURNAL</t>
+</td><td align="left">
+<t anchor="_80af3723-e5ac-4160-8bd7-8401d4aab943">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_88a66f8a-79ac-427e-acc1-301dc58d5c13">VTODO</t>
+</td><td align="left">
+<t anchor="_75e86bce-f121-4e08-a36e-40861c76a1a3">0</t>
+</td><td align="left"></td></tr></tbody></table></section>
+<section anchor="_method_cancel"><name>Method: CANCEL</name><t anchor="_3f2ad9a4-c61c-4aa4-a79f-1848f10e72fc">The "CANCEL" method in a "VPOLL" calendar component is used to send a
+cancellation notice of an existing poll request to the affected
+"Voters".  The message is sent by the "Organizer" of the poll.</t>
+<t anchor="_7d9c36e9-7c97-4f88-b4da-39a766b761de">The "Organizer" MUST send a "CANCEL" message to each "Voter" affected
+by the cancellation.  This can be done using a single "CANCEL"
+message for all "Voters" or by using multiple messages with different
+subsets of the affected "Voters" in each.</t>
+<t anchor="_3401418f-79d8-470b-983f-e6d61de04d39">When a "VPOLL" is cancelled, the "SEQUENCE" property value MUST be
+incremented as described in <xref target="component-revisions"></xref>.</t>
+<t anchor="_7cac7c4a-9a5f-41c9-a92b-32d14dd6308a">Once a CANCEL message has been sent to all voters no further voting
+may take place.  The poll is considered closed.</t>
+<t anchor="_85b1b836-5723-4401-afc4-6192ccb57709">This method type is an iCalendar object that conforms to the
+following property constraints:</t>
+<table anchor="_7367785c-1204-4b24-9bae-baebda5672fa"><name>Constraints for a METHOD:CANCEL of a VPOLL</name><thead><tr><th align="left">Component/Property</th><th align="left">Presence</th><th align="left">Comment</th></tr></thead><tbody><tr><td align="left">
+<t anchor="_be8c0ec8-4e70-492b-84f0-ddccc44aa43e">METHOD</t>
+</td><td align="left">
+<t anchor="_7a43f261-54c0-4aeb-9cf4-f0fe5a52673a">1</t>
+</td><td align="left">
+<t anchor="_b0a38d7d-2720-4bdd-8265-a2ce183fe92c">MUST be CANCEL.</t>
+</td></tr><tr><td align="left">
+<t anchor="_24ece296-d32a-425c-a06c-1d3fad0cca97">VPOLL</t>
+</td><td align="left">
+<t anchor="_51cd591a-2129-49ec-84c8-7017f04ddac1">1+</t>
+</td><td align="left">
+<t anchor="_e7f0357e-4834-41f1-b6e2-d0305dff1dac">All must have the same UID.</t>
+</td></tr><tr><td align="left">
+<t anchor="_93debda2-7e96-4157-8f27-bc4e8024832f">PARTICIPANT</t>
+</td><td align="left">
+<t anchor="_c8edfba6-bea0-46a7-9c45-877dc4058165">0+</t>
+</td><td align="left">
+<t anchor="_467b1ee3-af02-4d41-9175-0f3c9cb7a6b2">MUST include some or all Voters being removed from the poll. MUST include some or all Voters if the entire poll is cancelled.</t>
+</td></tr><tr><td align="left">
+<t anchor="_7b06a9fa-8ac3-44fe-8e1f-e8730be66d30">UID</t>
+</td><td align="left">
+<t anchor="_12eeab34-e9d1-4129-b2d7-ab1bee653f5d">1</t>
+</td><td align="left">
+<t anchor="_466a8380-3caa-422b-b20d-e3152a512087">MUST be the UID of the original REQUEST.</t>
+</td></tr><tr><td align="left">
+<t anchor="_9069eb47-d0d3-456f-9a68-b33fa4996fc0">DTSTAMP</t>
+</td><td align="left">
+<t anchor="_facac6d2-558d-4940-b089-e658f82de41e">1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_0294d6a9-2245-4587-80f9-9d7f8b96291f">ORGANIZER</t>
+</td><td align="left">
+<t anchor="_5a436035-3a1b-4b32-b0ef-f9455f731cf6">1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_05478eb7-7ce8-4ee0-9b0e-e4f375b48821">SEQUENCE</t>
+</td><td align="left">
+<t anchor="_a552c0c7-1994-4f9c-96f0-31807923c6b2">1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_4f54985d-f8e0-4247-848b-aa12c1764c74">ATTACH</t>
+</td><td align="left">
+<t anchor="_022e6fd3-9dcc-4fe5-8fa6-eee9a663a8a5">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_9c3cf5fc-1c37-4403-bfc8-408e9e1104ca">ACCEPT-RESPONSE</t>
+</td><td align="left">
+<t anchor="_f5dfa91a-eb8c-4871-a479-eb284c3549b5">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_26c889c4-0748-40b9-8fd4-c97b94233a32">COMMENT</t>
+</td><td align="left">
+<t anchor="_d9ab8ca8-6ba6-4669-923e-28c097f1d066">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_0e1cacf5-f94d-487f-81fd-a67e514c2da0">COMPLETED</t>
+</td><td align="left">
+<t anchor="_4bc45f92-a218-4846-8bf4-0d3e90499c3d">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_4856a91b-4636-49c5-8f1f-0f9ecc1abcf7">CATEGORIES</t>
+</td><td align="left">
+<t anchor="_5b6626d4-c5be-4711-ba5c-be8977977fea">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_70afd51a-de94-48b4-b911-d34d06875cad">CLASS</t>
+</td><td align="left">
+<t anchor="_d5644195-5183-4dc3-b333-c0cda8a1cc19">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_093af037-2a97-4911-9415-3b5d81e6f6de">CONTACT</t>
+</td><td align="left">
+<t anchor="_ca55269f-7219-4b6a-bd75-83e19137d5c6">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_b6ef37d7-d7b1-4bed-a0e9-7ab04055071f">CREATED</t>
+</td><td align="left">
+<t anchor="_223465c3-1c1b-4465-be20-39d56b65efaa">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_d8157867-a700-4407-b7b5-8c569b2c4a00">DESCRIPTION</t>
+</td><td align="left">
+<t anchor="_57c568e5-25e0-4c67-a95d-e76bb103f942">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_637578ec-e3f4-466a-a6ad-a24086aa5be7">DTEND</t>
+</td><td align="left">
+<t anchor="_66e3367b-7672-4ae7-8825-80389a49551a">0 or 1</t>
+</td><td align="left">
+<t anchor="_cb4b667a-50c3-44e0-886d-9304bc9af2fe">If present, DURATION MUST NOT be present.</t>
+</td></tr><tr><td align="left">
+<t anchor="_c399d5d2-6cb4-47ec-a829-e28c4353dc38">DTSTART</t>
+</td><td align="left">
+<t anchor="_b9542323-8e90-429a-99d3-d568747a979d">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_c2accfd2-a496-49bb-a498-36316b93a2cf">DURATION</t>
+</td><td align="left">
+<t anchor="_6239dc23-d2c2-4a35-b265-727905dd7a6b">0 or 1</t>
+</td><td align="left">
+<t anchor="_3e579e67-50aa-4966-ad0d-532960b1b13e">If present, DTEND MUST NOT be present.</t>
+</td></tr><tr><td align="left">
+<t anchor="_f677f6fe-d54e-451b-831c-7b29ce101de0">GEO</t>
+</td><td align="left">
+<t anchor="_f68c011f-f697-462e-9205-9466de9ec7cd">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_d92a2959-5482-49c9-b149-72a1c8f52ca6">LAST-MODIFIED</t>
+</td><td align="left">
+<t anchor="_a0388ca6-163b-48f9-af09-53d370f329cb">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_69ce6a90-65b6-4dca-b679-2463dba95b03">LOCATION</t>
+</td><td align="left">
+<t anchor="_225118ab-af1a-4955-965b-9163c3e46a06">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_34d59994-92de-451c-8b9b-10a260a82cc1">POLL-ITEM-ID</t>
+</td><td align="left">
+<t anchor="_c21c1917-79c9-4d43-8a27-70e02acde9b1">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_94035642-22fa-44cf-94e6-34313010863b">POLL-MODE</t>
+</td><td align="left">
+<t anchor="_e9501132-0d66-4cff-a81f-784ce9f813e4">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_2bd3b394-74bb-4b40-bfb6-ed7f3b12c7f6">POLL-PROPERTIES</t>
+</td><td align="left">
+<t anchor="_0fa55486-14ac-477a-9a4d-d06d6350f815">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_6d2e7757-3e94-4ee9-9da3-91fa02ca1298">PRIORITY</t>
+</td><td align="left">
+<t anchor="_012c266c-25c8-48a7-9b8a-82fcce2bcd5f">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_1975cbe3-ca32-4b8e-bd60-6c1df1684b5b">RELATED-TO</t>
+</td><td align="left">
+<t anchor="_bdc9d1f5-5f3b-4a7a-9540-576bffbe78f8">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_8ed35cb1-455f-4341-8c60-4991092b8561">RESOURCES</t>
+</td><td align="left">
+<t anchor="_8be30abf-89a8-4c28-a4b2-18939018bd16">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_62143180-2d78-4291-ac90-2d8bd894afab">STATUS</t>
+</td><td align="left">
+<t anchor="_54bb01da-64d4-426f-a29d-fc478b59e5f6">0 or 1</t>
+</td><td align="left">
+<t anchor="_357aa952-7cc7-4c40-8c28-59b48d9a07e4">MUST be set to CANCELLED to cancel the entire event. If uninviting specific Attendees, then MUST NOT be included.</t>
+</td></tr><tr><td align="left">
+<t anchor="_10fb90c1-88d8-4e55-b5bb-2756e7236a0d">SUMMARY</t>
+</td><td align="left">
+<t anchor="_37801ab6-a77c-478d-bb6b-4d57fbd4b9ee">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_a1de4545-720a-4e87-9183-16a36032598e">TRANSP</t>
+</td><td align="left">
+<t anchor="_89682c9e-0c39-46e2-a33f-f5a12c0c1c18">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_8312984e-c78a-4ec0-bf5a-7c6b7049afd0">URL</t>
+</td><td align="left">
+<t anchor="_f20dffb3-af75-47c1-bb84-7265f9af40d8">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_4afcf62f-f4ef-447d-8b74-908c52112e30">IANA-PROPERTY</t>
+</td><td align="left">
+<t anchor="_000393ac-1a2f-433f-a60c-05c42e1251b8">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_3e578174-d768-4360-b745-81f6fb1e868e">X-PROPERTY</t>
+</td><td align="left">
+<t anchor="_69c450ed-4b4c-4756-bbba-bd630025c756">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_495a8e67-3c45-4566-9736-92e50064b634">REQUEST-STATUS</t>
+</td><td align="left">
+<t anchor="_5fed2b7c-ebec-4304-9617-def4028c8530">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_236278d7-7d97-4233-94c9-629063aec090">VALARM</t>
+</td><td align="left">
+<t anchor="_bd1ff00e-34c6-4b94-8046-52dc980ae49a">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_d5a8c4ce-53d8-42a8-99fc-d7328cf15af4">VTIMEZONE</t>
+</td><td align="left">
+<t anchor="_951dad14-c9ef-4590-8816-5a53536b9049">0+</t>
+</td><td align="left">
+<t anchor="_8203cbb8-36eb-4542-8e9a-2ca2acd11843">MUST be present if any date/time refers to a timezone.</t>
+</td></tr><tr><td align="left">
+<t anchor="_3c49071b-fe72-4383-b6fa-4810ba7c5eea">IANA-COMPONENT</t>
+</td><td align="left">
+<t anchor="_1870a128-a1ea-4a24-965f-99aa0b662e3e">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_51cd9493-5330-4bb2-a208-eff4a44ca5a6">X-COMPONENT</t>
+</td><td align="left">
+<t anchor="_effef705-0d62-4ff4-acac-75058d928a5c">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_a69e6947-9239-46e3-811b-16cd95a55ccb">VTODO</t>
+</td><td align="left">
+<t anchor="_6b7e904d-b0f4-4704-ab66-13d09f672833">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_6f0e9f85-0407-4e4b-b947-e0c0181176e1">VJOURNAL</t>
+</td><td align="left">
+<t anchor="_e4b9b940-51c0-4020-9677-3a79a1fda3fb">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_24304313-e068-43e6-8e4d-754a7b7aff1d">VEVENT</t>
+</td><td align="left">
+<t anchor="_4ee91307-bbfe-441f-9e44-18141197afcb">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_3911769c-bf98-46d3-ae50-8eea8a33d606">VFREEBUSY</t>
+</td><td align="left">
+<t anchor="_24e68e6c-89be-495f-88da-898c9647e927">0</t>
+</td><td align="left"></td></tr></tbody></table></section>
+<section anchor="_method_refresh"><name>Method: REFRESH</name><t anchor="_46503957-b694-482d-bbc2-715a20170293">The "REFRESH" method in a "VPOLL" calendar component is used by
+"Voters" of an existing event to request an updated description from
+the poll "Organizer".  The "REFRESH" method must specify the "UID"
+property of the poll to update.  The "Organizer" responds with the
+latest description and version of the poll.</t>
+<t anchor="_15da9060-b33a-4cd2-ba0d-a393ca92e542">This method type is an iCalendar object that conforms to the
+following property constraints:</t>
+<table anchor="_fd67a33b-e59d-431b-afff-388d93a7a16a"><name>Constraints for a METHOD:REFRESH of a VPOLL</name><thead><tr><th align="left">Component/Property</th><th align="left">Presence</th><th align="left">Comment</th></tr></thead><tbody><tr><td align="left">
+<t anchor="_2afe9122-c637-45e1-bf63-03f69fa1a6e5">METHOD</t>
+</td><td align="left">
+<t anchor="_fa9e87e3-6144-4903-81bc-8615e1f74a03">1</t>
+</td><td align="left">
+<t anchor="_e6ab4e6e-cf93-4ebc-b488-5e8e71abfaa6">MUST be REFRESH.</t>
+</td></tr><tr><td align="left">
+<t anchor="_68b3c7ce-78b0-4a49-bf6d-1dc3a656eec5">VPOLL</t>
+</td><td align="left">
+<t anchor="_eefc870f-95f2-444c-bccf-fb930f96249a">1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_f8d3b63e-2966-4169-a5b2-df1c548b3fb3">PARTICIPANT</t>
+</td><td align="left">
+<t anchor="_61edf3ab-3a9e-4977-801e-aac487083365">1</t>
+</td><td align="left">
+<t anchor="_b9e32673-b5d4-4401-880c-d7d1788e3368">MUST identify the requester as a voter.</t>
+</td></tr><tr><td align="left">
+<t anchor="_e7c16679-fd4d-4b69-8288-e980a744516b">DTSTAMP</t>
+</td><td align="left">
+<t anchor="_9d82e5ed-80f5-4428-8feb-aa9fb22f9ff9">1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_2be4dda3-b084-4f7e-92f2-997af2318978">ORGANIZER</t>
+</td><td align="left">
+<t anchor="_fd16d7dc-eb3f-4482-a58b-a31555f6d4f8">1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_305bc70f-ab00-45ee-b431-4140b0ed16e9">UID</t>
+</td><td align="left">
+<t anchor="_2b09f0b4-1c8b-4923-8681-5f400fddfda8">1</t>
+</td><td align="left">
+<t anchor="_b536b695-5aa7-4349-aa96-6f5a1de38bf0">MUST be the UID associated with original REQUEST.</t>
+</td></tr><tr><td align="left">
+<t anchor="_873411df-34ed-4c39-886f-76e72e5462cf">COMMENT</t>
+</td><td align="left">
+<t anchor="_9df3185b-3bfd-4db2-8521-cca83bdcb9cb">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_a0cf3d4d-6e55-44bd-b974-f4bb375ba97e">COMPLETED</t>
+</td><td align="left">
+<t anchor="_7e043781-0985-4235-9931-b6ec138a4a3e">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_742d9d23-889e-4daf-a6ae-0713dde73093">IANA-PROPERTY</t>
+</td><td align="left">
+<t anchor="_997c38ae-e108-44ba-a905-50d10caf8988">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_6578db65-d46a-4999-9a4f-0789817e25eb">X-PROPERTY</t>
+</td><td align="left">
+<t anchor="_1ae989c7-fd26-4f7c-96d6-744c4667d519">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_69e11150-887d-41e8-8d1f-a7161576e47e">ACCEPT-RESPONSE</t>
+</td><td align="left">
+<t anchor="_3c9bd580-b1c0-4fb5-8199-2def115a7d8c">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_126c79d5-4397-4919-88bc-721f1bf38f71">ATTACH</t>
+</td><td align="left">
+<t anchor="_af5fbd35-f805-4c8b-9335-596979bef306">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_7d43fdc8-277a-4fac-a83b-db7518b0cb25">CATEGORIES</t>
+</td><td align="left">
+<t anchor="_bfee66da-dcee-45ad-b04f-21e8e4b1a8c6">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_f721d562-335a-4b40-bad7-7e5ccaa4507c">CLASS</t>
+</td><td align="left">
+<t anchor="_7d3c602f-1639-403e-8860-41b8f8fb85cd">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_0de72173-c2f2-4424-8fb1-27ef4cb4710f">CONTACT</t>
+</td><td align="left">
+<t anchor="_4347bedc-c1f3-4a83-8690-bfde6a6b2aa6">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_fe9f2b19-eeed-4c46-b806-e9174d617b41">CREATED</t>
+</td><td align="left">
+<t anchor="_0147161f-26f0-4460-b2ee-f0509648d91f">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_3d7b5cda-d6cb-408d-8380-9cbd2e0825ab">DESCRIPTION</t>
+</td><td align="left">
+<t anchor="_1fe44e1e-068b-4bd3-a6d5-3fd4e937e2d9">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_496ba761-5c36-4fbe-bb69-a44dc630526c">DTEND</t>
+</td><td align="left">
+<t anchor="_614f91d6-9810-4f6b-8f80-bae671abdab4">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_b959f9b5-7b76-4ce3-a198-e98c2b2d88ad">DTSTART</t>
+</td><td align="left">
+<t anchor="_7fece2bb-4b8e-4b94-b932-618425e95cf4">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_cb7f512b-1250-429d-bfe3-3c11e9a8e48a">DURATION</t>
+</td><td align="left">
+<t anchor="_1a91fc33-e1f7-4335-a136-464890dc3f44">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_c92dff7c-c67f-40b5-95cf-c380bc62055d">GEO</t>
+</td><td align="left">
+<t anchor="_bc84913c-7aa8-40cb-b941-3802207415c3">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_bc9bda6f-241d-4615-a91d-8f39b418f3e2">LAST-MODIFIED</t>
+</td><td align="left">
+<t anchor="_98744c7c-14fc-458e-8396-56cf4c2d36b8">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_7a9f3bba-0fa6-423b-bcbb-389ac452e1bd">LOCATION</t>
+</td><td align="left">
+<t anchor="_0d5d974f-dd4f-4ab0-84d5-89235de2f156">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_c593579e-849e-4f58-babc-d3aa0eb06492">POLL-ITEM-ID</t>
+</td><td align="left">
+<t anchor="_f2874b23-7958-4e85-b50d-fdf64616f7aa">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_52482ccc-b635-4ff1-a371-5c30eaca379b">POLL-MODE</t>
+</td><td align="left">
+<t anchor="_36589898-eda9-4d56-9b65-a76f5da9678a">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_d0336309-9926-4758-9f92-71722748b377">POLL-PROPERTIES</t>
+</td><td align="left">
+<t anchor="_1304635c-9270-4fa7-96b1-d7059b2eab91">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_fbe9b562-a719-4336-bed9-8aac3a2df643">PRIORITY</t>
+</td><td align="left">
+<t anchor="_85922098-3361-4238-8460-d9bd182614dc">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_6673f02b-d21c-47ec-92bc-2a74568ed85e">RELATED-TO</t>
+</td><td align="left">
+<t anchor="_5ee30805-b35e-4795-8f2c-6500547757df">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_b2aced49-4b7a-44a6-9a1c-7fccc7a863bc">REQUEST-STATUS</t>
+</td><td align="left">
+<t anchor="_ef05e4ac-0e11-4be5-89ed-1f56d81a224b">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_3aaf932e-1740-4d62-b166-43f576a1e4ea">RESOURCES</t>
+</td><td align="left">
+<t anchor="_ef558fab-6f17-4764-9b32-97af68207cb3">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_160e69bd-7e5d-436e-bfb2-2bc4856b62a3">SEQUENCE</t>
+</td><td align="left">
+<t anchor="_cdb6a80c-3add-4080-bac0-ea695bd00493">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_3b476699-ba3d-495f-a061-3bd1ae525394">STATUS</t>
+</td><td align="left">
+<t anchor="_ac198a1f-d1c8-448c-b39b-e26d056a9faa">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_12eb36bc-caed-4087-8c74-348eb69cac1b">SUMMARY</t>
+</td><td align="left">
+<t anchor="_c851b27b-ef9c-40a6-8519-77a32c11923a">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_d450ed85-1fdf-4b14-81e2-8d03d8a043bb">URL</t>
+</td><td align="left">
+<t anchor="_a29f1798-1049-415c-ac8c-28cf5b67955a">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_4b75feb3-6955-44d2-bd04-34d7c1814f39">VALARM</t>
+</td><td align="left">
+<t anchor="_16cc449b-e2b5-455c-ad20-22bab80c54db">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_45b80de0-a98c-42f5-8998-47e945e08cdf">VTIMEZONE</t>
+</td><td align="left">
+<t anchor="_4336f810-2f15-4ba6-b732-35babe44ac55">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_5b85397d-0ab2-4957-8e30-71503ee72562">IANA-COMPONENT</t>
+</td><td align="left">
+<t anchor="_32fd8595-4ac4-4c0d-9f00-c605451eaf65">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_0a8175cf-e12b-47fc-a4a9-4a04f0e68534">X-COMPONENT</t>
+</td><td align="left">
+<t anchor="_09753245-82a6-4ee6-a415-c55832338563">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_d6e3774c-9b95-433d-ae58-c51cb4642cb3">VTODO</t>
+</td><td align="left">
+<t anchor="_39c8ed34-08b1-4f27-b709-385ca9140202">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_8dff638d-faac-405b-9660-4872d3184f69">VJOURNAL</t>
+</td><td align="left">
+<t anchor="_960e8422-4b71-4dc5-b40d-a8daaec12d79">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_6dce4d85-c018-47f6-8861-e3d90023593a">VEVENT</t>
+</td><td align="left">
+<t anchor="_bb8ae8af-91c0-49d4-97ce-70f0cbc60a30">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_1435788d-138b-4fb3-b1df-4388740c46fc">VFREEBUSY</t>
+</td><td align="left">
+<t anchor="_49847522-f2d2-4ccf-a707-50ad8829ea11">0</t>
+</td><td align="left"></td></tr></tbody></table></section>
+<section anchor="_method_pollstatus"><name>Method: POLLSTATUS</name><t anchor="_1083a821-d2f2-437e-b84e-ce3244534b0f">The "POLLSTATUS" method in a "VPOLL" calendar component is used to
+inform recipients of the current status of the poll in a compact
+manner.  The "Organizer" MUST be present in the confirmed poll
+component.  All "Voters" MUST be present.  The selected component(s)
+according to the poll mode SHOULD NOT be present in the poll
+component.  Clients receiving this message may store the confirmed
+items in their calendars.</t>
+<t anchor="_189dff8c-5caa-47b3-8ada-40ae389fefb8">This method type is an iCalendar object that conforms to the
+following property constraints:</t>
+<table anchor="_d53cef05-b2e5-4801-b1f4-ffc11c7d1d70"><name>Constraints for a METHOD:POLLSTATUS of a VPOLL</name><thead><tr><th align="left">Component/Property</th><th align="left">Presence</th><th align="left">Comment</th></tr></thead><tbody><tr><td align="left">
+<t anchor="_653991f7-e038-4df2-860a-a0c767f79be4">METHOD</t>
+</td><td align="left">
+<t anchor="_07cb7f64-9d12-4618-9a8f-72a1accf5db9">1</t>
+</td><td align="left">
+<t anchor="_5dbd12d9-90ec-4257-a7da-099f1dc1da4a">MUST equal POLLSTATUS.</t>
+</td></tr><tr><td align="left">
+<t anchor="_d54c7df4-9b4f-4cd6-8d8d-79727ec047e0">VPOLL</t>
+</td><td align="left">
+<t anchor="_0c820b55-e2cb-4494-93b0-eeed177bdb84">1+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_7f0f5082-a347-4344-a27d-95124fbcca92">PARTICIPANT</t>
+</td><td align="left">
+<t anchor="_59761179-0f43-40cf-82b7-f0c9ca9fb934">1+</t>
+</td><td align="left">
+<t anchor="_fdaaa46f-bf77-482e-b483-95b12b92e10b">The voters containing their current vote</t>
+</td></tr><tr><td align="left">
+<t anchor="_c3687426-d412-4cec-88b5-0e9eec624b47">COMPLETED</t>
+</td><td align="left">
+<t anchor="_7fc5d861-caf4-4878-86a6-35a523a2accf">0 or 1</t>
+</td><td align="left">
+<t anchor="_97fda729-aa69-488e-b9ae-65b1b6846b12">Only present for a completed poll</t>
+</td></tr><tr><td align="left">
+<t anchor="_9c81ed9d-26c0-4bc2-a596-ca032a29a741">DTSTAMP</t>
+</td><td align="left">
+<t anchor="_ee08224c-e6dc-4083-8e26-770d0b0e6ed4">1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_b4199d9d-148b-4f9a-b0f2-56cb06005c98">DTSTART</t>
+</td><td align="left">
+<t anchor="_6882cbbf-7d54-43d0-abb3-6da4b0888888">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_780f6b57-f2ce-4bcf-a158-82f0a276fa7d">ORGANIZER</t>
+</td><td align="left">
+<t anchor="_b0a49a16-8cd6-4f52-b113-9328d9e9696f">1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_2b298dfa-3859-4969-b678-60dbbe29d575">SUMMARY</t>
+</td><td align="left">
+<t anchor="_d360a4cd-0f48-4fb9-a5e2-8ee6fb59f40c">1</t>
+</td><td align="left">
+<t anchor="_912ef855-b354-4eb7-a46f-b79a6cd4376a">Can be null.</t>
+</td></tr><tr><td align="left">
+<t anchor="_f0aa257f-51ea-4a3d-b73c-c565974a3040">UID</t>
+</td><td align="left">
+<t anchor="_bb6e559d-0da4-4ae0-b020-06b5d48e3e01">1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_e63bee45-298a-4376-8e5b-df921edef765">SEQUENCE</t>
+</td><td align="left">
+<t anchor="_ac73907d-59b8-4b41-a5f0-7442a54fe715">0 or 1</t>
+</td><td align="left">
+<t anchor="_04930e9c-13b0-46ab-9571-510dec68c6b2">MUST be present if value is greater than 0; MAY be present if 0.</t>
+</td></tr><tr><td align="left">
+<t anchor="_0d0cf5e2-e05c-4900-bee5-27f982f13659">ACCEPT-RESPONSE</t>
+</td><td align="left">
+<t anchor="_e374321d-ffd9-4e7b-83a2-243478c1e9cf">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_d5a68056-e1d4-4669-ba0b-c204aae5e442">ATTACH</t>
+</td><td align="left">
+<t anchor="_ad861d08-043e-41f0-ad66-8dbd885ad1ff">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_a7b9a14b-2cd0-43b2-b143-b13bc1f4aea2">CATEGORIES</t>
+</td><td align="left">
+<t anchor="_20c9cd1e-ddf6-43a6-9dc8-a32df2a76040">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_2b27a3a3-015a-46f4-a279-3d702f06f246">CLASS</t>
+</td><td align="left">
+<t anchor="_106f99f5-afaf-4e8f-b562-bb9de985a656">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_71689dc9-b84f-4225-a027-666c4222fd91">COMMENT</t>
+</td><td align="left">
+<t anchor="_280db73d-de0a-4920-8ec9-e756b104af86">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_a47cb9b0-9107-417e-b969-bd1a2764c5f5">CONTACT</t>
+</td><td align="left">
+<t anchor="_413bd5c0-74c6-4848-a32e-9e09dcf26401">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_0208bbc4-7624-4415-b284-4af933d096b4">CREATED</t>
+</td><td align="left">
+<t anchor="_b8a8b40f-9c24-4b77-9f47-b05337ab2a30">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_543c5234-bb91-43b4-9f7a-8da761d0f469">DESCRIPTION</t>
+</td><td align="left">
+<t anchor="_fd9fa4f8-4cb3-49c4-bc51-5d8fea33123e">0 or 1</t>
+</td><td align="left">
+<t anchor="_94cf6de7-1ecc-42af-84ca-75ccd3b832a7">Can be null.</t>
+</td></tr><tr><td align="left">
+<t anchor="_1871e9c2-8192-4650-9fb6-3df56202ea2c">DTEND</t>
+</td><td align="left">
+<t anchor="_92050319-bbf2-4281-b3f2-ac3bf54d4b44">0 or 1</t>
+</td><td align="left">
+<t anchor="_e38bd076-d5ff-4ff6-9672-eeafc90bc5cf">If present, DURATION MUST NOT be present.</t>
+</td></tr><tr><td align="left">
+<t anchor="_c96eff1c-76f2-4ad6-a444-c39b27a069ad">DURATION</t>
+</td><td align="left">
+<t anchor="_6f20357b-9ab0-4f27-8779-94c762e06d19">0 or 1</t>
+</td><td align="left">
+<t anchor="_a0ef7aae-dfe5-4a3b-bb60-2be910d1d1ea">If present, DTEND MUST NOT be present.</t>
+</td></tr><tr><td align="left">
+<t anchor="_74e6a98f-50a0-4ab6-9dc0-b60a5b2657a0">LAST-MODIFIED</t>
+</td><td align="left">
+<t anchor="_0f7e6c0e-63d6-4af0-b0cb-f8cb0ca8f153">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_b991b1be-7384-4d05-afdb-c369aa6d10cb">POLL-ITEM-ID</t>
+</td><td align="left">
+<t anchor="_6b642421-b6a1-4efd-a644-e0457da06c34">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_af544c27-167a-49e0-bfc9-a32c066d38fd">POLL-MODE</t>
+</td><td align="left">
+<t anchor="_f61d9054-5683-4f3e-91ae-abdd5c360f0c">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_8015585c-a69e-4f5e-8711-6eb443b2108f">POLL-PROPERTIES</t>
+</td><td align="left">
+<t anchor="_fc0f8107-07f5-40ba-a813-0ebe1129572a">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_80a32f01-636a-4857-8106-80df51c385e1">PRIORITY</t>
+</td><td align="left">
+<t anchor="_2ac325b4-8378-47b6-9ae5-05f3347c81c8">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_931d83cb-c20a-4f39-abb0-37d1a2934055">RELATED-TO</t>
+</td><td align="left">
+<t anchor="_759108ca-1968-45c6-a3d6-9934c389aad4">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_02189a8f-4762-4a9a-af75-b00f9ff2bdad">RESOURCES</t>
+</td><td align="left">
+<t anchor="_c057f4ae-c08d-4fa2-9243-579db17788b7">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_fa845ef7-a174-408e-a0ad-1c01f558e8ee">STATUS</t>
+</td><td align="left">
+<t anchor="_51ca86c8-9285-416f-828f-d07c4f0f7661">0 or 1</t>
+</td><td align="left">
+<t anchor="_f45ad0ba-5585-45ea-970e-70a0a64fe56c">MAY be one of TENTATIVE/CONFIRMED/CANCELLED.</t>
+</td></tr><tr><td align="left">
+<t anchor="_37bf7d70-2d51-4ce7-a904-01f979747120">URL</t>
+</td><td align="left">
+<t anchor="_bdc9316c-9712-4d84-87f9-0bb8d20d492a">0 or 1</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_f8c1fc91-6e89-472e-a9a2-a7bc770219f0">IANA-PROPERTY</t>
+</td><td align="left">
+<t anchor="_3b4f37d5-2dd4-446c-a072-2a38ead19188">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_afc4ecbc-e20b-451e-b907-068b476f8a48">X-PROPERTY</t>
+</td><td align="left">
+<t anchor="_ffdbd87e-bc32-4106-a21f-35781b6c0af6">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_750506a0-1f87-4ce4-a0ed-b11ef77f6fbd">REQUEST-STATUS</t>
+</td><td align="left">
+<t anchor="_04dc751e-3e02-4262-942b-e6b12ef296f1">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_5d319414-759e-4bfd-b5f1-92135c58fad7">VALARM</t>
+</td><td align="left">
+<t anchor="_a00f4a00-7128-4435-bf0f-e4c62bca9fc5">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_f327e4ff-c272-4c34-a725-51d4b12bbac6">VEVENT</t>
+</td><td align="left">
+<t anchor="_f30ba920-afb6-4586-8077-b1508a2f752b">0</t>
+</td><td align="left">
+<t anchor="_0c8ae600-06e1-4aef-b77c-8a22643b6bc6">All candidate components SHOULD NOT be present.</t>
+</td></tr><tr><td align="left">
+<t anchor="_f666dcb5-62f9-4ab7-94b1-1941fcd63186">VFREEBUSY</t>
+</td><td align="left">
+<t anchor="_745c7764-34f9-42b5-adcb-8161e2a54d86">0</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_71cc3529-ad3d-47d1-8d31-0637e72718ab">VJOURNAL</t>
+</td><td align="left">
+<t anchor="_aa2eab41-a7d7-46ef-a35e-33f878fc643a">0</t>
+</td><td align="left">
+<t anchor="_31460d8c-5b0c-4534-9c11-ad5dd2caff11">All candidate components SHOULD NOT be present.</t>
+</td></tr><tr><td align="left">
+<t anchor="_5bceecb3-8ebd-4dfe-b1a4-d6e872d7012b">VTODO</t>
+</td><td align="left">
+<t anchor="_dd6ccf52-ef1b-4301-8298-29bf26a28d4b">0</t>
+</td><td align="left">
+<t anchor="_8c7f5648-5666-4bcb-8765-c0b45058f3de">All candidate components SHOULD NOT be present.</t>
+</td></tr><tr><td align="left">
+<t anchor="_ef6d6591-e916-49e7-b868-57b2e2932d9f">VTIMEZONE</t>
+</td><td align="left">
+<t anchor="_142fe7ff-2ca2-43ef-a158-ef2de28b47be">0+</t>
+</td><td align="left">
+<t anchor="_38d5b76a-38be-461b-87f6-78ca79b1854f">MUST be present if any date/time refers to a timezone.</t>
+</td></tr><tr><td align="left">
+<t anchor="_1e8a39f1-873b-40b5-a55c-6f032a60fc6e">IANA-COMPONENT</t>
+</td><td align="left">
+<t anchor="_27e46cdf-6c35-4be1-aca2-a3b94a3a62c1">0+</t>
+</td><td align="left"></td></tr><tr><td align="left">
+<t anchor="_00e8bdf1-0b4e-406a-8dd3-f308f47d6ddc">X-COMPONENT</t>
+</td><td align="left">
+<t anchor="_a4e4d9bf-0630-42ce-8445-44a3f548bb9e">0+</t>
+</td><td align="left"></td></tr></tbody></table></section></section>
+    </section>
+    <section anchor="caldav-extensions">
+      <name>CalDAV Extensions</name>
+      <t anchor="_0520cf46-cb1a-4d43-9df0-03c8403bd1f9">This specification extends <relref target="RFC4791" section="" relative=""></relref> in that it defines a new
+component and new iCalendar properties to be supported and requires
+extra definitions related to time-ranges and reports.</t>
+      <t anchor="_72ca5a4e-1298-4672-965e-cc78b03818b4">Additionally, it extends <relref target="RFC6638" section="" relative=""></relref> as it a VPOLL component is a
+schedulable entity.</t>
+      <section anchor="_calendar_collection_properties"><name>Calendar Collection Properties</name><t anchor="_7ece9f5b-a633-4f52-a36e-2ccac5532211">This section defines new CalDAV properties for calendar collections.</t>
+<section anchor="_caldavsupported_vpoll_component_sets"><name>CALDAV:supported-vpoll-component-sets</name><dl anchor="_1c70761c-8ff5-4b34-b94e-aa623550c4af"><dt>Name</dt><dd>
+<t anchor="_d10994d5-d766-41a7-bd9a-8dac6a3e7679">supported-vpoll-component-sets</t>
+</dd><dt>Namespace</dt><dd>
+<t anchor="_0ce558ee-503b-49e7-9033-084de93f7762">urn:ietf:params:xml:ns:caldav</t>
+</dd><dt>Purpose</dt><dd>
+<t anchor="_b21497e0-e77e-4552-9b09-3f163e7e8c76">Specifies the calendar component types (e.g., VEVENT,
+VTODO, etc.) and combination of types that may be included in a
+VPOLL component.</t>
+</dd><dt>Conformance</dt><dd>
+<t anchor="_dc4a328c-130e-4e44-8bf6-a6687374a64b">This property MAY be defined on any calendar
+collection.  If defined, it MUST be protected and SHOULD NOT be
+returned by a PROPFIND DAV:allprop request (as defined in
+<relref target="RFC2518" section="" relative=""></relref>).</t>
+</dd><dt>Description</dt><dd><t anchor="_09143baf-1ce9-49e5-8e22-ed958d1500c2">The CALDAV:supported-vpoll-component-sets property is
+used to specify restrictions on the calendar component types that
+VPOLL components may contain in a calendar collection.</t><t anchor="_45a65caf-e479-4ed2-b463-34b19f71ea3e">It also specifies the combination of allowed component types.</t>
+<t anchor="_517faab0-a86a-495f-bbb0-cf1e9dab78b6">Any attempt by the client to store VPOLL components with component
+types or combinations of types not listed in this property, if it
+exists, MUST result in an error, with the <tt>CALDAV:supported-vpoll-component-sets</tt>
+precondition <xref target="caldav-additional-preconditions"></xref> being violated.  Since
+this property is protected, it cannot be changed by clients using
+a PROPPATCH request.  However, clients can initialize the value of
+this property when creating a new calendar collection with
+MKCALENDAR.  In the absence of this property, the server MUST
+accept all component types, and the client can assume that all
+component types are accepted.</t></dd><dt>Definition</dt><dd></dd></dl>
+<figure anchor="_cd698985-0bc4-44cd-a869-5293c4c39fef"><sourcecode><![CDATA[<!ELEMENT supported-vpoll-component-sets
+     (supported-vpoll-component-set*) >
+
+<!ELEMENT supported-vpoll-component-set (comp+)>]]></sourcecode></figure>
+
+<figure anchor="_e60b1981-93cb-4d98-83df-ea1fd320af22"><sourcecode type="xml"><![CDATA[<C:supported-vpoll-component-sets
+     xmlns:C="urn:ietf:params:xml:ns:caldav">
+
+  <!-- VPOLLs with VEVENT, VFREEBUSY or VTODO -->
+  <C:supported-vpoll-component-set>
+    <C:comp name="VEVENT" />
+    <C:comp name="VFREEBUSY" />
+    <C:comp name="VTODO" />
+  </C:supported-vpoll-component-set>
+
+  <!-- VPOLLs with just VEVENT or VFREEBUSY -->
+  <C:supported-vpoll-component-set>
+    <C:comp name="VEVENT" />
+    <C:comp name="VFREEBUSY" />
+  </C:supported-vpoll-component-set>
+
+  <!-- VPOLLs with just VEVENT -->
+  <C:supported-vpoll-component-set>
+    <C:comp name="VEVENT" />
+  </C:supported-vpoll-component-set>
+
+  <!-- VPOLLs with just VTODO -->
+  <C:supported-vpoll-component-set>
+    <C:comp name="VTODO" />
+  </C:supported-vpoll-component-set>
+</C:supported-vpoll-component-sets>]]></sourcecode></figure>
+</section>
+<section anchor="vpoll-max-items"><name>CALDAV:vpoll-max-items</name><dl anchor="_2656f7a9-7b01-4c36-84b8-4256df06d741"><dt>Name</dt><dd>
+<t anchor="_38afaed5-e028-4adc-ba09-b366a315d2fb">vpoll-max-items</t>
+</dd><dt>Namespace</dt><dd>
+<t anchor="_1eb408ac-47c6-4d13-8263-9b04db8f34f8">urn:ietf:params:xml:ns:caldav</t>
+</dd><dt>Purpose</dt><dd>
+<t anchor="_ce82419a-e5cc-42bf-a436-9f700a8039ab">Provides a numeric value indicating the maximum number of
+items that may be contained in any instance of a VPOLL calendar
+object resource stored in the calendar collection.</t>
+</dd><dt>Conformance</dt><dd>
+<t anchor="_3ce7a34c-2b5a-47b5-acf7-682378bc4a49">This property MAY be defined on any calendar
+collection.  If defined, it MUST be protected and SHOULD NOT be
+returned by a PROPFIND DAV:allprop request (as defined in
+<relref target="RFC2518" section="" relative=""></relref>).</t>
+</dd><dt>Description</dt><dd>
+<t anchor="_b76499e0-e799-4738-b456-2a89d9bc2ba3">The CALDAV:vpoll-max-items is used to specify a numeric
+value that indicates the maximum number of iCalendar components in
+any one instance of a VPOLL calendar object resource stored in a
+calendar collection.  Any attempt to store a calendar object
+resource with more components per instance than this value MUST
+result in an error, with the CALDAV: vpoll-max-items precondition
+<xref target="caldav-additional-preconditions"></xref> being violated.  In the absence of this property, the
+client can assume that the server can handle any number of items
+in a VPOLL calendar component.</t>
+</dd><dt>Definition</dt><dd></dd></dl>
+<figure anchor="_9ab1bd49-4765-47c2-9e01-a9030a4b0bd1"><sourcecode><![CDATA[<!ELEMENT vpoll-max-items (#PCDATA)>
+PCDATA value: a numeric value (integer greater than zero)]]></sourcecode></figure>
+
+<figure anchor="_d34effeb-af2f-4a2e-a24e-f4c4feeca50a"><sourcecode type="xml"><![CDATA[<C:vpoll-max-items xmlns:C="urn:ietf:params:xml:ns:caldav"
+>25</C:vpoll-max-items>]]></sourcecode></figure>
+</section>
+<section anchor="vpoll-max-active"><name>CALDAV:vpoll-max-active</name><dl anchor="_8222ae29-f5b8-4dee-a0f8-7adf048e8ee6"><dt>Name</dt><dd>
+<t anchor="_832aff79-5468-488c-beda-d04b24b6aeab">vpoll-max-active</t>
+</dd><dt>Namespace</dt><dd>
+<t anchor="_23983a1c-826a-45ba-890e-c796963c323a">urn:ietf:params:xml:ns:caldav</t>
+</dd><dt>Purpose</dt><dd>
+<t anchor="_a60d0443-bd69-4785-b943-7a05f865b1b3">Provides a numeric value indicating the maximum number of
+active vpolls at any one time.</t>
+</dd><dt>Conformance</dt><dd>
+<t anchor="_b42ccf91-b3dc-42be-8b2b-1328a8d42108">This property MAY be defined on any calendar
+collection.  If defined, it MUST be protected and SHOULD NOT be
+returned by a PROPFIND DAV:allprop request (as defined in
+<relref target="RFC2518" section="" relative=""></relref>).</t>
+</dd><dt>Description</dt><dd>
+<t anchor="_85187d5f-1d65-49de-802a-421a57367a8d">The CALDAV:vpoll-max-active is used to specify a
+numeric value that indicates the maximum number of active VPOLLs
+at any one time.  Any attempt to store a new active VPOLL calendar
+object resource which results in exceeding this limit MUST result
+in an error, with the <tt>CALDAV:vpoll-max-active</tt> precondition
+<xref target="caldav-additional-preconditions"></xref> being violated.  In the absence of this property, the
+client can assume that the server can handle any number of active
+VPOLLs.</t>
+</dd><dt>Definition</dt><dd></dd></dl>
+<figure anchor="_5b04b110-34bc-4bc8-bcbb-ad403618ccb2"><sourcecode><![CDATA[<!ELEMENT vpoll-max-active (#PCDATA)>
+PCDATA value: a numeric value (integer greater than zero)]]></sourcecode></figure>
+
+<figure anchor="_ef0f6c79-b956-4878-9ea3-648480347b9c"><sourcecode type="xml"><![CDATA[<C:vpoll-max-active xmlns:C="urn:ietf:params:xml:ns:caldav"
+>25</C:vpoll-max-active>]]></sourcecode></figure>
+</section>
+<section anchor="vpoll-max-voters"><name>CALDAV:vpoll-max-voters</name><dl anchor="_3f599646-2be4-4b9e-bbbc-51d4e0a3b1c7"><dt>Name</dt><dd>
+<t anchor="_c49ea4e3-358b-43e4-80dc-fc961185a533">
+<tt>vpoll-max-voters</tt>
+</t>
+</dd><dt>Namespace</dt><dd>
+<t anchor="_a1bd9b76-bf94-4d79-8a64-eea44d51a569">
+<tt>urn:ietf:params:xml:ns:caldav</tt>
+</t>
+</dd><dt>Purpose</dt><dd>
+<t anchor="_3d4aafeb-797e-4d8a-b6ff-0b7b79d19fc9">Provides a numeric value indicating the maximum number of
+voters for any instance of a VPOLL calendar object resource stored
+in the calendar collection.</t>
+</dd><dt>Conformance</dt><dd>
+<t anchor="_a686651a-8bb4-4305-a91a-3cefefb2db80">This property MAY be defined on any calendar
+collection.  If defined, it MUST be protected and SHOULD NOT be
+returned by a PROPFIND <tt>DAV:allprop</tt> request (as defined in
+<relref target="RFC2518" section="" relative=""></relref>).</t>
+</dd><dt>Description</dt><dd>
+<t anchor="_3950a6d0-2354-494c-9462-9e4be1d5348e">The <tt>CALDAV:vpoll-max-voters</tt> is used to specify a
+numeric value that indicates the maximum number of voters for any one instance of a VPOLL calendar object
+resource stored in a calendar collection. Any attempt to store a
+calendar object resource with more voters per instance
+than this value MUST result in an error, with the CALDAV:
+<tt>vpoll-max-voters</tt> precondition <xref target="caldav-additional-preconditions"></xref>
+being violated.  In the absence of this property, the client can
+assume that the server can handle any number of voters in a VPOLL
+calendar component.</t>
+</dd><dt>Definition</dt><dd></dd></dl>
+<figure anchor="_2354533e-4366-4afa-b328-fddf66af7905"><sourcecode><![CDATA[<!ELEMENT vpoll-max-voters (#PCDATA)>
+PCDATA value: a numeric value (integer greater than zero)]]></sourcecode></figure>
+
+<figure anchor="_ddc49671-bebc-43cd-906f-8a76bc25519f"><sourcecode type="xml"><![CDATA[<C:vpoll-max-voters xmlns:C="urn:ietf:params:xml:ns:caldav"
+>25</C:vpoll-max-voters>]]></sourcecode></figure>
+</section>
+<section anchor="_caldaveven_more_properties"><name>CalDAV:even-more-properties</name>
+
+</section>
+<section anchor="_extensions_to_caldav_scheduling"><name>Extensions to CalDAV scheduling</name><t anchor="_9f32897a-eb97-40eb-8216-04d532c6b9ce">This specification extends <relref target="RFC6638" section="" relative=""></relref>.</t>
+<t anchor="_6b1f9879-d72d-4bfa-bda9-efa5bde7a1d0">Each section of Appendix A "Scheduling Privileges Summary" is
+extended to include VPOLL.</t>
+<t anchor="_a2970b5d-0bf1-43bb-bda7-c49518e7b6d5">Any reference to the ATTENDEE property should be read to include the
+CALENDAR-ADDRESS property contained in the PARTICIPANT compoents.
+That is, for scheduling purposes the CALENDAR-ADDRESS property
+is handled in exactly the same manner as the ATTENDEE property.</t></section></section>
+      <section anchor="caldav-additional-preconditions"><name>Additional Preconditions for PUT, COPY, and MOVE</name><t anchor="_e7629ced-2437-4620-aa13-d40bc884eb8c">This specification creates additional Preconditions for PUT, COPY,
+and MOVE methods.  These preconditions apply when a PUT operation of
+a VPOLL calendar object resource into a calendar collection occurs,
+or when a COPY or MOVE operation of a calendar object resource into a
+calendar collection occurs, or when a COPY or MOVE operation occurs
+on a calendar collection.</t>
+<t anchor="_2d9d71d9-97a0-404e-9dad-20ef68c8a3b6">The new preconditions are:</t>
+<dl anchor="_7a907b18-670b-47de-b20d-d506e57e2af9"><dt>(CALDAV:supported-vpoll-component-sets)</dt><dd>
+<t anchor="_573dc208-72c9-4132-99a1-1707ce716435">The VPOLL resource
+submitted in the PUT request, or targeted by a COPY or MOVE
+request, MUST contain a type or combination of calendar component
+that is supported in the targeted calendar collection;</t>
+</dd><dt>(CALDAV:vpoll-max-items)</dt><dd>
+<t anchor="_49ae3157-f07d-42cb-8700-7f34a97c0dc2">The VPOLL resource submitted in the PUT
+request, or targeted by a COPY or MOVE request, MUST have a number
+of sub-components (excluding VTIMEZONE) less than or equal to the
+value of the <tt>CALDAV:vpoll-max-items</tt> property value <xref target="vpoll-max-items"></xref>
+on the calendar collection where the resource will be stored;</t>
+</dd><dt>(CALDAV:vpoll-max-active)</dt><dd>
+<t anchor="_8a714b9a-7080-4c30-bf18-2b6c0041276a">The PUT request, or COPY or MOVE request,
+MUST not result in the number of active VPOLLs being greater than
+the value of the <tt>CALDAV:vpoll-max-active</tt> property value
+<xref target="vpoll-max-active"></xref> on the calendar collection where the resource will
+be stored;</t>
+</dd><dt>(CALDAV:vpoll-max-voters)</dt><dd>
+<t anchor="_944ed5b9-a86c-4bbd-9a89-e6fc7d584b0d">The VPOLL resource submitted in the PUT
+request, or targeted by a COPY or MOVE request, MUST have a number
+of voters represented by PARTICIPANT components less than or equal to the value of the
+<tt>CALDAV:vpoll-max-voters</tt> property value <xref target="vpoll-max-voters"></xref> on the
+calendar collection where the resource will be stored;</t>
+</dd></dl></section>
+      <section anchor="_caldavcalendar_query_report"><name>CalDAV:calendar-query Report</name><t anchor="_e6252d71-45f0-4214-844f-64e93c7858b7">This allows the retrieval of VPOLLs and their included components.
+The query specification allows queries to be directed at the
+contained sub-components.  For VPOLL queries this feature is
+disallowed.  Time-range queries can only target the vpoll component
+itself.</t>
+<section anchor="_example_partial_retrieval_of_vpoll"><name>Example: Partial Retrieval of VPOLL</name><t anchor="_d0a68808-b78c-4733-b666-1fc85d6219c0">In this example, the client requests the server to return specific
+components and properties of the VPOLL components that overlap the
+time range from December 4, 2012, at 00:00:00 A.M.  UTC to December
+5, 2012, at 00:00:00 A.M.  UTC.  In addition, the <tt>DAV:getetag</tt>
+property is also requested and returned as part of the response.
+Note that due to the CALDAV: calendar-data element restrictions, the
+DTSTAMP property in VPOLL components has not been returned, and the
+only property returned in the VCALENDAR object is VERSION.</t>
+<figure anchor="_2c2699ee-721d-4e5e-af38-e23a53348ffe"><sourcecode><![CDATA[>> Request <<
+
+REPORT /cyrus/work/ HTTP/1.1
+Host: cal.example.com
+Depth: 1
+Content-Type: application/xml; charset="utf-8"
+Content-Length: xxxx
+
+<?xml version="1.0" encoding="utf-8" ?>
+<C:calendar-query xmlns:D="DAV:"
+              xmlns:C="urn:ietf:params:xml:ns:caldav">
+  <D:prop>
+    <D:getetag/>
+    <C:calendar-data>
+      <C:comp name="VCALENDAR">
+        <C:prop name="VERSION"/>
+        <C:comp name="VPOLL">
+          <C:prop name="SUMMARY"/>
+          <C:prop name="UID"/>
+          <C:prop name="DTSTART"/>
+          <C:prop name="DTEND"/>
+          <C:prop name="DURATION"/>
+        </C:comp>
+
+      </C:comp>
+    </C:calendar-data>
+  </D:prop>
+  <C:filter>
+    <C:comp-filter name="VCALENDAR">
+      <C:comp-filter name="VPOLL">
+        <C:time-range start="20121204T000000Z"
+                      end="20121205T000000Z"/>
+      </C:comp-filter>
+    </C:comp-filter>
+  </C:filter>
+</C:calendar-query>
+
+>> Response <<
+
+HTTP/1.1 207 Multi-Status
+Date: Sat, 11 Nov 2012 09:32:12 GMT
+Content-Type: application/xml; charset="utf-8"
+Content-Length: xxxx
+
+<?xml version="1.0" encoding="utf-8" ?>
+<D:multistatus xmlns:D="DAV:"
+           xmlns:C="urn:ietf:params:xml:ns:caldav">
+  <D:response>
+    <D:href>http://cal.example.com/cyrus/work/poll2.ics</D:href>
+    <D:propstat>
+      <D:prop>
+        <D:getetag>"fffff-abcd2"</D:getetag>
+        <C:calendar-data>BEGIN:VCALENDAR
+VERSION:2.0
+BEGIN:VPOLL
+DTSTART;TZID=US/Eastern:20121202T120000
+DURATION:PT4D
+SUMMARY:Poll #2
+UID:00959BC664CA650E933C892C@example.com
+END:VPOLL
+END:VCALENDAR
+</C:calendar-data>
+      </D:prop>
+      <D:status>HTTP/1.1 200 OK</D:status>
+    </D:propstat>
+  </D:response>
+  <D:response>
+    <D:href>http://cal.example.com/cyrus/work/poll3.ics</D:href>
+    <D:propstat>
+      <D:prop>
+        <D:getetag>"fffff-abcd3"</D:getetag>
+        <C:calendar-data>BEGIN:VCALENDAR
+
+VERSION:2.0
+PRODID:-//Example Corp.//CalDAV Client//EN
+BEGIN:VPOLL
+DTSTART;TZID=US/Eastern:20121204T100000
+DURATION:PT4D
+SUMMARY:Poll #3
+UID:DC6C50A017428C5216A2F1CD@example.com
+END:VPOLL
+END:VCALENDAR
+</C:calendar-data>
+      </D:prop>
+      <D:status>HTTP/1.1 200 OK</D:status>
+    </D:propstat>
+  </D:response>
+</D:multistatus>]]></sourcecode></figure>
+</section></section>
+      <section anchor="_caldav_time_ranges"><name>CalDAV time ranges</name><t anchor="_1208bfcb-033a-486c-8106-52c4b89610bb">"CALDAV:time-range XML Element" in <relref target="RFC4791" section="" relative=""></relref> describes
+how to specify time ranges to limit the set of calendar components
+returned by the server.  This specification extends <relref target="RFC4791" section="" relative=""></relref> to
+describe the meaning of time ranges for VPOLL</t>
+<t anchor="_a9877976-ed67-4ef4-8ddd-e2778adc8722">A VPOLL component is said to overlap a given time range if the
+condition for the corresponding component state specified in the
+table below is satisfied.  The conditions depend on the presence of
+the DTSTART, DURATION, DTEND, COMPLETED and CREATED properties in the
+VPOLL component.  Note that, as specified above, the DTEND value MUST
+be a DATE-TIME value equal to or after the DTSTART value if
+specified.</t>
+<figure anchor="_9b1ed2db-982a-400e-9a78-ad5668f0cf33"><sourcecode><![CDATA[+-------------------------------------------------------------------+
+| VPOLL has the DTSTART property?                                   |
+|   +---------------------------------------------------------------+
+|   |   VPOLL has the DURATION property?                            |
+|   |   +-----------------------------------------------------------+
+|   |   | VPOLL has the DTEND property?                             |
+|   |   |   +-------------------------------------------------------+
+|   |   |   | VPOLL has the COMPLETED property?                     |
+|   |   |   |   +---------------------------------------------------+
+|   |   |   |   | VPOLL has the CREATED property?                   |
+|   |   |   |   |   +-----------------------------------------------+
+|   |   |   |   |   | Condition to evaluate                         |
++---+---+---+---+---+-----------------------------------------------+
+| Y | Y | N | * | * | (start  <= DTSTART+DURATION)  AND             |
+|   |   |   |   |   | ((end   >  DTSTART)  OR                       |
+|   |   |   |   |   |  (end   >= DTSTART+DURATION))                 |
++---+---+---+---+---+-----------------------------------------------+
+| Y | N | Y | * | * | ((start <  DTEND)    OR  (start <= DTSTART))  |
+|   |   |   |   |   | AND                                           |
+|   |   |   |   |   | ((end   >  DTSTART)  OR  (end   >= DTEND))    |
++---+---+---+---+---+-----------------------------------------------+
+| Y | N | N | * | * | (start  <= DTSTART)  AND (end >  DTSTART)     |
++---+---+---+---+---+-----------------------------------------------+
+| N | N | Y | * | * | (start  <  DTEND)    AND (end >= DTEND)       |
++---+---+---+---+---+-----------------------------------------------+
+| N | N | N | Y | Y | ((start <= CREATED)  OR  (start <= COMPLETED))|
+|   |   |   |   |   | AND                                           |
+|   |   |   |   |   | ((end   >= CREATED)  OR  (end   >= COMPLETED))|
++---+---+---+---+---+-----------------------------------------------+
+| N | N | N | Y | N | (start  <= COMPLETED) AND (end  >= COMPLETED) |
++---+---+---+---+---+-----------------------------------------------+
+| N | N | N | N | Y | (end    >  CREATED)                           |
++---+---+---+---+---+-----------------------------------------------+
+| N | N | N | N | N | TRUE                                          |
++---+---+---+---+---+-----------------------------------------------+]]></sourcecode></figure>
+</section>
+    </section>
+    <section anchor="security">
+      <name>Security Considerations</name>
+      <t anchor="_147a144f-5863-4341-bd57-87600ffda67c">Applications using these property need to be aware of the risks
+entailed in using the URIs provided as values.  See <relref target="RFC3986" section="" relative=""></relref> for a
+discussion of the security considerations relating to URIs.</t>
+    </section>
+    <section anchor="iana">
+      <name>IANA Considerations</name>
+      <section anchor="_parameter_registrations"><name>Parameter Registrations</name><t anchor="_c6724694-efd2-49f8-9125-6cb4f0d1e2ef">This document defines the following new iCalendar property parameters
+to be added to the registry defined in <relref target="RFC5545" section="" relative=""></relref>:</t>
+<table anchor="_4c586623-86a0-48fa-898a-230b3950017e"><thead><tr><th align="left">Property Parameter</th><th align="left">Status</th><th align="left">Reference</th></tr></thead><tbody><tr><td align="left">
+<t anchor="_c9a87102-4cb1-4da5-bfc5-71cd77320d86">REQUIRED</t>
+</td><td align="left">
+<t anchor="_1e674792-fb1a-4567-8756-a32693f9c4dd">Current</t>
+</td><td align="left">
+<t anchor="_db3b0d46-9202-4d79-93c4-fce5b5e5d2c7">
+<xref target="new-prop-para-required"></xref>
+</t>
+</td></tr><tr><td align="left">
+<t anchor="_b7bec203-b0ba-42a7-b693-e7bb24635a55">STAY-INFORMED</t>
+</td><td align="left">
+<t anchor="_1d8e1970-8ff4-4f72-b7d4-b8565c5b52f4">Current</t>
+</td><td align="left">
+<t anchor="_87cc402c-ed0a-459e-b2cd-a0fd3e920b12">
+<xref target="new-prop-para-stay-informed"></xref>
+</t>
+</td></tr></tbody></table></section>
+      <section anchor="_property_registrations"><name>Property Registrations</name><t anchor="_da370836-1195-46ad-83cc-5762f4897e85">This document defines the following new iCalendar properties to be
+added to the registry defined in <relref target="RFC5545" section="" relative=""></relref>:</t>
+<table anchor="_c04a6e28-fbd3-49ae-a3b7-5506949a4b72"><thead><tr><th align="left">Property</th><th align="left">Status</th><th align="left">Reference</th></tr></thead><tbody><tr><td align="left">
+<t anchor="_76eb08d3-a285-4d44-a334-380ff5b7a0bc">ACCEPT-RESPONSE</t>
+</td><td align="left">
+<t anchor="_84180a65-e6ff-4a44-9571-64861af251d2">Current</t>
+</td><td align="left">
+<t anchor="_654ebc84-d1fa-44c3-b3cf-84a3c71f3e54">
+<xref target="new-prop-reply-url"></xref>
+</t>
+</td></tr><tr><td align="left">
+<t anchor="_a404f563-8c0a-4554-bf52-85ec1d0eb97c">POLL-ITEM-ID</t>
+</td><td align="left">
+<t anchor="_a5c9091b-0a10-4edf-bc97-adc6df2356ea">Current</t>
+</td><td align="left">
+<t anchor="_cea12bf8-475f-4ec6-b2ff-97b73012a227">
+<xref target="new-prop-poll-item-id"></xref>
+</t>
+</td></tr><tr><td align="left">
+<t anchor="_7d6556b3-79f7-48d9-8c80-3b8c71e581d8">POLL-MODE</t>
+</td><td align="left">
+<t anchor="_b067c0be-af0b-4166-bf28-0d534c9c90c1">Current</t>
+</td><td align="left">
+<t anchor="_aaab6385-cea6-4aae-b1c4-3dc8a308273f">
+<xref target="new-prop-poll-mode"></xref>
+</t>
+</td></tr><tr><td align="left">
+<t anchor="_8a0d77ca-bd64-4b10-9af0-20f127c22713">POLL-PROPERTIES</t>
+</td><td align="left">
+<t anchor="_d754c822-3f7b-4939-adad-8200dbe74128">Current</t>
+</td><td align="left">
+<t anchor="_d917db7d-d43a-4f83-99b7-3856dd55723a">
+<xref target="new-prop-poll-properties"></xref>
+</t>
+</td></tr><tr><td align="left">
+<t anchor="_84262248-da64-43f6-92e9-e6ac4fd39494">POLL-WINNER</t>
+</td><td align="left">
+<t anchor="_d2d64de7-5532-4a28-9e82-30fe3a7c27df">Current</t>
+</td><td align="left">
+<t anchor="_1717443c-a7f0-45b9-9ef6-43e657241bc5">
+<xref target="new-prop-poll-winner"></xref>
+</t>
+</td></tr><tr><td align="left">
+<t anchor="_cb757a95-e7d0-4d7d-95cd-4557cd16dbb3">RESPONSE</t>
+</td><td align="left">
+<t anchor="_f6fd4cfd-d475-46a9-af2d-431732e70a5f">Current</t>
+</td><td align="left">
+<t anchor="_213a9ada-d522-4800-9d73-7811e56a68bb">
+<xref target="new-prop-response"></xref>
+</t>
+</td></tr></tbody></table></section>
+      <section anchor="poll-registration-template"><name>POLL-MODE Registration Template</name><t anchor="_fda9715c-71ba-4e9d-adae-289f8fee65fd">A poll mode is defined by completing the following template.</t>
+<dl anchor="_f8577462-e9ab-4f00-956b-a7da2ffab41e"><dt>Poll mode name</dt><dd>
+<t anchor="_97d7a0c3-476e-4a69-afc3-fc2794b8fc03">The name of the poll mode.</t>
+</dd><dt>Purpose</dt><dd>
+<t anchor="_db17d169-9bbf-4ef9-8989-8591c0f48d4a">The purpose of the poll mode.  Give a short but clear
+description.</t>
+</dd><dt>Reference</dt><dd>
+<t anchor="_b7502d31-7d3d-4528-a560-2a0743936cbf">A reference to the RFC in which the poll mode is defined</t>
+</dd></dl></section>
+      <section anchor="_poll_mode_registrations"><name>POLL-MODE Registrations</name><t anchor="_cf86414b-c778-4df7-933c-3307216c5c76">This document defines the following registered poll modes.</t>
+<table anchor="_1ca45a59-9890-41d4-a6f0-4f04949ff1c2"><thead><tr><th align="left">Poll mode name</th><th align="left">Purpose</th><th align="left">Reference</th></tr></thead><tbody><tr><td align="left">
+<t anchor="_e6f22e1e-71a5-4287-8b5f-c1633a8b22cc">BASIC</t>
+</td><td align="left">
+<t anchor="_397309c8-7af7-4634-8dd5-d30b26cbac06">To provide simple voting for a single outcome from a number of candidates.</t>
+</td><td align="left">
+<t anchor="_c98ff39c-9fca-47ef-b774-19becf8c2872">Current</t>
+</td></tr></tbody></table></section>
+    </section>
+  </middle>
+  <back>
+    <references anchor="_normative_references">
+      <name>Normative references</name>
+      <reference target="https://www.rfc-editor.org/info/rfc2518" anchor="RFC2518">
+        <front>
+          <title>HTTP Extensions for Distributed Authoring&#x2009;&#x2014;&#x2009;WEBDAV</title>
+          <author fullname="Y. Goland" asciiFullname="Y. Goland"></author>
+          <author fullname="E. Whitehead" asciiFullname="E. Whitehead"></author>
+          <author fullname="A. Faizi" asciiFullname="A. Faizi"></author>
+          <author fullname="S. Carter" asciiFullname="S. Carter"></author>
+          <author fullname="D. Jensen" asciiFullname="D. Jensen"></author>
+          <date month="February" year="1999"></date>
+          <abstract>
+            <t>This document specifies a set of methods, headers, and content-types ancillary to HTTP/1.1 for the management of resource properties, creation and management of resource collections, namespace manipulation, and resource locking (collision avoidance).  [STANDARDS-TRACK]</t>
+          </abstract>
+        </front>
+        <format target="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.2518.xml" type="xml"></format>
+        <format target="https://www.rfc-editor.org/info/rfc2518" type="src"></format>
+        <refcontent>IETF RFC 2518</refcontent>
+        <seriesInfo value="RFC 2518" name="IETF"></seriesInfo>
+        <seriesInfo value="10.17487/RFC2518" name="DOI"></seriesInfo>
+      </reference>
+      <reference target="https://www.rfc-editor.org/info/rfc3986" anchor="RFC3986">
+        <front>
+          <title>Uniform Resource Identifier (URI): Generic Syntax</title>
+          <author fullname="T. Berners-Lee" asciiFullname="T. Berners-Lee"></author>
+          <author fullname="R. Fielding" asciiFullname="R. Fielding"></author>
+          <author fullname="L. Masinter" asciiFullname="L. Masinter"></author>
+          <date month="January" year="2005"></date>
+          <abstract>
+            <t>A Uniform Resource Identifier (URI) is a compact sequence of characters that identifies an abstract or physical resource.  This specification defines the generic URI syntax and a process for resolving URI references that might be in relative form, along with guidelines and security considerations for the use of URIs on the Internet.  The URI syntax defines a grammar that is a superset of all valid URIs, allowing an implementation to parse the common components of a URI reference without knowing the scheme-specific requirements of every possible identifier.  This specification does not define a generative grammar for URIs; that task is performed by the individual specifications of each URI scheme.  [STANDARDS-TRACK]</t>
+          </abstract>
+        </front>
+        <format target="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.3986.xml" type="xml"></format>
+        <format target="https://www.rfc-editor.org/info/rfc3986" type="src"></format>
+        <refcontent>IETF RFC 3986</refcontent>
+        <seriesInfo value="RFC 3986" name="IETF"></seriesInfo>
+        <seriesInfo value="10.17487/RFC3986" name="DOI"></seriesInfo>
+      </reference>
+      <reference target="https://www.rfc-editor.org/info/rfc4791" anchor="RFC4791">
+        <front>
+          <title>Calendaring Extensions to WebDAV (CalDAV)</title>
+          <author fullname="C. Daboo" asciiFullname="C. Daboo"></author>
+          <author fullname="B. Desruisseaux" asciiFullname="B. Desruisseaux"></author>
+          <author fullname="L. Dusseault" asciiFullname="L. Dusseault"></author>
+          <date month="March" year="2007"></date>
+          <abstract>
+            <t>This document defines extensions to the Web Distributed Authoring and Versioning (WebDAV) protocol to specify a standard way of accessing, managing, and sharing calendaring and scheduling information based on the iCalendar format.  This document defines the "calendar-access" feature of CalDAV.  [STANDARDS-TRACK]</t>
+          </abstract>
+        </front>
+        <format target="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.4791.xml" type="xml"></format>
+        <format target="https://www.rfc-editor.org/info/rfc4791" type="src"></format>
+        <refcontent>IETF RFC 4791</refcontent>
+        <seriesInfo value="RFC 4791" name="IETF"></seriesInfo>
+        <seriesInfo value="10.17487/RFC4791" name="DOI"></seriesInfo>
+      </reference>
+      <reference target="https://www.rfc-editor.org/info/rfc5545" anchor="RFC5545">
+        <front>
+          <title>Internet Calendaring and Scheduling Core Object Specification (iCalendar)</title>
+          <author fullname="B. Desruisseaux" asciiFullname="B. Desruisseaux" role="editor"></author>
+          <date month="September" year="2009"></date>
+          <abstract>
+            <t>This document defines the iCalendar data format for representing and exchanging calendaring and scheduling information such as events, to-dos, journal entries, and free/busy information, independent of any particular calendar service or protocol. [STANDARDS-TRACK]</t>
+          </abstract>
+        </front>
+        <format target="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5545.xml" type="xml"></format>
+        <format target="https://www.rfc-editor.org/info/rfc5545" type="src"></format>
+        <refcontent>IETF RFC 5545</refcontent>
+        <seriesInfo value="RFC 5545" name="IETF"></seriesInfo>
+        <seriesInfo value="10.17487/RFC5545" name="DOI"></seriesInfo>
+      </reference>
+      <reference target="https://www.rfc-editor.org/info/rfc5546" anchor="RFC5546">
+        <front>
+          <title>iCalendar Transport-Independent Interoperability Protocol (iTIP)</title>
+          <author fullname="C. Daboo" asciiFullname="C. Daboo" role="editor"></author>
+          <date month="December" year="2009"></date>
+          <abstract>
+            <t>This document specifies a protocol that uses the iCalendar object specification to provide scheduling interoperability between different calendaring systems.  This is done without reference to a specific transport protocol so as to allow multiple methods of communication between systems.  Subsequent documents will define profiles of this protocol that use specific, interoperable methods of communication between systems.The iCalendar Transport-Independent Interoperability Protocol (iTIP) complements the iCalendar object specification by adding semantics for group scheduling methods commonly available in current calendaring systems.  These scheduling methods permit two or more calendaring systems to perform transactions such as publishing, scheduling, rescheduling, responding to scheduling requests, negotiating changes, or canceling.  [STANDARDS-TRACK]</t>
+          </abstract>
+        </front>
+        <format target="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.5546.xml" type="xml"></format>
+        <format target="https://www.rfc-editor.org/info/rfc5546" type="src"></format>
+        <refcontent>IETF RFC 5546</refcontent>
+        <seriesInfo value="RFC 5546" name="IETF"></seriesInfo>
+        <seriesInfo value="10.17487/RFC5546" name="DOI"></seriesInfo>
+      </reference>
+      <reference target="https://www.rfc-editor.org/info/rfc6047" anchor="RFC6047">
+        <front>
+          <title>iCalendar Message-Based Interoperability Protocol (iMIP)</title>
+          <author fullname="A. Melnikov" asciiFullname="A. Melnikov" role="editor"></author>
+          <date month="December" year="2010"></date>
+          <abstract>
+            <t>This document, "iCalendar Message-Based Interoperability Protocol (iMIP)", specifies a binding from the iCalendar Transport-independent Interoperability Protocol (iTIP) to Internet email-based transports. Calendaring entries defined by the iCalendar Object Model (iCalendar) are wrapped using constructs from RFC 5322 and MIME (RFC 2045, RFC 2046, RFC 2047, and RFC 2049), and then transported over SMTP.  [STANDARDS-TRACK]</t>
+          </abstract>
+        </front>
+        <format target="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6047.xml" type="xml"></format>
+        <format target="https://www.rfc-editor.org/info/rfc6047" type="src"></format>
+        <refcontent>IETF RFC 6047</refcontent>
+        <seriesInfo value="RFC 6047" name="IETF"></seriesInfo>
+        <seriesInfo value="10.17487/RFC6047" name="DOI"></seriesInfo>
+      </reference>
+      <reference target="https://www.rfc-editor.org/info/rfc6638" anchor="RFC6638">
+        <front>
+          <title>Scheduling Extensions to CalDAV</title>
+          <author fullname="C. Daboo" asciiFullname="C. Daboo"></author>
+          <author fullname="B. Desruisseaux" asciiFullname="B. Desruisseaux"></author>
+          <date month="June" year="2012"></date>
+          <abstract>
+            <t>This document defines extensions to the Calendaring Extensions to WebDAV (CalDAV) "calendar-access" feature to specify a standard way of performing scheduling operations with iCalendar-based calendar components.  This document defines the "calendar-auto-schedule" feature of CalDAV.  [STANDARDS-TRACK]</t>
+          </abstract>
+        </front>
+        <format target="https://xml2rfc.tools.ietf.org/public/rfc/bibxml/reference.RFC.6638.xml" type="xml"></format>
+        <format target="https://www.rfc-editor.org/info/rfc6638" type="src"></format>
+        <refcontent>IETF RFC 6638</refcontent>
+        <seriesInfo value="RFC 6638" name="IETF"></seriesInfo>
+        <seriesInfo value="10.17487/RFC6638" name="DOI"></seriesInfo>
+      </reference>
+      <reference anchor="I-D.ietf-calext-eventpub-extensions">
+        <front>
+          <title>Event Publishing Extensions to iCalendar</title>
+          <author fullname="Michael Douglass" asciiFullname="Michael Douglass"></author>
+          <date month="October" year="2019"></date>
+          <abstract>
+            <t>This specification updates RFC5545 by introducing a number of new iCalendar properties and components which are of particular use for event publishers and in social networking.  This specification also defines a new STRUCTURED-DATA property for iCalendar RFC5545 to allow for data that is directly pertinent to an event or task to be included with the calendar data.</t>
+          </abstract>
+        </front>
+        <format target="https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-calext-eventpub-extensions.xml" type="xml"></format>
+        <format target="http://www.ietf.org/internet-drafts/draft-ietf-calext-eventpub-extensions-15.txt" type="TXT"></format>
+        <format target="http://www.ietf.org/internet-drafts/draft-ietf-calext-eventpub-extensions-15.pdf" type="PDF"></format>
+        <refcontent>IETF I-D.ietf-calext-eventpub-extensions</refcontent>
+        <seriesInfo value="I-D.ietf-calext-eventpub-extensions" name="IETF"></seriesInfo>
+      </reference>
+    </references>
+    <references anchor="_informative_references">
+      <name>Bibliography</name>
+    </references>
+    <section anchor="_open_issues">
+      <name>Open issues</name>
+      <t anchor="_8c8f0e54-b48e-42c5-9a2f-8cf7059d9b7c">public-comment: Not documented and was a parameter on something.
+Really sounds like a PARTICIPANT or VOTE property</t>
+      <t anchor="_4c048d76-d51b-426c-b972-eee69ee512dc">Notifications: Need to do a section on what Notifications to
+  support.
+  A.  VPOLL is about to end and you haven't voted on it yet.
+  Instead reuse VALARMS to notify the user?</t>
+      <t anchor="_a1166ebc-f5c6-4365-a236-8673173cc49e">Future: Restarting a confirmed/completed VPOLL  What to do with
+  changes to STATUS:CONFIRMED?  Allow them or not?  What do to that
+  poll had a winning event or todo.
+  Stress VPOLL UID MUST be unique
+  Changing status back from CONFIRMED MUST adjust status of any
+  events booked as a result of confirmation.
+  MUST winning event be cancelled for POLL-MODE basic?  No - voter
+  has indicated now unable to attend - want to revote</t>
+      <t anchor="_0513032e-fb50-4897-b514-d2150565656a">Future: Voting on a confirmed/completed VPOLL  Can a voter vote after
+  completion?  May be unable to attend and wants to indicate.
+  Requires retention of VPOLL
+  retention period
+  Removed status</t>
+      <t anchor="_e2eeb92d-308a-4257-9ea5-b968b6dd6fb6">ORGANIZER/ATTENDEE validity  Can a user create a poll with scheduled
+  events where that user's isn't the organizer of the poll?  So is
+  there a requirement that the account that poll is on is able to
+  create each one of the resources in the poll? i.e. I can't create
+  a poll with a set of events where I am just the attendee of the
+  events.  Are there any other restrictions for components in a
+  VPOLL?
+  Add to security consideration</t>
+      <t anchor="_1c3a1304-208d-4ea6-bdc6-e8dbeb064ba4">Update to existing event after poll confirm  When voting on existing
+  event - winning properties ONLY are merged in to the real event.</t>
+      <t anchor="_0120d7bd-faf5-4e85-9dfc-c9cdd19c9aaa">Need to write down what isn't valid in a VPOLL
+  a.  Can't change POLL-MODE</t>
+      <t anchor="_1ae74088-be78-413e-9827-466eccf77f9d">Guide for ATTENDEE roles
+  chair, NON-PARTICIPANT etc</t>
+      <t anchor="_34c20c2a-4da8-47a3-a712-aee256155871">? - some iTip notes  On confirm - send itip if appropriate (PUBLISH)
+  - all non-participating - shared - feeds
+  Organizer can specify where result is?
+  Confirm can specify that itip is sent - ITIP / NONE - parameter ?
+  on POLL-WINNER</t>
+      <t anchor="_d8655794-ec63-4b7f-ab7c-1ab4690b9ea1">Need to add example of freebusy in response</t>
+      <figure anchor="_8a2a1f66-3e1c-4b38-8fd8-3af8b05e4ccf">
+        
+      <sourcecode><![CDATA[BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//BedeworkCaldavTest//BedeworkCaldavTest
+METHOD: REPLY
+BEGIN:VPOLL
+ORGANIZER:mailto:douglm@mysite.edu
+BEGIN:PARTICIPANT
+PARTICIPANT-TYPE: VOTER
+CALENDAR-ADDRESS:mailto:eric@example.com
+UID:sched01-1234567890
+DTSTAMP:20120101T010000Z
+SEQUENCE:0
+SUMMARY:What to do this week
+BEGIN:VFREEBUSY
+.......
+END:VFREEBUSY
+END:PARTICIPANT
+END:VPOLL
+END:VCALENDAR]]></sourcecode></figure>
+    </section>
+    <section anchor="_change_log">
+      <name>Change log</name>
+      <dl anchor="_0cacf2e8-2503-4cfa-983c-0c34047ce22f">
+        <dt>Calext V01: 2019-10-17 MD</dt>
+        <dd>
+<t anchor="_3de3805e-a901-49ae-962a-534991142965">Replace VVOTER and VOTER with PARTICIPANT.</t>
+</dd>
+        <dt>Calext V00: 2019-05-17 MD</dt>
+        <dd>
+<t anchor="_d1585c3b-ed59-4fc8-ab79-3eba234a5fd0">First calext version. Moved source to metanorma. No changes to specification.</t>
+</dd>
+        <dt>V03: 2014-10-28 MD</dt>
+        <dd>
+<ul anchor="_aa315c8f-df3f-4f48-9c4d-c6b2dd15d75e">
+<li>
+<t anchor="_f3542908-f595-4080-b831-9934885b1792">Add VVOTER and VOTE components.</t>
+</li>
+<li>
+<t anchor="_47fc22b8-2f6a-458c-9cdd-4dc7006a7225">Add RESPONSE property.</t>
+</li>
+<li>
+<t anchor="_d2b516e4-8906-48c0-b712-35e77ded21fa">Remove RESPONSE parameter from VOTER.</t>
+</li>
+</ul>
+</dd>
+        <dt>V03: 2014-05-12 MD</dt>
+        <dd>
+<ul anchor="_417ed5db-9d54-4072-b1c1-1e64f3c2144d">
+<li>
+<t anchor="_1b8b766b-df63-4f7c-bea6-eef6741fb5ba">Add reply-url property and required parameter.</t>
+</li>
+<li>
+<t anchor="_013de760-e486-4db4-9270-8db775c82445">Fix ACCEPT-RESPONSE definition.</t>
+</li>
+</ul>
+</dd>
+        <dt>V02: 2014-05-12 MD</dt>
+        <dd>
+<ul anchor="_e747c032-b49c-4c7b-9d50-276a3fd2cd60">
+<li>
+<t anchor="_dd06792c-5baf-465a-9f74-5c45fe4107f9">Typos fixed, clarifications made.</t>
+</li>
+<li>
+<t anchor="_e01b5e40-c6d7-4bce-ba43-fe3bdd4184b6">Removed spurious COMMENT param.  Switched some to PUBLIC-COMMENT</t>
+</li>
+<li>
+<t anchor="_19f4fc0a-9c1c-48a3-b198-98967f38d4b3">Changed STAY-INFORMED to remove boolean value type and state
+explicit TRUE/FALSE values.</t>
+</li>
+<li>
+<t anchor="_d8332de0-cf1c-402a-84d4-671a9ff6a9c4">iTip: Allow VPOLL DTSTART to be optional and allow VAVAILABILITY
+as subcomponent</t>
+</li>
+<li>
+<t anchor="_c81e3d56-0e24-401a-b6ed-1843df04b025">iTip: fix broken table cells</t>
+</li>
+<li>
+<t anchor="_d4ad5adc-b862-4176-8b39-f2e4606cce6b">Add POLL-PROPERTIES, POLL-WINNER to 5545 extensions table</t>
+</li>
+<li>
+<t anchor="_1cdf494f-14e5-4d53-8481-d5f96d2fa63e">Added Caldav scheduling section</t>
+</li>
+</ul>
+</dd>
+        <dt>V01: 2013-08-07 MD</dt>
+        <dd>
+<ul anchor="_272949cc-1418-4ece-b80f-9df05c7cb145">
+<li>
+<t anchor="_1f9f8880-09c8-4ce0-8aa7-01795dabbb91">Removed method CONFIRM</t>
+</li>
+<li>
+<t anchor="_67bffe64-450f-4196-8f13-4fc31b2e02b3">Removed pollitemid from VPOLL abnf.  Added text for pollwinner</t>
+</li>
+<li>
+<t anchor="_3c7cffb0-10da-4425-866b-f9d8e6fb49e9">Added POLL-WINNER and verbiage</t>
+</li>
+<li>
+<t anchor="_752c6d79-ebe4-486a-ba57-5f20dac925b5">Added STATUS values</t>
+</li>
+<li>
+<t anchor="_8cfe277c-3e62-47ee-89a6-c92d45f94bc2">Added RELTYPE=POLL</t>
+</li>
+<li>
+<t anchor="_673df4b2-ed9f-40c7-a35a-45cf1bab337a">Added supported-vpoll-component-sets</t>
+</li>
+<li>
+<t anchor="_79a19448-960e-4c03-a8fe-73a06e59b49f">Added CalDAV related parameters to VOTER</t>
+</li>
+<li>
+<t anchor="_2bb2100d-fe75-428c-aa7b-aca47db9f855">Removed bad CalDAV query example.  State that queries cannot
+target the sub-components.</t>
+</li>
+</ul>
+</dd>
+        <dt>Initial version: 2012-11-02 MD</dt>
+        <dd></dd>
+      </dl>
+    </section>
+  </back>
+</rfc>
