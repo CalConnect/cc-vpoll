@@ -1,4 +1,5 @@
+# metanorma.release.yml — cc-vpoll
+
 documents:
-  - source: sources/cc-51006.adoc
-  - source: sources/draft-ietf-calext-vpoll.adoc
-  - source: sources/draft-york-vpoll.adoc
+  - pattern: "cc-*"
+    channels: [public/standards]
